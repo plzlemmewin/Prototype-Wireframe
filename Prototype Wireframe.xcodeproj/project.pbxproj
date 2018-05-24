@@ -15,7 +15,6 @@
 		04679A89208D3C24006A2434 /* Prototype_WireframeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A88208D3C24006A2434 /* Prototype_WireframeTests.swift */; };
 		04679A94208D3C24006A2434 /* Prototype_WireframeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A93208D3C24006A2434 /* Prototype_WireframeUITests.swift */; };
 		04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA3208D3DB9006A2434 /* LogTableViewController.swift */; };
-		04679AA6208D43FD006A2434 /* GoalCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA5208D43FD006A2434 /* GoalCollectionViewController.swift */; };
 		04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA9209505E8006A2434 /* GoalPageViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,7 +50,6 @@
 		04679A93208D3C24006A2434 /* Prototype_WireframeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prototype_WireframeUITests.swift; sourceTree = "<group>"; };
 		04679A95208D3C24006A2434 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04679AA3208D3DB9006A2434 /* LogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
-		04679AA5208D43FD006A2434 /* GoalCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCollectionViewController.swift; sourceTree = "<group>"; };
 		04679AA9209505E8006A2434 /* GoalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,7 +104,6 @@
 				04679A73208D3C23006A2434 /* AppDelegate.swift */,
 				04679A75208D3C23006A2434 /* GoalViewController.swift */,
 				04679AA9209505E8006A2434 /* GoalPageViewController.swift */,
-				04679AA5208D43FD006A2434 /* GoalCollectionViewController.swift */,
 				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
 				04679A77208D3C23006A2434 /* Main.storyboard */,
 				04679A7A208D3C23006A2434 /* Assets.xcassets */,
@@ -269,7 +266,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */,
-				04679AA6208D43FD006A2434 /* GoalCollectionViewController.swift in Sources */,
 				04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
 				04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */,

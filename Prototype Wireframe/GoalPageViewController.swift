@@ -8,8 +8,13 @@
 
 import UIKit
 
+
+
 class GoalPageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource  {
 
+    var currentIndex: Int?
+    var pendingIndex: Int?
+    
     func newVC(viewController: String) -> UIViewController {
         return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: viewController)
     }
@@ -31,9 +36,9 @@ class GoalPageViewController: UIPageViewController, UIPageViewControllerDelegate
         // User is on the first view controller and swiped left to loop to
         // the last view controller.
         guard previousIndex >= 0 else {
-            return orderedViewControllers.last
+            // return orderedViewControllers.last
             // Uncommment the line below, remove the line above if you don't want the page control to loop.
-            // return nil
+            return nil
         }
         
         guard orderedViewControllers.count > previousIndex else {
@@ -41,6 +46,7 @@ class GoalPageViewController: UIPageViewController, UIPageViewControllerDelegate
         }
         
         return orderedViewControllers[previousIndex]
+        
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -66,12 +72,22 @@ class GoalPageViewController: UIPageViewController, UIPageViewControllerDelegate
         return orderedViewControllers[nextIndex]
     }
     
+//    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+//        pendingIndex = orderedViewControllers.index(of: pendingViewControllers.first!)
+//    }
+//
+//    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+//        if completed {
+//            currentIndex = pendingIndex
+//            print("\(currentIndex!)")
+//        }
+//    }
     
     var pageControl = UIPageControl()
 
     func configurePageControl() {
         // The total number of pages that are available is based on how many available colors we have.
-        pageControl = UIPageControl(frame: CGRect(x: 0,y: view.bounds.minY + 330  ,width: view.frame.width ,height: 50))
+        pageControl = UIPageControl(frame: CGRect(x: 0,y: 290  ,width: view.frame.width ,height: 50))
         print(pageControl.frame)
         self.pageControl.numberOfPages = orderedViewControllers.count
         self.pageControl.currentPage = 0
@@ -108,6 +124,7 @@ class GoalPageViewController: UIPageViewController, UIPageViewControllerDelegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
         self.pageControl.currentPage = orderedViewControllers.index(of: pageContentViewController)!
+        print("\(pageControl.currentPage)")
     }
 
     /*
