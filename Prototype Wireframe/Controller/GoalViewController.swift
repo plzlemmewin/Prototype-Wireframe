@@ -10,7 +10,8 @@ import UIKit
 
 class GoalViewController: UIViewController {
     
-    var pageNumber: Int?
+    var pageViewController: UIPageViewController!
+    
     
     @IBOutlet weak var summaryLabel: UILabel!
     

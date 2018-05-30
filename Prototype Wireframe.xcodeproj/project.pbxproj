@@ -16,6 +16,10 @@
 		04679A94208D3C24006A2434 /* Prototype_WireframeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A93208D3C24006A2434 /* Prototype_WireframeUITests.swift */; };
 		04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA3208D3DB9006A2434 /* LogTableViewController.swift */; };
 		04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA9209505E8006A2434 /* GoalPageViewController.swift */; };
+		046C05B120BE2F3C00AC1ECA /* FoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C05B020BE2F3C00AC1ECA /* FoodCell.swift */; };
+		046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C05B220BE5EA600AC1ECA /* DetailViewController.swift */; };
+		04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBD20B88469001491E9 /* Food Item.swift */; };
+		04CBAFC020B88917001491E9 /* Food Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBF20B88917001491E9 /* Food Database.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,10 @@
 		04679A95208D3C24006A2434 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04679AA3208D3DB9006A2434 /* LogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
 		04679AA9209505E8006A2434 /* GoalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPageViewController.swift; sourceTree = "<group>"; };
+		046C05B020BE2F3C00AC1ECA /* FoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCell.swift; sourceTree = "<group>"; };
+		046C05B220BE5EA600AC1ECA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		04CBAFBD20B88469001491E9 /* Food Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Item.swift"; sourceTree = "<group>"; };
+		04CBAFBF20B88917001491E9 /* Food Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Database.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,11 +109,9 @@
 		04679A72208D3C23006A2434 /* Prototype Wireframe */ = {
 			isa = PBXGroup;
 			children = (
-				04679A73208D3C23006A2434 /* AppDelegate.swift */,
-				04679A75208D3C23006A2434 /* GoalViewController.swift */,
-				04679AA9209505E8006A2434 /* GoalPageViewController.swift */,
-				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
-				04679A77208D3C23006A2434 /* Main.storyboard */,
+				04CBAFBC20B88443001491E9 /* Controller */,
+				04CBAFBB20B8842E001491E9 /* View */,
+				04CBAFB920B88416001491E9 /* Model */,
 				04679A7A208D3C23006A2434 /* Assets.xcassets */,
 				04679A7C208D3C23006A2434 /* LaunchScreen.storyboard */,
 				04679A7F208D3C23006A2434 /* Info.plist */,
@@ -129,6 +135,36 @@
 				04679A95208D3C24006A2434 /* Info.plist */,
 			);
 			path = "Prototype WireframeUITests";
+			sourceTree = "<group>";
+		};
+		04CBAFB920B88416001491E9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				046C05B020BE2F3C00AC1ECA /* FoodCell.swift */,
+				04CBAFBD20B88469001491E9 /* Food Item.swift */,
+				04CBAFBF20B88917001491E9 /* Food Database.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		04CBAFBB20B8842E001491E9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				04679A77208D3C23006A2434 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		04CBAFBC20B88443001491E9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				04679A73208D3C23006A2434 /* AppDelegate.swift */,
+				04679A75208D3C23006A2434 /* GoalViewController.swift */,
+				04679AA9209505E8006A2434 /* GoalPageViewController.swift */,
+				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
+				046C05B220BE5EA600AC1ECA /* DetailViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,8 +303,12 @@
 			files = (
 				04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */,
 				04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */,
+				046C05B120BE2F3C00AC1ECA /* FoodCell.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
+				04CBAFC020B88917001491E9 /* Food Database.swift in Sources */,
+				04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */,
 				04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */,
+				046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
