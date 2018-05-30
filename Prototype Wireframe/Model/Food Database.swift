@@ -20,7 +20,7 @@ class FoodDatabase {
     }
     
     init() {
-        for _ in 0..<5 {
+        for _ in 0..<20 {
             createFood()
         }
     }
