@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let foodDatabase = FoodDatabase()
 //        let tabController = window!.rootViewController as! UITabBarController
 //        let logTableController = tabController.
+        
+        // Initialize and configure Firebase
+        FirebaseApp.configure()
+        
         
         return true
     }

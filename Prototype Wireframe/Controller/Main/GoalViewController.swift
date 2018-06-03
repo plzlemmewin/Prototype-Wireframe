@@ -40,6 +40,7 @@ class GoalViewController: UIViewController {
         updateData()
     }
     
+    
     func updateData() {
         chartLabel.text = chartNameArray[0]
         summaryLabel.text = personalTrainerComment[0]

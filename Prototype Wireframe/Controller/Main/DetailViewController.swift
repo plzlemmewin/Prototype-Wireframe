@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController, UITextFieldDelegate {
+class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerViewDelegate, UIPickerViewDataSource*/ {
     
     @IBOutlet var nameField: UITextField!
     @IBOutlet var servingSizeField: UITextField!
@@ -21,9 +21,24 @@ class DetailViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBOutlet var servingPicker: UIPickerView!
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
+    
+//    struct ServingSize {
+//        <#fields#>
+//    }
+//
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+//        servingPicker.delegate = self
+//        servingPicker.dataSource = self
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -55,4 +70,19 @@ class DetailViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    // MARK: UIPicker Delegate Methods
+    
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 3
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        <#code#>
+//    }
+
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        <#code#>
+//    }
+
 }
+

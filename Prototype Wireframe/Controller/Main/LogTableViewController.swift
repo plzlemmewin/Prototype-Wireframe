@@ -42,6 +42,9 @@ class LogTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationItem.title = "Today"
+        
+        
         sortData()
         tableView.reloadData()
     }
@@ -65,10 +68,11 @@ class LogTableViewController: UITableViewController {
         return sectionHeaderHeight
     }
     
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: sectionHeaderHeight))
-        view.backgroundColor = UIColor(red: 118/255, green: 214/255, blue: 255/255, alpha: 0.75)
-        let nameLabel = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: sectionHeaderHeight))
+        view.backgroundColor = UIColor(red: 118/255, green: 214/255, blue: 255/255, alpha: 1)
+        let nameLabel = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 150, height: sectionHeaderHeight))
         if let section = Meals(rawValue: section) {
             switch section {
             case .breakfast:
@@ -83,8 +87,17 @@ class LogTableViewController: UITableViewController {
                 nameLabel.text = ""
             }
         }
-
+        let calorieLabel = UILabel(frame: CGRect(x: tableView.bounds.width - 45, y: 0, width: 45, height: sectionHeaderHeight))
+        calorieLabel.text = "\(300)"
+        
+        /*NEED TO REVIST AND ADJUST HEADER LABEL AND CALORIE LABEL TO BE DYNAMIC*/
+//        nameLabel.layer.borderWidth = 1.0
+//        nameLabel.layer.borderColor = UIColor.black.cgColor
+//        calorieLabel.layer.borderWidth = 1.0
+//        calorieLabel.layer.borderColor = UIColor.black.cgColor
+        
         view.addSubview(nameLabel)
+        view.addSubview(calorieLabel)
         return view
     }
     
