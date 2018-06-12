@@ -75,7 +75,13 @@ class LogTableViewController: UITableViewController {
         view.backgroundColor = UIColor(red: 118/255, green: 214/255, blue: 255/255, alpha: 1)
         let nameLabel = UILabel(frame: CGRect(x: 15, y: 0, width: 160, height: sectionHeaderHeight))
         
-        let button = UIButton(frame: CGRect(x: tableView.bounds.width - 65, y: 0, width: 55, height: sectionHeaderHeight))
+        let addButton = UIButton(type: .contactAdd)
+        
+        // Configure button
+        addButton.frame = CGRect(x: tableView.bounds.width - 45, y: 0, width: 35, height: sectionHeaderHeight)
+        addButton.tintColor = UIColor.lightGray
+        addButton.tag = section
+        addButton.addTarget(self, action: #selector(self.addNewFood), for: .touchUpInside)
         
         
         let totalCalories = 0
@@ -100,14 +106,24 @@ class LogTableViewController: UITableViewController {
         /*NEED TO REVIST AND ADJUST HEADER LABEL AND CALORIE LABEL TO BE DYNAMIC*/
 //        nameLabel.layer.borderWidth = 1.0
 //        nameLabel.layer.borderColor = UIColor.black.cgColor
-//        calorieLabel.layer.borderWidth = 1.0
-//        calorieLabel.layer.borderColor = UIColor.black.cgColor
+//        addButton.layer.borderWidth = 1.0
+//        addButton.layer.borderColor = UIColor.black.cgColor
         
         view.addSubview(nameLabel)
+        view.addSubview(addButton)
         
 //        view.addSubview(calorieLabel)
         return view
     }
+    
+    
+    @objc func addNewFood(_ sender: UIButton) {
+        let section = sender.tag
+        
+        performSegue(withIdentifier: "addFood", sender: sender)
+    }
+    
+    
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -137,7 +153,10 @@ class LogTableViewController: UITableViewController {
                 detailVC.food = food
             }
         case "addFood"?:
-            print("Adding New Food")
+            let destinationNavigationC = segue.destination as! UINavigationController
+            let targetController = destinationNavigationC.topViewController as! AddFoodViewController
+            targetController.selectedMeal = (sender as! UIButton).tag
+            print("\(targetController.selectedMeal)")
         default:
             preconditionFailure("Unexpected segue identifier")
         }

@@ -14,6 +14,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var foodTableView: UITableView!
     
     var foodDatabase = FoodDatabase()
+    var selectedMeal: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()

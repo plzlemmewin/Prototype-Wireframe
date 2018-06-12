@@ -26,9 +26,9 @@
 		04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D7920C710D3003D5762 /* MenuBar.swift */; };
 		04AC4D9C20C88BA1003D5762 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D9B20C88BA1003D5762 /* Food.swift */; };
 		04AC4D9E20C88EFE003D5762 /* FoodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D9D20C88EFE003D5762 /* FoodData.swift */; };
-		04AC4DA120C898A0003D5762 /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4DA020C898A0003D5762 /* DBFoodCell.swift */; };
 		04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBD20B88469001491E9 /* Food Item.swift */; };
 		04CBAFC020B88917001491E9 /* Food Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBF20B88917001491E9 /* Food Database.swift */; };
+		04D0764520D03C5D0015C3FC /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0764420D03C5D0015C3FC /* DBFoodCell.swift */; };
 		5E5899CDE2922C2E7804D75F /* Pods_Prototype_WireframeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF7BB278175FA58CC231DDE /* Pods_Prototype_WireframeUITests.framework */; };
 		99FA5798A947C67AF6FBEF2B /* Pods_Prototype_WireframeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */; };
 		D26ABB6730E5047E9DE87EC1 /* Pods_Prototype_Wireframe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB2BB8C522B6456DD732DEFA /* Pods_Prototype_Wireframe.framework */; };
@@ -77,9 +77,9 @@
 		04AC4D7920C710D3003D5762 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		04AC4D9B20C88BA1003D5762 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		04AC4D9D20C88EFE003D5762 /* FoodData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodData.swift; sourceTree = "<group>"; };
-		04AC4DA020C898A0003D5762 /* DBFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFoodCell.swift; sourceTree = "<group>"; };
 		04CBAFBD20B88469001491E9 /* Food Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Item.swift"; sourceTree = "<group>"; };
 		04CBAFBF20B88917001491E9 /* Food Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Database.swift"; sourceTree = "<group>"; };
+		04D0764420D03C5D0015C3FC /* DBFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBFoodCell.swift; path = "Prototype Wireframe/View/Food Cell/DBFoodCell.swift"; sourceTree = SOURCE_ROOT; };
 		13D1421FC4B8EC3BE7941F61 /* Pods-Prototype WireframeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeUITests/Pods-Prototype WireframeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Prototype_WireframeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FF7D87D7226CC5664567E7B /* Pods-Prototype WireframeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeTests/Pods-Prototype WireframeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 			children = (
 				04AC4D9B20C88BA1003D5762 /* Food.swift */,
 				04AC4D9D20C88EFE003D5762 /* FoodData.swift */,
-				04AC4DA020C898A0003D5762 /* DBFoodCell.swift */,
+				04D0764420D03C5D0015C3FC /* DBFoodCell.swift */,
 			);
 			path = "Database Model ";
 			sourceTree = "<group>";
@@ -590,8 +590,8 @@
 				046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
 				04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */,
+				04D0764520D03C5D0015C3FC /* DBFoodCell.swift in Sources */,
 				04AC4D9C20C88BA1003D5762 /* Food.swift in Sources */,
-				04AC4DA120C898A0003D5762 /* DBFoodCell.swift in Sources */,
 				04CBAFC020B88917001491E9 /* Food Database.swift in Sources */,
 				04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */,
 				04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */,

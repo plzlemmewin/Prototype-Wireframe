@@ -397,14 +397,10 @@
                             <outlet property="delegate" destination="HMu-hz-a5Q" id="SDu-QN-z0p"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" id="ZTn-qA-AgQ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="uCb-lM-XC4">
-                            <connections>
-                                <action selector="addNewFood:" destination="HMu-hz-a5Q" id="bG1-Jl-OM4"/>
-                                <segue destination="kyd-zX-cvf" kind="presentation" identifier="addFood" id="Fmx-Yi-I68"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" id="ZTn-qA-AgQ"/>
+                    <connections>
+                        <segue destination="kyd-zX-cvf" kind="presentation" identifier="addFood" id="9x3-XQ-H69"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fk1-Wa-ajg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -423,7 +419,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AjK-87-Vgz">
-                                <rect key="frame" x="24" y="72" width="327" height="587"/>
+                                <rect key="frame" x="24" y="72" width="327" height="538"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="K7s-vh-7ro">
                                         <rect key="frame" x="0.0" y="0.0" width="327" height="30"/>
@@ -489,7 +485,7 @@
                                         <rect key="frame" x="0.0" y="114" width="327" height="216"/>
                                     </pickerView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="25" verticalHuggingPriority="249" text="Date Added" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eR1-9L-Ymi">
-                                        <rect key="frame" x="0.0" y="338" width="327" height="249"/>
+                                        <rect key="frame" x="0.0" y="338" width="327" height="200"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1130,6 +1126,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bBD-2f-lOb"/>
-        <segue reference="Hc4-9S-12f"/>
+        <segue reference="wtU-fn-VpR"/>
     </inferredMetricsTieBreakers>
 </document>
