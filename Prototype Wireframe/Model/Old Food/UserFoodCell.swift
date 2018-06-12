@@ -8,10 +8,11 @@
 
 import UIKit
 
-class FoodCell: UITableViewCell {
+class UserFoodCell: UITableViewCell {
     
     @IBOutlet var idLabel: UILabel!
     @IBOutlet var calorieLabel: UILabel!
-    @IBOutlet var servingSizeLabel: UILabel!
+    @IBOutlet var detailLabel: UILabel!
     
 }
+

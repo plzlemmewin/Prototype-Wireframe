@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */; };
 		04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A73208D3C23006A2434 /* AppDelegate.swift */; };
 		04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A75208D3C23006A2434 /* GoalViewController.swift */; };
 		04679A79208D3C23006A2434 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04679A77208D3C23006A2434 /* Main.storyboard */; };
@@ -16,12 +17,16 @@
 		04679A94208D3C24006A2434 /* Prototype_WireframeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A93208D3C24006A2434 /* Prototype_WireframeUITests.swift */; };
 		04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA3208D3DB9006A2434 /* LogTableViewController.swift */; };
 		04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA9209505E8006A2434 /* GoalPageViewController.swift */; };
-		046C05B120BE2F3C00AC1ECA /* FoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C05B020BE2F3C00AC1ECA /* FoodCell.swift */; };
+		046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */; };
 		046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C05B220BE5EA600AC1ECA /* DetailViewController.swift */; };
 		0471104E20C37EE10049D29C /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471104D20C37EE10049D29C /* WelcomeViewController.swift */; };
 		0471105020C383080049D29C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0471104F20C383080049D29C /* GoogleService-Info.plist */; };
 		0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471105120C39B4B0049D29C /* RegisterViewController.swift */; };
 		0471105820C39C080049D29C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471105720C39C080049D29C /* LoginViewController.swift */; };
+		04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D7920C710D3003D5762 /* MenuBar.swift */; };
+		04AC4D9C20C88BA1003D5762 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D9B20C88BA1003D5762 /* Food.swift */; };
+		04AC4D9E20C88EFE003D5762 /* FoodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D9D20C88EFE003D5762 /* FoodData.swift */; };
+		04AC4DA120C898A0003D5762 /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4DA020C898A0003D5762 /* DBFoodCell.swift */; };
 		04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBD20B88469001491E9 /* Food Item.swift */; };
 		04CBAFC020B88917001491E9 /* Food Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBF20B88917001491E9 /* Food Database.swift */; };
 		5E5899CDE2922C2E7804D75F /* Pods_Prototype_WireframeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF7BB278175FA58CC231DDE /* Pods_Prototype_WireframeUITests.framework */; };
@@ -47,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodViewController.swift; sourceTree = "<group>"; };
 		04679A70208D3C23006A2434 /* Prototype Wireframe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Prototype Wireframe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04679A73208D3C23006A2434 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04679A75208D3C23006A2434 /* GoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewController.swift; sourceTree = "<group>"; };
@@ -62,12 +68,16 @@
 		04679A95208D3C24006A2434 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04679AA3208D3DB9006A2434 /* LogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
 		04679AA9209505E8006A2434 /* GoalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPageViewController.swift; sourceTree = "<group>"; };
-		046C05B020BE2F3C00AC1ECA /* FoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCell.swift; sourceTree = "<group>"; };
+		046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFoodCell.swift; sourceTree = "<group>"; };
 		046C05B220BE5EA600AC1ECA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		0471104D20C37EE10049D29C /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		0471104F20C383080049D29C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0471105120C39B4B0049D29C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		0471105720C39C080049D29C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		04AC4D7920C710D3003D5762 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
+		04AC4D9B20C88BA1003D5762 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		04AC4D9D20C88EFE003D5762 /* FoodData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodData.swift; sourceTree = "<group>"; };
+		04AC4DA020C898A0003D5762 /* DBFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFoodCell.swift; sourceTree = "<group>"; };
 		04CBAFBD20B88469001491E9 /* Food Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Item.swift"; sourceTree = "<group>"; };
 		04CBAFBF20B88917001491E9 /* Food Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Database.swift"; sourceTree = "<group>"; };
 		13D1421FC4B8EC3BE7941F61 /* Pods-Prototype WireframeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeUITests/Pods-Prototype WireframeUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -134,13 +144,12 @@
 		04679A72208D3C23006A2434 /* Prototype Wireframe */ = {
 			isa = PBXGroup;
 			children = (
+				04679A7F208D3C23006A2434 /* Info.plist */,
+				0471104F20C383080049D29C /* GoogleService-Info.plist */,
+				0499103220CAE1D30096858A /* Supporting Files */,
 				04CBAFBC20B88443001491E9 /* Controller */,
 				04CBAFBB20B8842E001491E9 /* View */,
 				04CBAFB920B88416001491E9 /* Model */,
-				04679A7A208D3C23006A2434 /* Assets.xcassets */,
-				04679A7C208D3C23006A2434 /* LaunchScreen.storyboard */,
-				04679A7F208D3C23006A2434 /* Info.plist */,
-				0471104F20C383080049D29C /* GoogleService-Info.plist */,
 			);
 			path = "Prototype Wireframe";
 			sourceTree = "<group>";
@@ -169,6 +178,7 @@
 				0471104D20C37EE10049D29C /* WelcomeViewController.swift */,
 				0471105120C39B4B0049D29C /* RegisterViewController.swift */,
 				0471105720C39C080049D29C /* LoginViewController.swift */,
+				04AC4D7920C710D3003D5762 /* MenuBar.swift */,
 			);
 			path = LoginFlow;
 			sourceTree = "<group>";
@@ -178,18 +188,47 @@
 			children = (
 				04679A75208D3C23006A2434 /* GoalViewController.swift */,
 				04679AA9209505E8006A2434 /* GoalPageViewController.swift */,
-				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
 				046C05B220BE5EA600AC1ECA /* DetailViewController.swift */,
+				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
+				045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		0499103120CAE1A00096858A /* Database Model  */ = {
+			isa = PBXGroup;
+			children = (
+				04AC4D9B20C88BA1003D5762 /* Food.swift */,
+				04AC4D9D20C88EFE003D5762 /* FoodData.swift */,
+				04AC4DA020C898A0003D5762 /* DBFoodCell.swift */,
+			);
+			path = "Database Model ";
+			sourceTree = "<group>";
+		};
+		0499103220CAE1D30096858A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04679A7A208D3C23006A2434 /* Assets.xcassets */,
+				04679A7C208D3C23006A2434 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04AC4D9F20C88F03003D5762 /* Old Food */ = {
+			isa = PBXGroup;
+			children = (
+				046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */,
+				04CBAFBD20B88469001491E9 /* Food Item.swift */,
+				04CBAFBF20B88917001491E9 /* Food Database.swift */,
+			);
+			path = "Old Food";
 			sourceTree = "<group>";
 		};
 		04CBAFB920B88416001491E9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				046C05B020BE2F3C00AC1ECA /* FoodCell.swift */,
-				04CBAFBD20B88469001491E9 /* Food Item.swift */,
-				04CBAFBF20B88917001491E9 /* Food Database.swift */,
+				0499103120CAE1A00096858A /* Database Model  */,
+				04AC4D9F20C88F03003D5762 /* Old Food */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -205,9 +244,9 @@
 		04CBAFBC20B88443001491E9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				04679A73208D3C23006A2434 /* AppDelegate.swift */,
 				0471105420C39B8A0049D29C /* Main */,
 				0471105320C39B6F0049D29C /* LoginFlow */,
-				04679A73208D3C23006A2434 /* AppDelegate.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -514,6 +553,8 @@
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
@@ -523,6 +564,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -542,13 +585,18 @@
 				0471104E20C37EE10049D29C /* WelcomeViewController.swift in Sources */,
 				0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */,
 				04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */,
+				04AC4D9E20C88EFE003D5762 /* FoodData.swift in Sources */,
 				04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */,
-				046C05B120BE2F3C00AC1ECA /* FoodCell.swift in Sources */,
+				046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
+				04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */,
+				04AC4D9C20C88BA1003D5762 /* Food.swift in Sources */,
+				04AC4DA120C898A0003D5762 /* DBFoodCell.swift in Sources */,
 				04CBAFC020B88917001491E9 /* Food Database.swift in Sources */,
 				04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */,
 				04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */,
 				046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */,
+				045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */,
 				0471105820C39C080049D29C /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

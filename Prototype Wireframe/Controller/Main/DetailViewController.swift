@@ -15,7 +15,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerVie
     @IBOutlet var caloriesField: UITextField!
     @IBOutlet var miscLabel: UILabel!
     
-    var food: FoodItem! {
+    var food: Food! {
         didSet {
             navigationItem.title = "Edit Food"
         }
