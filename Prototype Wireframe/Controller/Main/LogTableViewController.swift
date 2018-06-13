@@ -11,14 +11,15 @@ import UIKit
 class LogTableViewController: UITableViewController {
     
     //MARK: Class Properties
-    var foodDatabase = FoodDatabase()
+    let sectionHeaderHeight: CGFloat = 35
     
+    var foodDatabase = FoodDatabase()
     
     enum Meals: Int {
         case breakfast = 0, lunch, dinner, snacks
     }
     
-    let sectionHeaderHeight: CGFloat = 35
+    
     
     var data = [Meals: [Food]]()
     
@@ -100,9 +101,6 @@ class LogTableViewController: UITableViewController {
             }
         }
         
-//        let calorieLabel = UILabel(frame: CGRect(x: tableView.bounds.width - 45, y: 0, width: 45, height: sectionHeaderHeight))
-//        calorieLabel.text = "\(300)"
-        
         /*NEED TO REVIST AND ADJUST HEADER LABEL AND CALORIE LABEL TO BE DYNAMIC*/
 //        nameLabel.layer.borderWidth = 1.0
 //        nameLabel.layer.borderColor = UIColor.black.cgColor
@@ -112,18 +110,8 @@ class LogTableViewController: UITableViewController {
         view.addSubview(nameLabel)
         view.addSubview(addButton)
         
-//        view.addSubview(calorieLabel)
         return view
     }
-    
-    
-    @objc func addNewFood(_ sender: UIButton) {
-        let section = sender.tag
-        
-        performSegue(withIdentifier: "addFood", sender: sender)
-    }
-    
-    
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -165,20 +153,11 @@ class LogTableViewController: UITableViewController {
         navigationItem.backBarButtonItem = backItem
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "showFood" {
-//            if let row = tableView.indexPathForSelectedRow?.row {
-//                let food = foodDatabase.foodList[row]
-//                let detailVC = segue.destination as! DetailViewController
-//                detailVC.food = food
-//                let backItem = UIBarButtonItem()
-//                backItem.title = "Back"
-//                navigationItem.backBarButtonItem = backItem
-//            }
-//        }
-//    }
+    @objc func addNewFood(_ sender: UIButton) {
+        let section = sender.tag
+        
+        performSegue(withIdentifier: "addFood", sender: sender)
+    }
     
-//    @IBAction func addNewFood(_ sender: UIBarButtonItem) {
-//        performSegue(withIdentifier: "addFood", sender: self)
-//    }
+
 }
