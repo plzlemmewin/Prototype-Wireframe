@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    let realm = try! Realm()
+    
+    //    var foodDatabase = FoodDatabase()
+    var foodDatabase: Results<Food>!
 
     
     @IBOutlet var foodTableView: UITableView!
     
-    var foodDatabase = FoodDatabase()
+
     var selectedMeal: Int?
     
     override func viewDidLoad() {
@@ -23,21 +29,22 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         foodTableView.dataSource = self
         
         foodTableView.rowHeight = 55
-
+        
+        loadDatabase()
     }
     
     // MARK: - TableView Datasource Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return foodDatabase.foodList.count
+        return foodDatabase.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddFoodCell", for: indexPath) as! DBFoodCell
 
-        let food = foodDatabase.foodList[indexPath.row]
+        let food = foodDatabase[indexPath.row]
 
-        cell.idLabel.text = food.identifier
+        cell.idLabel.text = food.name
         if let brand = food.brand {
             cell.brandLabel.text = brand
         } else {
@@ -73,7 +80,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch segue.identifier {
         case "FoodDetail"?:
             if let row = foodTableView.indexPathForSelectedRow?.row {
-                let food = foodDatabase.foodList[row]
+                let food = foodDatabase[row]
                 let detailVC = segue.destination as! DetailViewController
                 detailVC.food = food
             }
@@ -107,6 +114,15 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        navigationItem.backBarButtonItem = backItem
 //        navigationItem.title = "Add Food"
 //    }
+    
+    func loadDatabase() {
+        
+        foodDatabase = realm.objects(Food.self)
+        foodTableView.reloadData()
+        
+    }
+    
+    
 }
 
 extension AddFoodViewController: UISearchBarDelegate {

@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import RealmSwift
 
 class LogTableViewController: UITableViewController {
+    
+    let realm = try! Realm()
+    var userFoods = [Food]()
     
     //MARK: Class Properties
     let sectionHeaderHeight: CGFloat = 35
     
-    var foodDatabase = FoodDatabase()
     
     enum Meals: Int {
         case breakfast = 0, lunch, dinner, snacks
@@ -24,16 +27,17 @@ class LogTableViewController: UITableViewController {
     var data = [Meals: [Food]]()
     
     func sortData() {
-        data[.breakfast] = foodDatabase.foodList.filter { $0.timing == "breakfast" }
-        data[.lunch] = foodDatabase.foodList.filter{$0.timing == "lunch"}
-        data[.dinner] = foodDatabase.foodList.filter{$0.timing == "dinner"}
-        data[.snacks] = foodDatabase.foodList.filter{$0.timing == "snacks"}
+//        data[.breakfast] = foodDatabase.foodList.filter { $0.timing == "breakfast" }
+//        data[.lunch] = foodDatabase.foodList.filter{$0.timing == "lunch"}
+//        data[.dinner] = foodDatabase.foodList.filter{$0.timing == "dinner"}
+//        data[.snacks] = foodDatabase.foodList.filter{$0.timing == "snacks"}
     }
     
     //MARK: Loading Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        loadUserData()
         
 //        tableView.rowHeight = UITableViewAutomaticDimension
 //        tableView.estimatedRowHeight = 65
@@ -43,7 +47,7 @@ class LogTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationItem.title = "Today"
+        navigationItem.title = "Today" 
         
         
         sortData()
@@ -118,7 +122,7 @@ class LogTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! UserFoodCell
         
         if let section = Meals(rawValue: indexPath.section), let food = data[section]?[indexPath.row] {
-            cell.idLabel.text = food.identifier
+            cell.idLabel.text = food.name
             cell.calorieLabel.text = "\(food.calories)"
             cell.detailLabel.text = food.servingSize
         }
@@ -136,7 +140,7 @@ class LogTableViewController: UITableViewController {
         switch segue.identifier {
         case "showFood"?:
             if let row = tableView.indexPathForSelectedRow?.row {
-                let food = foodDatabase.foodList[row]
+                let food = userFoods[row]
                 let detailVC = segue.destination as! DetailViewController
                 detailVC.food = food
             }
@@ -159,5 +163,11 @@ class LogTableViewController: UITableViewController {
         performSegue(withIdentifier: "addFood", sender: sender)
     }
     
+//    func loadUserData() {
+//       let userData = realm.objects(UserData.self)
+//        let userFoods = userData.data
+//
+//        tableView.reloadData()
+//    }
 
 }

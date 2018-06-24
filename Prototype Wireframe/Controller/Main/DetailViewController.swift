@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerViewDelegate, UIPickerViewDataSource*/ {
     
@@ -42,7 +43,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        nameField.text = food.identifier
+        nameField.text = food.name
         servingSizeField.text = food.servingSize
         caloriesField.text = "\(food.calories)"
         
@@ -54,15 +55,15 @@ class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerVie
         
         view.endEditing(true)
         
-        food.identifier = nameField.text ?? ""
-        food.servingSize = servingSizeField.text ?? ""
-        
-        // Iffy, needs to be revisited
-        if let value = Int(caloriesField.text!) {
-            food.calories = value
-        } else {
-            food.calories = 0
-        }
+//        food.name = nameField.text ?? ""
+//        food.servingSize = servingSizeField.text ?? ""
+//
+//        // Iffy, needs to be revisited
+//        if let value = Int(caloriesField.text!) {
+//            food.calories = value
+//        } else {
+//            food.calories = 0
+//        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
