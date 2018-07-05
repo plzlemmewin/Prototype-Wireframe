@@ -30,6 +30,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         foodTableView.rowHeight = 55
         
+        print("\(String(describing: selectedMeal))")
         loadDatabase()
     }
     
@@ -81,8 +82,23 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         case "FoodDetail"?:
             if let row = foodTableView.indexPathForSelectedRow?.row {
                 let food = foodDatabase[row]
+
                 let detailVC = segue.destination as! DetailViewController
                 detailVC.food = food
+                detailVC.navigationItem.title = "Add Food"
+                switch selectedMeal! {
+                case 0:
+                    detailVC.timing = "breakfast"
+                case 1:
+                    detailVC.timing = "lunch"
+                case 2:
+                    detailVC.timing = "dinner"
+                case 3:
+                    detailVC.timing = "snacks"
+                default:
+                    detailVC.timing = ""
+                }
+                
             }
         default:
             preconditionFailure("Unexpected segue identifier")
@@ -117,7 +133,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func loadDatabase() {
         
-        foodDatabase = realm.objects(Food.self)
+        foodDatabase = realm.objects(Food.self).filter("timing = nil")
         foodTableView.reloadData()
         
     }

@@ -9,18 +9,27 @@
 import UIKit
 import RealmSwift
 
-class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerViewDelegate, UIPickerViewDataSource*/ {
+class DetailViewController: UIViewController, UITextFieldDelegate /*, UIPickerViewDelegate, UIPickerViewDataSource*/ {
     
-    @IBOutlet var nameField: UITextField!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet var servingSizeField: UITextField!
     @IBOutlet var caloriesField: UITextField!
     @IBOutlet var miscLabel: UILabel!
     
-    var food: Food! {
+
+    let realm = try! Realm()
+    
+    var timing: String? {
+        didSet {
+            print("\(timing ?? "nil")")
+        }
+    }
+    var food: Food! /*{
         didSet {
             navigationItem.title = "Edit Food"
         }
-    }
+    }*/
     
     @IBOutlet var servingPicker: UIPickerView!
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
@@ -43,7 +52,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        nameField.text = food.name
+        nameLabel.text = food.name
         servingSizeField.text = food.servingSize
         caloriesField.text = "\(food.calories)"
         
@@ -66,10 +75,59 @@ class DetailViewController: UIViewController, UITextFieldDelegate/*, UIPickerVie
 //        }
     }
     
+    // MARK: UITextFieldDelegate Methods
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        saveButton.isEnabled = false
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateSaveButtonState()
+    }
+    
+    // MARK: Private Methods
+
+    private func updateSaveButtonState() {
+        let text = nameLabel.text ?? ""
+        saveButton.isEnabled = !text.isEmpty
+    }
+    
+    @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        let newFood = Food()
+        newFood.name = food.name
+        newFood.brand = food.brand
+        newFood.cooked = food.cooked
+        newFood.servingSize = servingSizeField.text
+        newFood.calories = food.calories
+        newFood.fats = food.fats
+        newFood.carbs = food.carbs
+        newFood.protein = food.protein
+        newFood.alcohol = food.alcohol
+        newFood.timing = timing ?? food.timing
+        newFood.breakfast = food.breakfast
+        newFood.lunch = food.lunch
+        newFood.dinner = food.dinner
+        newFood.snack = food.snack
+        newFood.main = food.main
+        newFood.side = food.side
+        newFood.cuisine = food.cuisine
+        do {
+            try realm.write {
+                realm.objects(UserData.self).first?.data.append(newFood)
+            }
+        } catch {
+            print("Error saving new items, \(error)")
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
     
     // MARK: UIPicker Delegate Methods
     

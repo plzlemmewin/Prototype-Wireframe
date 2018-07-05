@@ -12,7 +12,7 @@ import RealmSwift
 class LogTableViewController: UITableViewController {
     
     let realm = try! Realm()
-    var userFoods = [Food]()
+    var userFoods: List<Food>!
     
     //MARK: Class Properties
     let sectionHeaderHeight: CGFloat = 35
@@ -27,17 +27,18 @@ class LogTableViewController: UITableViewController {
     var data = [Meals: [Food]]()
     
     func sortData() {
-//        data[.breakfast] = foodDatabase.foodList.filter { $0.timing == "breakfast" }
-//        data[.lunch] = foodDatabase.foodList.filter{$0.timing == "lunch"}
-//        data[.dinner] = foodDatabase.foodList.filter{$0.timing == "dinner"}
-//        data[.snacks] = foodDatabase.foodList.filter{$0.timing == "snacks"}
+        data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
+        data[.lunch] = userFoods.filter {$0.timing == "lunch"}
+        data[.dinner] = userFoods.filter{$0.timing == "dinner"}
+        data[.snacks] = userFoods.filter{$0.timing == "snacks"}
     }
     
     //MARK: Loading Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        loadUserData()
+        loadUserData()
+        print("\(userFoods)")
         
 //        tableView.rowHeight = UITableViewAutomaticDimension
 //        tableView.estimatedRowHeight = 65
@@ -143,12 +144,13 @@ class LogTableViewController: UITableViewController {
                 let food = userFoods[row]
                 let detailVC = segue.destination as! DetailViewController
                 detailVC.food = food
+                detailVC.navigationItem.title = "Edit Food"
             }
         case "addFood"?:
             let destinationNavigationC = segue.destination as! UINavigationController
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController
             targetController.selectedMeal = (sender as! UIButton).tag
-            print("\(targetController.selectedMeal)")
+//            print("\(targetController.selectedMeal)")
         default:
             preconditionFailure("Unexpected segue identifier")
         }
@@ -163,11 +165,11 @@ class LogTableViewController: UITableViewController {
         performSegue(withIdentifier: "addFood", sender: sender)
     }
     
-//    func loadUserData() {
-//       let userData = realm.objects(UserData.self)
-//        let userFoods = userData.data
-//
-//        tableView.reloadData()
-//    }
+    func loadUserData() {
+        
+        userFoods = realm.objects(UserData.self).first?.data
+
+        tableView.reloadData()
+    }
 
 }

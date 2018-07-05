@@ -418,31 +418,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AjK-87-Vgz">
-                                <rect key="frame" x="24" y="72" width="327" height="538"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JuJ-YQ-nvr">
+                                <rect key="frame" x="24" y="80" width="327" height="29"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="AjK-87-Vgz">
+                                <rect key="frame" x="24" y="129" width="327" height="530"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="K7s-vh-7ro">
-                                        <rect key="frame" x="0.0" y="0.0" width="327" height="30"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ykg-8X-zze">
-                                                <rect key="frame" x="0.0" y="0.0" width="45" height="30"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zql-bM-NFe">
-                                                <rect key="frame" x="53" y="0.0" width="274" height="30"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="o72-6T-3XX" id="TSf-xO-fBJ"/>
-                                                </connections>
-                                            </textField>
-                                        </subviews>
-                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DuZ-rg-UiA">
-                                        <rect key="frame" x="0.0" y="38" width="327" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="30"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Serving Size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tYI-wY-wcz">
                                                 <rect key="frame" x="0.0" y="0.0" width="94.5" height="30"/>
@@ -462,7 +448,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dGJ-la-hjX">
-                                        <rect key="frame" x="0.0" y="76" width="327" height="30"/>
+                                        <rect key="frame" x="0.0" y="40" width="327" height="30"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V3x-Nv-LbP">
                                                 <rect key="frame" x="0.0" y="0.0" width="62.5" height="30"/>
@@ -482,10 +468,10 @@
                                         </subviews>
                                     </stackView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YiP-Mn-SQd">
-                                        <rect key="frame" x="0.0" y="114" width="327" height="216"/>
+                                        <rect key="frame" x="0.0" y="80" width="327" height="216"/>
                                     </pickerView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="25" verticalHuggingPriority="249" text="Date Added" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eR1-9L-Ymi">
-                                        <rect key="frame" x="0.0" y="338" width="327" height="200"/>
+                                        <rect key="frame" x="0.0" y="306" width="327" height="224"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -493,27 +479,36 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="tYI-wY-wcz" firstAttribute="leading" secondItem="V3x-Nv-LbP" secondAttribute="leading" id="Q1O-pd-xKs"/>
-                                    <constraint firstItem="ykg-8X-zze" firstAttribute="leading" secondItem="tYI-wY-wcz" secondAttribute="leading" id="lcm-CG-437"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="AjK-87-Vgz" firstAttribute="leading" secondItem="nFk-3l-pWa" secondAttribute="leadingMargin" constant="8" id="6bi-9c-sre"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="AjK-87-Vgz" secondAttribute="trailing" constant="8" id="b40-09-EIV"/>
-                            <constraint firstItem="AjK-87-Vgz" firstAttribute="top" secondItem="Aaj-fv-Qs3" secondAttribute="bottom" constant="8" id="hWb-LM-CXt"/>
-                            <constraint firstItem="lL5-00-0Ko" firstAttribute="top" secondItem="AjK-87-Vgz" secondAttribute="bottom" constant="8" id="tfa-yo-ca5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JuJ-YQ-nvr" secondAttribute="trailing" constant="8" id="9Bg-sx-RW1"/>
+                            <constraint firstItem="JuJ-YQ-nvr" firstAttribute="top" secondItem="Aaj-fv-Qs3" secondAttribute="bottom" constant="16" id="Bex-wj-XnL"/>
+                            <constraint firstItem="AjK-87-Vgz" firstAttribute="top" secondItem="JuJ-YQ-nvr" secondAttribute="bottom" constant="20" id="Vmc-6q-0r8"/>
+                            <constraint firstItem="lL5-00-0Ko" firstAttribute="top" secondItem="AjK-87-Vgz" secondAttribute="bottom" constant="8" id="ejD-p8-zfD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="AjK-87-Vgz" secondAttribute="trailing" constant="8" id="lbw-JH-IJw"/>
+                            <constraint firstItem="JuJ-YQ-nvr" firstAttribute="leading" secondItem="nFk-3l-pWa" secondAttribute="leadingMargin" constant="8" id="wcB-ay-I4E"/>
+                            <constraint firstItem="AjK-87-Vgz" firstAttribute="leading" secondItem="nFk-3l-pWa" secondAttribute="leadingMargin" constant="8" id="xwn-8j-Sgm"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="fMn-9F-R91" appends="YES" id="Cdq-Z7-Y9N"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="m3T-59-J3G"/>
+                    <navigationItem key="navigationItem" id="m3T-59-J3G">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="dTR-wa-Ota">
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="o72-6T-3XX" id="Ylz-4t-KUX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="caloriesField" destination="beZ-v1-jgl" id="LEF-2o-fHz"/>
                         <outlet property="miscLabel" destination="eR1-9L-Ymi" id="dTG-sy-awe"/>
-                        <outlet property="nameField" destination="zql-bM-NFe" id="eGS-8H-CDG"/>
+                        <outlet property="nameLabel" destination="JuJ-YQ-nvr" id="B4b-bX-K8L"/>
+                        <outlet property="saveButton" destination="dTR-wa-Ota" id="FWM-Ns-j9e"/>
                         <outlet property="servingPicker" destination="YiP-Mn-SQd" id="SsM-9Q-zgM"/>
                         <outlet property="servingSizeField" destination="fbH-Jw-NjQ" id="86B-Fz-nXp"/>
                     </connections>
@@ -525,7 +520,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2748" y="1189"/>
+            <point key="canvasLocation" x="2748" y="1188.7556221889056"/>
         </scene>
         <!--Add Food-->
         <scene sceneID="4dx-45-7dE">
@@ -1126,6 +1121,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bBD-2f-lOb"/>
-        <segue reference="wtU-fn-VpR"/>
+        <segue reference="Hc4-9S-12f"/>
     </inferredMetricsTieBreakers>
 </document>
