@@ -14,7 +14,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     let realm = try! Realm()
     
     //    var foodDatabase = FoodDatabase()
-    var foodDatabase: Results<Food>!
+    var foodDatabase: Results<DBFood>!
 
     
     @IBOutlet var foodTableView: UITableView!
@@ -84,7 +84,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let food = foodDatabase[row]
 
                 let detailVC = segue.destination as! DetailViewController
-                detailVC.food = food
+                detailVC.foodToAdd = food
                 detailVC.navigationItem.title = "Add Food"
                 switch selectedMeal! {
                 case 0:
@@ -133,7 +133,8 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func loadDatabase() {
         
-        foodDatabase = realm.objects(Food.self).filter("timing = nil")
+        // foodDatabase = realm.objects(Food.self).filter("timing = nil")
+        foodDatabase = realm.objects(DBFood.self)
         foodTableView.reloadData()
         
     }

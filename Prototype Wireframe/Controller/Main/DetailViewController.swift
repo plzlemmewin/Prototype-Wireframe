@@ -25,11 +25,13 @@ class DetailViewController: UIViewController, UITextFieldDelegate /*, UIPickerVi
             print("\(timing ?? "nil")")
         }
     }
-    var food: Food! /*{
+    var food: Food? /*{
         didSet {
             navigationItem.title = "Edit Food"
         }
     }*/
+    
+    var foodToAdd: DBFood?
     
     @IBOutlet var servingPicker: UIPickerView!
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
@@ -52,9 +54,13 @@ class DetailViewController: UIViewController, UITextFieldDelegate /*, UIPickerVi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        nameLabel.text = food.name
-        servingSizeField.text = food.servingSize
-        caloriesField.text = "\(food.calories)"
+        nameLabel.text = food?.name ?? foodToAdd?.name
+        servingSizeField.text = food?.servingSize ?? foodToAdd?.servingSize
+        if let item = food {
+            caloriesField.text = "\(item.calories)"
+        } else {
+            caloriesField.text = "\(foodToAdd!.calories)"
+        }
         
         miscLabel.text = "PlaceHolder Section"
     }
@@ -99,23 +105,23 @@ class DetailViewController: UIViewController, UITextFieldDelegate /*, UIPickerVi
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
         let newFood = Food()
-        newFood.name = food.name
-        newFood.brand = food.brand
-        newFood.cooked = food.cooked
+        newFood.name = (food?.name ?? foodToAdd?.name)!
+        newFood.brand = food?.brand ?? foodToAdd?.brand
+        newFood.cooked = food?.cooked ?? foodToAdd?.cooked
         newFood.servingSize = servingSizeField.text
-        newFood.calories = food.calories
-        newFood.fats = food.fats
-        newFood.carbs = food.carbs
-        newFood.protein = food.protein
-        newFood.alcohol = food.alcohol
-        newFood.timing = timing ?? food.timing
-        newFood.breakfast = food.breakfast
-        newFood.lunch = food.lunch
-        newFood.dinner = food.dinner
-        newFood.snack = food.snack
-        newFood.main = food.main
-        newFood.side = food.side
-        newFood.cuisine = food.cuisine
+        newFood.calories = (food?.calories ?? foodToAdd?.calories)!
+        newFood.fats = (food?.fats ?? foodToAdd?.fats)!
+        newFood.carbs = (food?.carbs ?? foodToAdd?.carbs)!
+        newFood.protein = (food?.protein ?? foodToAdd?.protein)!
+        newFood.alcohol = (food?.alcohol ?? foodToAdd?.alcohol)!
+        newFood.timing = (timing ?? food?.timing)!
+        newFood.breakfast = (food?.breakfast ?? foodToAdd?.breakfast)!
+        newFood.lunch = (food?.lunch ?? foodToAdd?.lunch)!
+        newFood.dinner = (food?.dinner ?? foodToAdd?.dinner)!
+        newFood.snack = (food?.snack ?? foodToAdd?.snack)!
+        newFood.main = (food?.main ?? foodToAdd?.main)!
+        newFood.side = (food?.side ?? foodToAdd?.side)!
+        newFood.cuisine = food?.cuisine ?? foodToAdd?.cuisine
         do {
             try realm.write {
                 realm.objects(UserData.self).first?.data.append(newFood)

@@ -17,7 +17,6 @@ class LogTableViewController: UITableViewController {
     //MARK: Class Properties
     let sectionHeaderHeight: CGFloat = 35
     
-    
     enum Meals: Int {
         case breakfast = 0, lunch, dinner, snacks
     }
@@ -31,6 +30,7 @@ class LogTableViewController: UITableViewController {
         data[.lunch] = userFoods.filter {$0.timing == "lunch"}
         data[.dinner] = userFoods.filter{$0.timing == "dinner"}
         data[.snacks] = userFoods.filter{$0.timing == "snacks"}
+        print("\(data[.breakfast])")
     }
     
     //MARK: Loading Methods
@@ -38,7 +38,7 @@ class LogTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadUserData()
-        print("\(userFoods)")
+      //  print("\(userFoods)")
         
 //        tableView.rowHeight = UITableViewAutomaticDimension
 //        tableView.estimatedRowHeight = 65
@@ -66,6 +66,7 @@ class LogTableViewController: UITableViewController {
  //       return foodDatabase.foodList.count
         if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
             return mealData.count
+            
         }
         return 0
     }
@@ -89,8 +90,22 @@ class LogTableViewController: UITableViewController {
         addButton.tag = section
         addButton.addTarget(self, action: #selector(self.addNewFood), for: .touchUpInside)
         
+//        func sortData() {
+//            data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
+//            data[.lunch] = userFoods.filter {$0.timing == "lunch"}
+//            data[.dinner] = userFoods.filter{$0.timing == "dinner"}
+//            data[.snacks] = userFoods.filter{$0.timing == "snacks"}
+//        }
         
-        let totalCalories = 0
+        var totalCalories: Int = 0
+        if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
+            for value in mealData {
+                totalCalories += value.calories
+            }
+        }
+    
+        
+       // let totalCalories = 0
         if let section = Meals(rawValue: section) {
             switch section {
             case .breakfast:
@@ -101,8 +116,6 @@ class LogTableViewController: UITableViewController {
                 nameLabel.text = "Dinner: \(totalCalories)"
             case .snacks:
                 nameLabel.text = "Snacks: \(totalCalories)"
-            default:
-                nameLabel.text = ""
             }
         }
         
