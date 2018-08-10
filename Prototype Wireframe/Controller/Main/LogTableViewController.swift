@@ -21,8 +21,6 @@ class LogTableViewController: UITableViewController {
         case breakfast = 0, lunch, dinner, snacks
     }
     
-    
-    
     var data = [Meals: [Food]]()
     
     func sortData() {
@@ -50,7 +48,6 @@ class LogTableViewController: UITableViewController {
         
         navigationItem.title = "Today" 
         
-        
         sortData()
         tableView.reloadData()
     }
@@ -68,13 +65,12 @@ class LogTableViewController: UITableViewController {
             return mealData.count
             
         }
-        return 0
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return sectionHeaderHeight
     }
-    
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -90,22 +86,15 @@ class LogTableViewController: UITableViewController {
         addButton.tag = section
         addButton.addTarget(self, action: #selector(self.addNewFood), for: .touchUpInside)
         
-//        func sortData() {
-//            data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
-//            data[.lunch] = userFoods.filter {$0.timing == "lunch"}
-//            data[.dinner] = userFoods.filter{$0.timing == "dinner"}
-//            data[.snacks] = userFoods.filter{$0.timing == "snacks"}
-//        }
-        
         var totalCalories: Int = 0
         if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
             for value in mealData {
                 totalCalories += value.calories
             }
+        } else {
+            totalCalories = 0
         }
     
-        
-       // let totalCalories = 0
         if let section = Meals(rawValue: section) {
             switch section {
             case .breakfast:
@@ -131,7 +120,6 @@ class LogTableViewController: UITableViewController {
         return view
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! UserFoodCell
         
@@ -139,12 +127,9 @@ class LogTableViewController: UITableViewController {
             cell.idLabel.text = food.name
             cell.calorieLabel.text = "\(food.calories)"
             cell.detailLabel.text = food.servingSize
+        } else {
+            cell.idLabel.text = "Add a Food"
         }
-        
-//        let food = foodDatabase.foodList[indexPath.row]
-//        cell.idLabel.text = food.identifier
-//        cell.calorieLabel.text = "\(food.calories)"
-//        cell.servingSizeLabel.text = food.servingSize
         
         return cell
     }
@@ -179,9 +164,7 @@ class LogTableViewController: UITableViewController {
     }
     
     func loadUserData() {
-        
         userFoods = realm.objects(UserData.self).first?.data
-
         tableView.reloadData()
     }
 

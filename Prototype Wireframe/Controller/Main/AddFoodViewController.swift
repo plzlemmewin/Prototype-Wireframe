@@ -16,7 +16,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     //    var foodDatabase = FoodDatabase()
     var foodDatabase: Results<DBFood>!
 
-    
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var foodTableView: UITableView!
     
 
@@ -143,26 +143,29 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
 }
 
 extension AddFoodViewController: UISearchBarDelegate {
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        loadItems(with: request)
+        foodDatabase = foodDatabase!.filter("name CONTAINS[cd] %@", searchBar.text!)// .sorted(byKeyPath: "name", ascending: true)
         
+        foodTableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0 {
-//            loadItems()
-//
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-//
+        if searchBar.text?.count == 0 {
+            loadDatabase()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+// This is A QUICK FIX. THIS WHOLE SECTION IS NOT THE RIGHT WAY TO ADDRESS THIS ISSUE.
+        } else {
+            loadDatabase()
+            foodDatabase = foodDatabase!.filter("name CONTAINS[cd] %@", searchBar.text!)// .sorted(byKeyPath: "name", ascending: true)
+            
+            foodTableView.reloadData()
+            
         }
+        
+    }
 }

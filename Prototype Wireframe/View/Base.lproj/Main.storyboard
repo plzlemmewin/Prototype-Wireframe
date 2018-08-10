@@ -540,6 +540,9 @@
                                     <constraint firstAttribute="height" constant="45" id="9eh-Sg-V55"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="073-pd-3tV" id="Bd7-4a-kb9"/>
+                                </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qeU-MW-wY5">
                                 <rect key="frame" x="0.0" y="144" width="375" height="523"/>
@@ -671,6 +674,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="foodTableView" destination="qeU-MW-wY5" id="95t-Gf-klP"/>
+                        <outlet property="searchBar" destination="2hI-ri-kJ6" id="Qoi-1N-WFC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mhx-Kb-5LB" userLabel="First Responder" sceneMemberID="firstResponder"/>
