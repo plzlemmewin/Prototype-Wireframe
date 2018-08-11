@@ -9,7 +9,9 @@
 import UIKit
 import RealmSwift
 
-class DetailViewController: UIViewController, UITextFieldDelegate /*, UIPickerViewDelegate, UIPickerViewDataSource*/ {
+class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerViewDelegate, UIPickerViewDataSource {
+
+    
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var nameLabel: UILabel!
@@ -25,30 +27,46 @@ class DetailViewController: UIViewController, UITextFieldDelegate /*, UIPickerVi
             print("\(timing ?? "nil")")
         }
     }
+    var foodToAdd: DBFood?
     var food: Food? /*{
         didSet {
             navigationItem.title = "Edit Food"
         }
     }*/
     
-    var foodToAdd: DBFood?
+    
+    /*enum Meals: Int {
+     case breakfast = 0, lunch, dinner, snacks
+     }
+     
+     var data = [Meals: [Food]]()
+     
+     func sortData() {
+     data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
+     data[.lunch] = userFoods.filter {$0.timing == "lunch"}
+     data[.dinner] = userFoods.filter{$0.timing == "dinner"}
+     data[.snacks] = userFoods.filter{$0.timing == "snacks"}
+     print("\(data[.breakfast])")
+     }*/
+    
+    var servingData: [[String]] = [[String]]()
     
     @IBOutlet var servingPicker: UIPickerView!
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     
-//    struct ServingSize {
-//        <#fields#>
-//    }
-//
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        servingPicker.delegate = self
-//        servingPicker.dataSource = self
+        servingPicker.delegate = self
+        servingPicker.dataSource = self
+        
+        servingData = [["-","1","2","3","4","5","6","7","8","9","10","11",],
+                       ["-","1/8","1/4","1/3","1/2","2/3","3/4",],
+                       ["oz","g",],
+                       ]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,17 +155,18 @@ class DetailViewController: UIViewController, UITextFieldDelegate /*, UIPickerVi
     
     // MARK: UIPicker Delegate Methods
     
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return 3
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        <#code#>
-//    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 3
+    }
 
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        <#code#>
-//    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return servingData[component].count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return servingData[component][row]
+    }
 
+    
 }
 

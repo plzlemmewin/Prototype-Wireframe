@@ -155,9 +155,9 @@ extension AddFoodViewController: UISearchBarDelegate {
         if searchBar.text?.count == 0 {
             loadDatabase()
             
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
+//            DispatchQueue.main.async {
+//                searchBar.resignFirstResponder()
+//            }
 // This is A QUICK FIX. THIS WHOLE SECTION IS NOT THE RIGHT WAY TO ADDRESS THIS ISSUE.
         } else {
             loadDatabase()
