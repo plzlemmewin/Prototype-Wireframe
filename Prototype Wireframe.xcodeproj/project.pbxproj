@@ -28,6 +28,7 @@
 		04AC4D9C20C88BA1003D5762 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D9B20C88BA1003D5762 /* Food.swift */; };
 		04D1D38920DA0DA5005A0404 /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1D38820DA0DA4005A0404 /* DBFoodCell.swift */; };
 		04D52F0220EDA2B200958B46 /* DBFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F0120EDA2B200958B46 /* DBFood.swift */; };
+		04D52F042120C30400958B46 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F032120C30400958B46 /* LogViewController.swift */; };
 		5E5899CDE2922C2E7804D75F /* Pods_Prototype_WireframeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF7BB278175FA58CC231DDE /* Pods_Prototype_WireframeUITests.framework */; };
 		99FA5798A947C67AF6FBEF2B /* Pods_Prototype_WireframeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */; };
 		D26ABB6730E5047E9DE87EC1 /* Pods_Prototype_Wireframe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB2BB8C522B6456DD732DEFA /* Pods_Prototype_Wireframe.framework */; };
@@ -78,6 +79,7 @@
 		04AC4D9B20C88BA1003D5762 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		04D1D38820DA0DA4005A0404 /* DBFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBFoodCell.swift; path = "Prototype Wireframe/View/DBFoodCell.swift"; sourceTree = SOURCE_ROOT; };
 		04D52F0120EDA2B200958B46 /* DBFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFood.swift; sourceTree = "<group>"; };
+		04D52F032120C30400958B46 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		13D1421FC4B8EC3BE7941F61 /* Pods-Prototype WireframeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeUITests/Pods-Prototype WireframeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Prototype_WireframeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FF7D87D7226CC5664567E7B /* Pods-Prototype WireframeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeTests/Pods-Prototype WireframeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				04679AA9209505E8006A2434 /* GoalPageViewController.swift */,
 				046C05B220BE5EA600AC1ECA /* DetailViewController.swift */,
 				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
+				04D52F032120C30400958B46 /* LogViewController.swift */,
 				045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */,
 			);
 			path = Main;
@@ -574,6 +577,7 @@
 				0471104E20C37EE10049D29C /* WelcomeViewController.swift in Sources */,
 				0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */,
 				042D5E3920E047D0004604BD /* UserData.swift in Sources */,
+				04D52F042120C30400958B46 /* LogViewController.swift in Sources */,
 				04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */,
 				04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */,
 				046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */,

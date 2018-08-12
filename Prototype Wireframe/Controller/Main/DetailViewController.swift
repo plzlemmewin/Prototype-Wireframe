@@ -50,6 +50,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
      }*/
     
     var servingData: [[String]] = [[String]]()
+    let fullServings = ["-","1","2","3","4","5","6","7","8","9","10","11",]
+    let partialServings = ["-","1/8","1/4","1/3","1/2","2/3","3/4",]
     
     @IBOutlet var servingPicker: UIPickerView!
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
@@ -62,11 +64,17 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         
         servingPicker.delegate = self
         servingPicker.dataSource = self
+//
+//        servingData = [["-","1","2","3","4","5","6","7","8","9","10","11",],
+//                       ["-","1/8","1/4","1/3","1/2","2/3","3/4",],
+//                       ["oz","g",],
+//                       ]
         
-        servingData = [["-","1","2","3","4","5","6","7","8","9","10","11",],
-                       ["-","1/8","1/4","1/3","1/2","2/3","3/4",],
+        
+        servingData = [fullServings,
+                       partialServings,
                        ["oz","g",],
-                       ]
+        ]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,15 +96,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         
         view.endEditing(true)
         
-//        food.name = nameField.text ?? ""
-//        food.servingSize = servingSizeField.text ?? ""
-//
-//        // Iffy, needs to be revisited
-//        if let value = Int(caloriesField.text!) {
-//            food.calories = value
-//        } else {
-//            food.calories = 0
-//        }
+        
     }
     
     // MARK: UITextFieldDelegate Methods
@@ -166,6 +166,10 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return servingData[component][row]
     }
+    
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        
+//    }
 
     
 }
