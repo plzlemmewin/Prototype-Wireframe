@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0417D7EA213A302F00E3B973 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0417D7E9213A302F00E3B973 /* Food.swift */; };
+		042D5E3920E047D0004604BD /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042D5E3820E047D0004604BD /* UserData.swift */; };
 		045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */; };
 		04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A73208D3C23006A2434 /* AppDelegate.swift */; };
 		04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A75208D3C23006A2434 /* GoalViewController.swift */; };
@@ -24,11 +26,9 @@
 		0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471105120C39B4B0049D29C /* RegisterViewController.swift */; };
 		0471105820C39C080049D29C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471105720C39C080049D29C /* LoginViewController.swift */; };
 		04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D7920C710D3003D5762 /* MenuBar.swift */; };
-		04AC4D9C20C88BA1003D5762 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D9B20C88BA1003D5762 /* Food.swift */; };
-		04AC4D9E20C88EFE003D5762 /* FoodData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D9D20C88EFE003D5762 /* FoodData.swift */; };
-		04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBD20B88469001491E9 /* Food Item.swift */; };
-		04CBAFC020B88917001491E9 /* Food Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBAFBF20B88917001491E9 /* Food Database.swift */; };
-		04D0764520D03C5D0015C3FC /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0764420D03C5D0015C3FC /* DBFoodCell.swift */; };
+		04D1D38920DA0DA5005A0404 /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1D38820DA0DA4005A0404 /* DBFoodCell.swift */; };
+		04D52F0220EDA2B200958B46 /* DBFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F0120EDA2B200958B46 /* DBFood.swift */; };
+		04D52F042120C30400958B46 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F032120C30400958B46 /* LogViewController.swift */; };
 		5E5899CDE2922C2E7804D75F /* Pods_Prototype_WireframeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF7BB278175FA58CC231DDE /* Pods_Prototype_WireframeUITests.framework */; };
 		99FA5798A947C67AF6FBEF2B /* Pods_Prototype_WireframeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */; };
 		D26ABB6730E5047E9DE87EC1 /* Pods_Prototype_Wireframe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB2BB8C522B6456DD732DEFA /* Pods_Prototype_Wireframe.framework */; };
@@ -52,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0417D7E9213A302F00E3B973 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Food.swift; path = "Prototype Wireframe/Model/Food.swift"; sourceTree = SOURCE_ROOT; };
+		042D5E3820E047D0004604BD /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodViewController.swift; sourceTree = "<group>"; };
 		04679A70208D3C23006A2434 /* Prototype Wireframe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Prototype Wireframe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04679A73208D3C23006A2434 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,18 +70,16 @@
 		04679A95208D3C24006A2434 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04679AA3208D3DB9006A2434 /* LogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
 		04679AA9209505E8006A2434 /* GoalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPageViewController.swift; sourceTree = "<group>"; };
-		046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFoodCell.swift; sourceTree = "<group>"; };
+		046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserFoodCell.swift; path = "../Model/Old Food/UserFoodCell.swift"; sourceTree = "<group>"; };
 		046C05B220BE5EA600AC1ECA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		0471104D20C37EE10049D29C /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		0471104F20C383080049D29C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0471105120C39B4B0049D29C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		0471105720C39C080049D29C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		04AC4D7920C710D3003D5762 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
-		04AC4D9B20C88BA1003D5762 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
-		04AC4D9D20C88EFE003D5762 /* FoodData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodData.swift; sourceTree = "<group>"; };
-		04CBAFBD20B88469001491E9 /* Food Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Item.swift"; sourceTree = "<group>"; };
-		04CBAFBF20B88917001491E9 /* Food Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Food Database.swift"; sourceTree = "<group>"; };
-		04D0764420D03C5D0015C3FC /* DBFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBFoodCell.swift; path = "Prototype Wireframe/View/Food Cell/DBFoodCell.swift"; sourceTree = SOURCE_ROOT; };
+		04D1D38820DA0DA4005A0404 /* DBFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBFoodCell.swift; path = "Prototype Wireframe/View/DBFoodCell.swift"; sourceTree = SOURCE_ROOT; };
+		04D52F0120EDA2B200958B46 /* DBFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFood.swift; sourceTree = "<group>"; };
+		04D52F032120C30400958B46 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		13D1421FC4B8EC3BE7941F61 /* Pods-Prototype WireframeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeUITests/Pods-Prototype WireframeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Prototype_WireframeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FF7D87D7226CC5664567E7B /* Pods-Prototype WireframeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeTests/Pods-Prototype WireframeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -190,6 +190,7 @@
 				04679AA9209505E8006A2434 /* GoalPageViewController.swift */,
 				046C05B220BE5EA600AC1ECA /* DetailViewController.swift */,
 				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
+				04D52F032120C30400958B46 /* LogViewController.swift */,
 				045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */,
 			);
 			path = Main;
@@ -198,9 +199,9 @@
 		0499103120CAE1A00096858A /* Database Model  */ = {
 			isa = PBXGroup;
 			children = (
-				04AC4D9B20C88BA1003D5762 /* Food.swift */,
-				04AC4D9D20C88EFE003D5762 /* FoodData.swift */,
-				04D0764420D03C5D0015C3FC /* DBFoodCell.swift */,
+				0417D7E9213A302F00E3B973 /* Food.swift */,
+				042D5E3820E047D0004604BD /* UserData.swift */,
+				04D52F0120EDA2B200958B46 /* DBFood.swift */,
 			);
 			path = "Database Model ";
 			sourceTree = "<group>";
@@ -214,21 +215,10 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		04AC4D9F20C88F03003D5762 /* Old Food */ = {
-			isa = PBXGroup;
-			children = (
-				046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */,
-				04CBAFBD20B88469001491E9 /* Food Item.swift */,
-				04CBAFBF20B88917001491E9 /* Food Database.swift */,
-			);
-			path = "Old Food";
-			sourceTree = "<group>";
-		};
 		04CBAFB920B88416001491E9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				0499103120CAE1A00096858A /* Database Model  */,
-				04AC4D9F20C88F03003D5762 /* Old Food */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -237,6 +227,8 @@
 			isa = PBXGroup;
 			children = (
 				04679A77208D3C23006A2434 /* Main.storyboard */,
+				04D1D38820DA0DA4005A0404 /* DBFoodCell.swift */,
+				046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -584,18 +576,18 @@
 			files = (
 				0471104E20C37EE10049D29C /* WelcomeViewController.swift in Sources */,
 				0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */,
+				042D5E3920E047D0004604BD /* UserData.swift in Sources */,
+				04D52F042120C30400958B46 /* LogViewController.swift in Sources */,
 				04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */,
-				04AC4D9E20C88EFE003D5762 /* FoodData.swift in Sources */,
 				04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */,
 				046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
 				04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */,
-				04D0764520D03C5D0015C3FC /* DBFoodCell.swift in Sources */,
-				04AC4D9C20C88BA1003D5762 /* Food.swift in Sources */,
-				04CBAFC020B88917001491E9 /* Food Database.swift in Sources */,
-				04CBAFBE20B88469001491E9 /* Food Item.swift in Sources */,
+				04D1D38920DA0DA5005A0404 /* DBFoodCell.swift in Sources */,
 				04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */,
 				046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */,
+				04D52F0220EDA2B200958B46 /* DBFood.swift in Sources */,
+				0417D7EA213A302F00E3B973 /* Food.swift in Sources */,
 				045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */,
 				0471105820C39C080049D29C /* LoginViewController.swift in Sources */,
 			);

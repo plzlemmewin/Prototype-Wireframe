@@ -7,33 +7,36 @@
 //
 
 import UIKit
+import RealmSwift
 
 class LogTableViewController: UITableViewController {
     
+    let realm = try! Realm()
+    var userFoods: List<Food>!
+    
     //MARK: Class Properties
     let sectionHeaderHeight: CGFloat = 35
-    
-    var foodDatabase = FoodDatabase()
     
     enum Meals: Int {
         case breakfast = 0, lunch, dinner, snacks
     }
     
-    
-    
     var data = [Meals: [Food]]()
     
     func sortData() {
-        data[.breakfast] = foodDatabase.foodList.filter { $0.timing == "breakfast" }
-        data[.lunch] = foodDatabase.foodList.filter{$0.timing == "lunch"}
-        data[.dinner] = foodDatabase.foodList.filter{$0.timing == "dinner"}
-        data[.snacks] = foodDatabase.foodList.filter{$0.timing == "snacks"}
+        data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
+        data[.lunch] = userFoods.filter {$0.timing == "lunch"}
+        data[.dinner] = userFoods.filter{$0.timing == "dinner"}
+        data[.snacks] = userFoods.filter{$0.timing == "snacks"}
+        print("\(data[.breakfast])")
     }
     
     //MARK: Loading Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadUserData()
+      //  print("\(userFoods)")
         
 //        tableView.rowHeight = UITableViewAutomaticDimension
 //        tableView.estimatedRowHeight = 65
@@ -43,8 +46,7 @@ class LogTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationItem.title = "Today"
-        
+        navigationItem.title = "Today" 
         
         sortData()
         tableView.reloadData()
@@ -61,14 +63,14 @@ class LogTableViewController: UITableViewController {
  //       return foodDatabase.foodList.count
         if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
             return mealData.count
+            
         }
-        return 0
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return sectionHeaderHeight
     }
-    
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -84,8 +86,15 @@ class LogTableViewController: UITableViewController {
         addButton.tag = section
         addButton.addTarget(self, action: #selector(self.addNewFood), for: .touchUpInside)
         
-        
-        let totalCalories = 0
+        var totalCalories: Int = 0
+        if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
+            for value in mealData {
+                totalCalories += value.calories
+            }
+        } else {
+            totalCalories = 0
+        }
+    
         if let section = Meals(rawValue: section) {
             switch section {
             case .breakfast:
@@ -96,8 +105,6 @@ class LogTableViewController: UITableViewController {
                 nameLabel.text = "Dinner: \(totalCalories)"
             case .snacks:
                 nameLabel.text = "Snacks: \(totalCalories)"
-            default:
-                nameLabel.text = ""
             }
         }
         
@@ -113,20 +120,16 @@ class LogTableViewController: UITableViewController {
         return view
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! UserFoodCell
         
         if let section = Meals(rawValue: indexPath.section), let food = data[section]?[indexPath.row] {
-            cell.idLabel.text = food.identifier
+            cell.idLabel.text = food.name
             cell.calorieLabel.text = "\(food.calories)"
             cell.detailLabel.text = food.servingSize
+        } else {
+            cell.idLabel.text = "Add a Food"
         }
-        
-//        let food = foodDatabase.foodList[indexPath.row]
-//        cell.idLabel.text = food.identifier
-//        cell.calorieLabel.text = "\(food.calories)"
-//        cell.servingSizeLabel.text = food.servingSize
         
         return cell
     }
@@ -136,15 +139,16 @@ class LogTableViewController: UITableViewController {
         switch segue.identifier {
         case "showFood"?:
             if let row = tableView.indexPathForSelectedRow?.row {
-                let food = foodDatabase.foodList[row]
+                let food = userFoods[row]
                 let detailVC = segue.destination as! DetailViewController
                 detailVC.food = food
+                detailVC.navigationItem.title = "Edit Food"
             }
         case "addFood"?:
             let destinationNavigationC = segue.destination as! UINavigationController
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController
             targetController.selectedMeal = (sender as! UIButton).tag
-            print("\(targetController.selectedMeal)")
+//            print("\(targetController.selectedMeal)")
         default:
             preconditionFailure("Unexpected segue identifier")
         }
@@ -159,5 +163,9 @@ class LogTableViewController: UITableViewController {
         performSegue(withIdentifier: "addFood", sender: sender)
     }
     
+    func loadUserData() {
+        userFoods = realm.objects(UserData.self).first?.data
+        tableView.reloadData()
+    }
 
 }

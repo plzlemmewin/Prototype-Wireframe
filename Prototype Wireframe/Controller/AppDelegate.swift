@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let foodDatabase = FoodDatabase()
 //        let tabController = window!.rootViewController as! UITabBarController
 //        let logTableController = tabController.
+        
+        print(Realm.Configuration.defaultConfiguration.fileURL)
+        
+        do {
+            let realm = try Realm()
+        } catch {
+            print("Error initializing new realm: \(error)")
+        }
+        
         
         // Initialize and configure Firebase
         FirebaseApp.configure()
