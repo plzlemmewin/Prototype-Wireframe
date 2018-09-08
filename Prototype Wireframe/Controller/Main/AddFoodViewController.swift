@@ -61,12 +61,9 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             cell.cookedLabel.text = ""
         }
-        cell.calorieLabel.text = "\(food.calories)"
-        if let servingSize = food.servingSize {
-            cell.servingSizeLabel.text = servingSize
-        } else {
-            cell.servingSizeLabel.text = ""
-        }
+        cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.acceptedUnits.first?.conversionToBaseUnit)!)))"
+        
+        cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
 
         return cell
     }
@@ -137,6 +134,10 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         foodDatabase = realm.objects(DBFood.self)
         foodTableView.reloadData()
         
+    }
+    
+    private func roundToTens(x: Double) -> Int {
+        return 10 * Int(round(x / 10.0))
     }
     
     
