@@ -27,6 +27,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             print("\(timing ?? "nil")")
         }
     }
+    
     var foodToAdd: DBFood?
     var food: Food? /*{
         didSet {
@@ -34,31 +35,16 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         }
     }*/
     
-    
-    /*enum Meals: Int {
-     case breakfast = 0, lunch, dinner, snacks
-     }
-     
-     var data = [Meals: [Food]]()
-     
-     func sortData() {
-     data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
-     data[.lunch] = userFoods.filter {$0.timing == "lunch"}
-     data[.dinner] = userFoods.filter{$0.timing == "dinner"}
-     data[.snacks] = userFoods.filter{$0.timing == "snacks"}
-     print("\(data[.breakfast])")
-     }*/
-    
     var servingData: [[String]] = [[String]]()
     
     // let fullServings = ["-","1","2","3","4","5","6","7","8","9","10","11","12","13","14"]
     var fullServings = ["-"]
     var fullServingsSetup = [Int]()
     
-    let partialServings = ["-","1/8","1/4","3/8","1/3","1/2","2/3","5/8","3/4","7/8"]
+    let partialServings = ["-","1/8","1/4","1/3","3/8","1/2","5/8","2/3","3/4","7/8"]
     var conversionList = [String]()
     var servingInUnits: Double = 0
-    var totalCalories: Int = 0
+    var totalCalories: Double = 0
 
     @IBOutlet var servingPicker: UIPickerView!
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
@@ -86,7 +72,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         servingData = [fullServings,
                        partialServings,
                        conversionList,
-//                       ["oz","g",],
         ]
         
         if let enteredFood = foodToAdd {
@@ -109,10 +94,10 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         servingSizeField.text = food?.servingSize ?? "\(foodToAdd!.defaultServing) \(foodToAdd!.defaultUnit)"
         if let item = food {
             caloriesField.text = "\(item.calories)"
-            totalCalories = item.calories
+            totalCalories = Double(item.calories)
         } else {
-            totalCalories = Int((foodToAdd?.acceptedUnits.first?.conversionToBaseUnit)! * foodToAdd!.caloriesPerBaseUnit)
-            caloriesField.text = "\(roundToTens(x: Double(totalCalories)))"
+            totalCalories = (foodToAdd?.acceptedUnits.first?.conversionToBaseUnit)! * foodToAdd!.caloriesPerBaseUnit
+            caloriesField.text = "\(roundToTens(x: totalCalories))"
         }
         
         miscLabel.text = "PlaceHolder Section"
@@ -165,7 +150,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         newFood.brand = food?.brand ?? foodToAdd?.brand
         newFood.cooked = food?.cooked ?? foodToAdd?.cooked
         newFood.servingSize = servingSizeField.text
-        newFood.calories = (food?.calories ?? totalCalories)
+        newFood.calories = (food?.calories ?? Int(totalCalories))
         newFood.fats = (food?.fats ?? round((foodToAdd?.fatsPerBaseUnit)! * servingInUnits))
         newFood.carbs = (food?.carbs ?? round((foodToAdd?.carbsPerBaseUnit)! * servingInUnits))
         newFood.protein = (food?.protein ?? round((foodToAdd?.proteinPerBaseUnit)! * servingInUnits))
@@ -244,8 +229,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             }
             servingInUnits = wholeNumberServing + partialServing
             if let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit, let caloriesPerUnit = foodToAdd?.caloriesPerBaseUnit  {
-                totalCalories = roundToTens(x: servingInUnits * caloriesPerUnit * unitConversion)
-                caloriesField.text = String(totalCalories)
+                totalCalories = servingInUnits * caloriesPerUnit * unitConversion
+                caloriesField.text = String(roundToTens(x: totalCalories))
             }
 
         case 1:
@@ -280,8 +265,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             }
             servingInUnits = wholeNumberServing + partialServing
             if let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit, let caloriesPerUnit = foodToAdd?.caloriesPerBaseUnit {
-                totalCalories = roundToTens(x: servingInUnits * caloriesPerUnit * unitConversion)
-                caloriesField.text = String(totalCalories)
+                totalCalories = servingInUnits * caloriesPerUnit * unitConversion
+                caloriesField.text = String(roundToTens(x: totalCalories))
             }
 
         case 2:
