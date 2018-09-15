@@ -30,11 +30,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     
     var mappedDBFood: DBFood?
     var foodToAdd: DBFood?
-    var food: Food? /*{
-        didSet {
-            navigationItem.title = "Edit Food"
-        }
-    }*/
+    var food: Food?
     
     var servingData: [[String]] = [[String]]()
     var fullServings = ["-"]
@@ -295,30 +291,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                 wholeNumberServing = 0
             }
             partialServingMatch(selection: servingData[1][servingPicker.selectedRow(inComponent: 1)], output: &partialServing)
-//            switch servingData[1][servingPicker.selectedRow(inComponent: 1)] {
-//            case "-":
-//                partialServing = 0
-//            case "1/8":
-//                partialServing = 1/8
-//            case "1/4":
-//                partialServing = 1/4
-//            case "1/3":
-//                partialServing = 1/3
-//            case "3/8":
-//                partialServing = 3/8
-//            case "1/2":
-//                partialServing = 1/2
-//            case "5/8":
-//                partialServing = 5/8
-//            case "2/3":
-//                partialServing = 2/3
-//            case "3/4":
-//                partialServing = 3/4
-//            case "7/8":
-//                partialServing = 7/8
-//            default:
-//                partialServing = 0
-//            }
+
             servingInUnits = wholeNumberServing + partialServing
             if let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit, let caloriesPerUnit = foodToAdd?.caloriesPerBaseUnit  {
                 totalCalories = servingInUnits * caloriesPerUnit * unitConversion
@@ -337,30 +310,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                 wholeNumberServing = 0
             }
             partialServingMatch(selection: servingData[component][servingPicker.selectedRow(inComponent: component)], output: &partialServing)
-//            switch servingData[component][servingPicker.selectedRow(inComponent: component)] {
-//            case "-":
-//                partialServing = 0
-//            case "1/8":
-//                partialServing = 1/8
-//            case "1/4":
-//                partialServing = 1/4
-//            case "1/3":
-//                partialServing = 1/3
-//            case "3/8":
-//                partialServing = 3/8
-//            case "1/2":
-//                partialServing = 1/2
-//            case "5/8":
-//                partialServing = 5/8
-//            case "2/3":
-//                partialServing = 2/3
-//            case "3/4":
-//                partialServing = 3/4
-//            case "7/8":
-//                partialServing = 7/8
-//            default:
-//                partialServing = 0
-//            }
+
             servingInUnits = wholeNumberServing + partialServing
             if let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit, let caloriesPerUnit = foodToAdd?.caloriesPerBaseUnit {
                 totalCalories = servingInUnits * caloriesPerUnit * unitConversion
