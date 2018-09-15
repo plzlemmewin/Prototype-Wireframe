@@ -86,7 +86,7 @@ class LogTableViewController: UITableViewController {
         addButton.tag = section
         addButton.addTarget(self, action: #selector(self.addNewFood), for: .touchUpInside)
         
-        var totalCalories: Int = 0
+        var totalCalories: Double = 0
         if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
             for value in mealData {
                 totalCalories += value.calories
@@ -126,7 +126,7 @@ class LogTableViewController: UITableViewController {
         if let section = Meals(rawValue: indexPath.section), let food = data[section]?[indexPath.row] {
             cell.idLabel.text = food.name
             cell.calorieLabel.text = "\(food.calories)"
-            cell.detailLabel.text = food.servingSize
+            cell.detailLabel.text = "\(food.servingSize) \(food.unit)"
         } else {
             cell.idLabel.text = "Add a Food"
         }

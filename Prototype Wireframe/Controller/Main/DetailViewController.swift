@@ -28,6 +28,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         }
     }
     
+    var mappedDBFood: DBFood?
     var foodToAdd: DBFood?
     var food: Food? /*{
         didSet {
@@ -36,14 +37,13 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     }*/
     
     var servingData: [[String]] = [[String]]()
-    
-    // let fullServings = ["-","1","2","3","4","5","6","7","8","9","10","11","12","13","14"]
     var fullServings = ["-"]
     var fullServingsSetup = [Int]()
     
     let partialServings = ["-","1/8","1/4","1/3","3/8","1/2","5/8","2/3","3/4","7/8"]
     var conversionList = [String]()
     var servingInUnits: Double = 0
+    var unit: String = ""
     var totalCalories: Double = 0
 
     @IBOutlet var servingPicker: UIPickerView!
@@ -58,17 +58,11 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         servingPicker.delegate = self
         servingPicker.dataSource = self
         loadAcceptedUnits()
-//
-//        servingData = [["-","1","2","3","4","5","6","7","8","9","10","11",],
-//                       ["-","1/8","1/4","1/3","1/2","2/3","3/4",],
-//                       ["oz","g",],
-//                       ]
         
         fullServingsSetup += 1...2000
         let stringSetup = fullServingsSetup.map { String($0) }
         fullServings.append(contentsOf: stringSetup)
 
-    
         servingData = [fullServings,
                        partialServings,
                        conversionList,
@@ -78,29 +72,77 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             servingPicker.selectRow(enteredFood.defaultServing, inComponent: 0, animated: false)
             servingPicker.selectRow(0, inComponent: 1, animated: false)
             servingPicker.selectRow(0, inComponent: 2, animated: false)
+            
+            servingInUnits = Double(enteredFood.defaultServing)
+            unit = enteredFood.defaultUnit
+            print("true")
+            
+        } else if let enteredFood = food {
+            
+            servingInUnits = enteredFood.servingSize
+            var fullServing = Int(servingInUnits)
+            var partialServing = servingInUnits - Double(fullServing)
+            let unit = enteredFood.unit
+
+            switch partialServing {
+            case 0..<0.0625:
+                partialServing = 0
+            case 0.0625..<0.1875 :
+                partialServing = 1
+            case 0.1875..<0.291666:
+                partialServing = 2
+            case 0.291666..<0.354166:
+                partialServing = 3
+            case 0.354166..<0.4375:
+                partialServing = 4
+            case 0.4375..<0.5625:
+                partialServing = 5
+            case 0.5625..<0.645833:
+                partialServing = 6
+            case 0.645833..<0.70833:
+                partialServing = 7
+            case 0.70833..<0.8125:
+                partialServing = 8
+            case 0.8125..<0.9375:
+                partialServing = 9
+            case 0.9375...1:
+                partialServing = 0
+                fullServing = fullServing + 1
+            default:
+                print("not working")
+            }
+//            print("\(fullServing) \(partialServing) \(unit)")
+            
+            servingPicker.selectRow(fullServing, inComponent: 0, animated: false)
+            servingPicker.selectRow(Int(partialServing), inComponent: 1, animated: false)
+            
+            mappedDBFood = realm.objects(DBFood.self).filter("id = \(enteredFood.id)").first
+            var supportedUnits = [String]()
+            for unit in (mappedDBFood?.acceptedUnits)! {
+                supportedUnits.append(unit.unit)
+            }
+            
+            servingPicker.selectRow(supportedUnits.index(of: "\(unit)")!, inComponent: 2, animated: false)
         }
-//        } else {
-//            servingPicker.selectRow(Int((food?.servingSize)!)!, inComponent: 0, animated: false)
-//            servingPicker.selectRow(0, inComponent: 1, animated: false)
-//            servingPicker.selectRow(Int((foodToAdd?.acceptedUnits.first?.conversionToBaseUnit)!), inComponent: 2, animated: false)
-//        }
-        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         nameLabel.text = food?.name ?? foodToAdd?.name
-        servingSizeField.text = food?.servingSize ?? "\(foodToAdd!.defaultServing) \(foodToAdd!.defaultUnit)"
         if let item = food {
-            caloriesField.text = "\(item.calories)"
-            totalCalories = Double(item.calories)
+            totalCalories = item.calories
+            caloriesField.text = "\(roundToTens(x: item.calories))"
+            servingSizeField.text = "\(item.servingSize) \(item.unit)"
         } else {
             totalCalories = (foodToAdd?.acceptedUnits.first?.conversionToBaseUnit)! * foodToAdd!.caloriesPerBaseUnit
             caloriesField.text = "\(roundToTens(x: totalCalories))"
+            servingSizeField.text = "\(foodToAdd!.defaultServing) \(foodToAdd!.defaultUnit)"
         }
         
         miscLabel.text = "PlaceHolder Section"
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -110,7 +152,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     }
     
     // MARK: UITextFieldDelegate Methods
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -125,55 +166,105 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     }
     
     // MARK: Private Methods
-
     private func updateSaveButtonState() {
         let text = nameLabel.text ?? ""
         saveButton.isEnabled = !text.isEmpty
     }
     
     private func loadAcceptedUnits() {
-        if let foodFromDatabse = foodToAdd {
-            for unit in foodFromDatabse.acceptedUnits {
+        if let foodFromDatabase = foodToAdd {
+            for unit in foodFromDatabase.acceptedUnits {
+                conversionList.append(unit.unit)
+            }
+        } else if let existingFood = food {
+            let mappedDBFood = realm.objects(DBFood.self).filter("id = \(existingFood.id)").first
+            for unit in (mappedDBFood?.acceptedUnits)! {
                 conversionList.append(unit.unit)
             }
         }
     }
-    
+        
     func roundToTens(x: Double) -> Int {
         return 10 * Int(round(x / 10.0))
     }
     
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
-        let newFood = Food()
-        newFood.name = (food?.name ?? foodToAdd?.name)!
-        newFood.brand = food?.brand ?? foodToAdd?.brand
-        newFood.cooked = food?.cooked ?? foodToAdd?.cooked
-        newFood.servingSize = servingSizeField.text
-        newFood.calories = (food?.calories ?? Int(totalCalories))
-        newFood.fats = (food?.fats ?? round((foodToAdd?.fatsPerBaseUnit)! * servingInUnits))
-        newFood.carbs = (food?.carbs ?? round((foodToAdd?.carbsPerBaseUnit)! * servingInUnits))
-        newFood.protein = (food?.protein ?? round((foodToAdd?.proteinPerBaseUnit)! * servingInUnits))
-        newFood.alcohol = (food?.alcohol ?? round((foodToAdd?.alcoholPerBaseUnit)! * servingInUnits))
-        newFood.timing = (timing ?? food?.timing)!
-        newFood.breakfast = (food?.breakfast ?? foodToAdd?.breakfast)!
-        newFood.lunch = (food?.lunch ?? foodToAdd?.lunch)!
-        newFood.dinner = (food?.dinner ?? foodToAdd?.dinner)!
-        newFood.snack = (food?.snack ?? foodToAdd?.snack)!
-        newFood.main = (food?.main ?? foodToAdd?.main)!
-        newFood.side = (food?.side ?? foodToAdd?.side)!
-        newFood.cuisine = food?.cuisine ?? foodToAdd?.cuisine
-        do {
-            try realm.write {
-                realm.objects(UserData.self).first?.data.append(newFood)
+        if let foodToBeAdded = foodToAdd, let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
+            
+            let newFood = Food()
+            newFood.id = foodToBeAdded.id
+            newFood.name = foodToBeAdded.name
+            newFood.brand = foodToBeAdded.brand
+            newFood.cooked = foodToBeAdded.cooked
+            newFood.servingSize = servingInUnits
+            newFood.unit = "\(foodToBeAdded.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].unit)"
+            newFood.calories = foodToBeAdded.caloriesPerBaseUnit * servingInUnits * unitConversion
+            newFood.fats = foodToBeAdded.fatsPerBaseUnit * servingInUnits * unitConversion
+            newFood.carbs = foodToBeAdded.carbsPerBaseUnit * servingInUnits * unitConversion
+            newFood.protein = foodToBeAdded.proteinPerBaseUnit * servingInUnits * unitConversion
+            newFood.alcohol = foodToBeAdded.alcoholPerBaseUnit * servingInUnits * unitConversion
+            newFood.timing = timing!
+            
+            do {
+                try realm.write {
+                    realm.objects(UserData.self).first?.data.append(newFood)
+                }
+            } catch {
+                print("Error saving new items, \(error)")
             }
-        } catch {
-            print("Error saving new items, \(error)")
+            dismiss(animated: true, completion: nil)
+        } else if let foodToBeEditedInfo = mappedDBFood, let unitConversion = mappedDBFood?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
+            print("starting process")
+            do {
+                try realm.write {
+                    print("in process")
+                    food!.calories = totalCalories
+                    food!.servingSize = servingInUnits
+                    food!.unit = "\(foodToBeEditedInfo.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].unit)"
+                    food!.fats = foodToBeEditedInfo.caloriesPerBaseUnit * servingInUnits * unitConversion
+                    food!.carbs = foodToBeEditedInfo.carbsPerBaseUnit * servingInUnits * unitConversion
+                    food!.protein = foodToBeEditedInfo.proteinPerBaseUnit * servingInUnits * unitConversion
+                    food!.alcohol = foodToBeEditedInfo.alcoholPerBaseUnit * servingInUnits * unitConversion
+                }
+                
+            } catch {
+                print("Error saving new items, \(error)")
+            }
+            _ = navigationController?.popViewController(animated: true)
+            print("process complete")
         }
-        dismiss(animated: true, completion: nil)
     }
+        
+
     
     
+    func partialServingMatch(selection: String, output: inout Double) {
+        switch selection {
+        case "-":
+            output = 0
+        case "1/8":
+            output = 1/8
+        case "1/4":
+            output = 1/4
+        case "1/3":
+            output = 1/3
+        case "3/8":
+            output = 3/8
+        case "1/2":
+            output = 1/2
+        case "5/8":
+            output = 5/8
+        case "2/3":
+            output = 2/3
+        case "3/4":
+            output = 3/4
+        case "7/8":
+            output = 7/8
+        default:
+            output = 0
+        }
+    }
     
     
     // MARK: UIPicker Delegate Methods
@@ -203,32 +294,38 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             } else {
                 wholeNumberServing = 0
             }
-            switch servingData[1][servingPicker.selectedRow(inComponent: 1)] {
-            case "-":
-                partialServing = 0
-            case "1/8":
-                partialServing = 1/8
-            case "1/4":
-                partialServing = 1/4
-            case "1/3":
-                partialServing = 1/3
-            case "3/8":
-                partialServing = 3/8
-            case "1/2":
-                partialServing = 1/2
-            case "5/8":
-                partialServing = 5/8
-            case "2/3":
-                partialServing = 2/3
-            case "3/4":
-                partialServing = 3/4
-            case "7/8":
-                partialServing = 7/8
-            default:
-                partialServing = 0
-            }
+            partialServingMatch(selection: servingData[1][servingPicker.selectedRow(inComponent: 1)], output: &partialServing)
+//            switch servingData[1][servingPicker.selectedRow(inComponent: 1)] {
+//            case "-":
+//                partialServing = 0
+//            case "1/8":
+//                partialServing = 1/8
+//            case "1/4":
+//                partialServing = 1/4
+//            case "1/3":
+//                partialServing = 1/3
+//            case "3/8":
+//                partialServing = 3/8
+//            case "1/2":
+//                partialServing = 1/2
+//            case "5/8":
+//                partialServing = 5/8
+//            case "2/3":
+//                partialServing = 2/3
+//            case "3/4":
+//                partialServing = 3/4
+//            case "7/8":
+//                partialServing = 7/8
+//            default:
+//                partialServing = 0
+//            }
             servingInUnits = wholeNumberServing + partialServing
             if let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit, let caloriesPerUnit = foodToAdd?.caloriesPerBaseUnit  {
+                totalCalories = servingInUnits * caloriesPerUnit * unitConversion
+                caloriesField.text = String(roundToTens(x: totalCalories))
+            } else if let existingFood = mappedDBFood {
+                let caloriesPerUnit = existingFood.caloriesPerBaseUnit
+                let unitConversion = existingFood.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit
                 totalCalories = servingInUnits * caloriesPerUnit * unitConversion
                 caloriesField.text = String(roundToTens(x: totalCalories))
             }
@@ -239,32 +336,38 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             } else {
                 wholeNumberServing = 0
             }
-            switch servingData[component][servingPicker.selectedRow(inComponent: component)] {
-            case "-":
-                partialServing = 0
-            case "1/8":
-                partialServing = 1/8
-            case "1/4":
-                partialServing = 1/4
-            case "1/3":
-                partialServing = 1/3
-            case "3/8":
-                partialServing = 3/8
-            case "1/2":
-                partialServing = 1/2
-            case "5/8":
-                partialServing = 5/8
-            case "2/3":
-                partialServing = 2/3
-            case "3/4":
-                partialServing = 3/4
-            case "7/8":
-                partialServing = 7/8
-            default:
-                partialServing = 0
-            }
+            partialServingMatch(selection: servingData[component][servingPicker.selectedRow(inComponent: component)], output: &partialServing)
+//            switch servingData[component][servingPicker.selectedRow(inComponent: component)] {
+//            case "-":
+//                partialServing = 0
+//            case "1/8":
+//                partialServing = 1/8
+//            case "1/4":
+//                partialServing = 1/4
+//            case "1/3":
+//                partialServing = 1/3
+//            case "3/8":
+//                partialServing = 3/8
+//            case "1/2":
+//                partialServing = 1/2
+//            case "5/8":
+//                partialServing = 5/8
+//            case "2/3":
+//                partialServing = 2/3
+//            case "3/4":
+//                partialServing = 3/4
+//            case "7/8":
+//                partialServing = 7/8
+//            default:
+//                partialServing = 0
+//            }
             servingInUnits = wholeNumberServing + partialServing
             if let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit, let caloriesPerUnit = foodToAdd?.caloriesPerBaseUnit {
+                totalCalories = servingInUnits * caloriesPerUnit * unitConversion
+                caloriesField.text = String(roundToTens(x: totalCalories))
+            } else if let existingFood = mappedDBFood {
+                let caloriesPerUnit = existingFood.caloriesPerBaseUnit
+                let unitConversion = existingFood.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit
                 totalCalories = servingInUnits * caloriesPerUnit * unitConversion
                 caloriesField.text = String(roundToTens(x: totalCalories))
             }
@@ -274,7 +377,12 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                 servingInUnits = Double(totalCalories) / (selectedUnit * caloriesPerUnit)
                 wholeNumberServing = servingInUnits.rounded(.down)
                 partialServing = servingInUnits - wholeNumberServing
-                print("\(partialServing)")
+            } else if let existingFood = mappedDBFood {
+                let caloriesPerUnit = existingFood.caloriesPerBaseUnit
+                let selectedUnit = existingFood.acceptedUnits[servingPicker.selectedRow(inComponent: component)].conversionToBaseUnit
+                servingInUnits = Double(totalCalories) / (selectedUnit * caloriesPerUnit)
+                wholeNumberServing = servingInUnits.rounded(.down)
+                partialServing = servingInUnits - wholeNumberServing
             }
             switch partialServing {
             case 0..<0.0625:
@@ -320,13 +428,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         default:
             print("error")
         }
-        
-//        if let serving = Double(servingData[component][servingPicker.selectedRow(inComponent: 0)] + servingData[component][servingPicker.selectedRow(inComponent: 1)]) {
-//            servingInBaseUnits = serving
-//        }
-        
     }
-
-    
 }
 
