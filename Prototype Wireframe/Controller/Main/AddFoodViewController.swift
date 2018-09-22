@@ -111,26 +111,8 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         dismiss(animated: true, completion: nil)
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        switch segue.identifier {
-//        case "addFoodDetail"?:
-//            if let row = foodTableView.indexPathForSelectedRow?.row {
-//                let food = foodDatabase.foodList
-//                let detailVC = segue.destination as! DetailViewController
-//                detailVC.food = food
-//            }
-//        default:
-//            preconditionFailure("Unexpected segue identifier")
-//        }
-//        let backItem = UIBarButtonItem()
-//        backItem.title = "Back"
-//        navigationItem.backBarButtonItem = backItem
-//        navigationItem.title = "Add Food"
-//    }
-    
     func loadDatabase() {
         
-        // foodDatabase = realm.objects(Food.self).filter("timing = nil")
         foodDatabase = realm.objects(DBFood.self)
         foodTableView.reloadData()
         
