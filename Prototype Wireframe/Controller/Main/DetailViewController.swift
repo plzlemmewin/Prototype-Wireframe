@@ -202,13 +202,22 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             newFood.alcohol = foodToBeAdded.alcoholPerBaseUnit * servingInUnits * unitConversion
             newFood.timing = timing!
             
+            let dateFormat: DateFormatter = {
+                let df = DateFormatter()
+                df.dateStyle = .medium
+                df.timeStyle = .none
+                return df
+            }()
+            let currentDate = Date()
+            let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: currentDate))
+            
             do {
                 try realm.write {
-                    realm.objects(UserData.self).first?.data.append(newFood)
+                    realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data.append(newFood)
                 }
             } catch {
                 print("Error saving new items, \(error)")
-            }
+            } 
             dismiss(animated: true, completion: nil)
         } else if let foodToBeEditedInfo = mappedDBFood, let unitConversion = mappedDBFood?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
             print("starting process")

@@ -18,7 +18,6 @@
 		04679A7E208D3C23006A2434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04679A7C208D3C23006A2434 /* LaunchScreen.storyboard */; };
 		04679A89208D3C24006A2434 /* Prototype_WireframeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A88208D3C24006A2434 /* Prototype_WireframeTests.swift */; };
 		04679A94208D3C24006A2434 /* Prototype_WireframeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A93208D3C24006A2434 /* Prototype_WireframeUITests.swift */; };
-		04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA3208D3DB9006A2434 /* LogTableViewController.swift */; };
 		04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679AA9209505E8006A2434 /* GoalPageViewController.swift */; };
 		046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */; };
 		046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C05B220BE5EA600AC1ECA /* DetailViewController.swift */; };
@@ -27,6 +26,7 @@
 		0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471105120C39B4B0049D29C /* RegisterViewController.swift */; };
 		0471105820C39C080049D29C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471105720C39C080049D29C /* LoginViewController.swift */; };
 		04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC4D7920C710D3003D5762 /* MenuBar.swift */; };
+		04BF8912214EB77C0095A21E /* DailyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF8911214EB77C0095A21E /* DailyData.swift */; };
 		04D1D38920DA0DA5005A0404 /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1D38820DA0DA4005A0404 /* DBFoodCell.swift */; };
 		04D52F0220EDA2B200958B46 /* DBFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F0120EDA2B200958B46 /* DBFood.swift */; };
 		04D52F042120C30400958B46 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F032120C30400958B46 /* LogViewController.swift */; };
@@ -70,7 +70,6 @@
 		04679A8F208D3C24006A2434 /* Prototype WireframeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Prototype WireframeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04679A93208D3C24006A2434 /* Prototype_WireframeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prototype_WireframeUITests.swift; sourceTree = "<group>"; };
 		04679A95208D3C24006A2434 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		04679AA3208D3DB9006A2434 /* LogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
 		04679AA9209505E8006A2434 /* GoalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPageViewController.swift; sourceTree = "<group>"; };
 		046C05B020BE2F3C00AC1ECA /* UserFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserFoodCell.swift; path = "../Model/Old Food/UserFoodCell.swift"; sourceTree = "<group>"; };
 		046C05B220BE5EA600AC1ECA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +78,7 @@
 		0471105120C39B4B0049D29C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		0471105720C39C080049D29C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		04AC4D7920C710D3003D5762 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
+		04BF8911214EB77C0095A21E /* DailyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyData.swift; sourceTree = "<group>"; };
 		04D1D38820DA0DA4005A0404 /* DBFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBFoodCell.swift; path = "Prototype Wireframe/View/DBFoodCell.swift"; sourceTree = SOURCE_ROOT; };
 		04D52F0120EDA2B200958B46 /* DBFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFood.swift; sourceTree = "<group>"; };
 		04D52F032120C30400958B46 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
@@ -193,7 +193,6 @@
 				046C05B220BE5EA600AC1ECA /* DetailViewController.swift */,
 				04D52F032120C30400958B46 /* LogViewController.swift */,
 				045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */,
-				04679AA3208D3DB9006A2434 /* LogTableViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -203,6 +202,7 @@
 			children = (
 				0417D7E9213A302F00E3B973 /* Food.swift */,
 				042D5E3820E047D0004604BD /* UserData.swift */,
+				04BF8911214EB77C0095A21E /* DailyData.swift */,
 				04D52F0120EDA2B200958B46 /* DBFood.swift */,
 				0417D7EF213C4CF400E3B973 /* UnitOfMeasure.swift */,
 			);
@@ -581,7 +581,6 @@
 				0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */,
 				042D5E3920E047D0004604BD /* UserData.swift in Sources */,
 				04D52F042120C30400958B46 /* LogViewController.swift in Sources */,
-				04679AA4208D3DB9006A2434 /* LogTableViewController.swift in Sources */,
 				04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */,
 				0417D7F0213C4CF500E3B973 /* UnitOfMeasure.swift in Sources */,
 				046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */,
@@ -594,6 +593,7 @@
 				0417D7EA213A302F00E3B973 /* Food.swift in Sources */,
 				045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */,
 				0471105820C39C080049D29C /* LoginViewController.swift in Sources */,
+				04BF8912214EB77C0095A21E /* DailyData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

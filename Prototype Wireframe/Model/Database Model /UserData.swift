@@ -11,5 +11,8 @@ import RealmSwift
 
 class UserData: Object {
     @objc dynamic var name: String = ""
-    let data = List<Food>()
+    @objc dynamic var goal: String = ""
+    @objc dynamic var currentTDEE: Int = 2300
+    @objc dynamic var currentCaloricTarget: Int = 0
+    let dailyData = List<DailyData>()
 }
