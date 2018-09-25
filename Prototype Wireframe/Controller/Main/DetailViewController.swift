@@ -22,11 +22,12 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
 
     let realm = try! Realm()
     
-    var timing: String? {
+    var timing: String? /*{
         didSet {
             print("\(timing ?? "nil")")
         }
-    }
+    }*/
+    var logDate: Date?
     
     var mappedDBFood: DBFood?
     var foodToAdd: DBFood?
@@ -208,8 +209,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                 df.timeStyle = .none
                 return df
             }()
-            let currentDate = Date()
-            let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: currentDate))
+           
+            let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: logDate!))
             
             do {
                 try realm.write {

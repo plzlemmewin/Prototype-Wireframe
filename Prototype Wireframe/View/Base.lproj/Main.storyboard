@@ -1108,13 +1108,24 @@
                             <constraint firstAttribute="bottom" secondItem="POR-uK-Y8u" secondAttribute="bottom" id="Miw-31-gpx"/>
                             <constraint firstItem="POR-uK-Y8u" firstAttribute="top" secondItem="wxw-RH-N3M" secondAttribute="bottom" constant="8" id="aJA-Te-wAY"/>
                             <constraint firstItem="POR-uK-Y8u" firstAttribute="leading" secondItem="C3x-XF-gwD" secondAttribute="leading" id="eFO-Iv-0z0"/>
-                            <constraint firstItem="wxw-RH-N3M" firstAttribute="top" secondItem="rUX-vE-Tej" secondAttribute="bottom" constant="8" id="fEA-ZA-ac3"/>
                             <constraint firstAttribute="trailing" secondItem="POR-uK-Y8u" secondAttribute="trailing" id="fxF-FO-8AE"/>
                             <constraint firstItem="wxw-RH-N3M" firstAttribute="leading" secondItem="C3x-XF-gwD" secondAttribute="leading" constant="8" id="sQI-sz-B45"/>
+                            <constraint firstItem="wxw-RH-N3M" firstAttribute="top" secondItem="rUX-vE-Tej" secondAttribute="bottom" constant="8" id="sya-SW-DDf"/>
                             <constraint firstItem="wxw-RH-N3M" firstAttribute="centerX" secondItem="C3x-XF-gwD" secondAttribute="centerX" id="yfb-L7-5HB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="937-gn-loq"/>
+                    <navigationItem key="navigationItem" id="937-gn-loq">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="DMVSq" id="E3Y-lO-6rh">
+                            <connections>
+                                <action selector="previousDayPressed:" destination="WIe-dI-HIP" id="Pw5-8a-6dc"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="DMVSq-right" id="3UX-3F-zCi">
+                            <connections>
+                                <action selector="nextDayPressed:" destination="WIe-dI-HIP" id="gKF-Nf-F6X"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="caloriesIn" destination="yxY-74-E4f" id="xxu-W9-0GQ"/>
                         <outlet property="caloriesOut" destination="OZy-hw-MR2" id="geo-Xf-tbe"/>
@@ -1259,6 +1270,8 @@
     </scenes>
     <resources>
         <image name="Bar Chart" width="346" height="262"/>
+        <image name="DMVSq" width="13" height="21"/>
+        <image name="DMVSq-right" width="13" height="21"/>
         <image name="Line Chart" width="474" height="363"/>
         <image name="Pie Chart" width="308" height="307"/>
         <image name="adviceIcon" width="36" height="36"/>

@@ -21,6 +21,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 
     var selectedMeal: Int?
+    var logDate: Date?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +84,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let detailVC = segue.destination as! DetailViewController
                 detailVC.foodToAdd = food
                 detailVC.navigationItem.title = "Add Food"
+                detailVC.logDate = self.logDate
                 switch selectedMeal! {
                 case 0:
                     detailVC.timing = "breakfast"
