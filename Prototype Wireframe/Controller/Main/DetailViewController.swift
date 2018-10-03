@@ -66,13 +66,43 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         ]
         
         if let enteredFood = foodToAdd {
-            servingPicker.selectRow(enteredFood.defaultServing, inComponent: 0, animated: false)
-            servingPicker.selectRow(0, inComponent: 1, animated: false)
-            servingPicker.selectRow(0, inComponent: 2, animated: false)
+            servingInUnits = enteredFood.defaultServing
+            var fullServing = Int(servingInUnits)
+            var partialServing = servingInUnits - Double(fullServing)
             
-            servingInUnits = Double(enteredFood.defaultServing)
-            unit = enteredFood.defaultUnit
-            print("true")
+            
+            switch partialServing {
+            case 0..<0.0625:
+                partialServing = 0
+            case 0.0625..<0.1875 :
+                partialServing = 1
+            case 0.1875..<0.291666:
+                partialServing = 2
+            case 0.291666..<0.354166:
+                partialServing = 3
+            case 0.354166..<0.4375:
+                partialServing = 4
+            case 0.4375..<0.5625:
+                partialServing = 5
+            case 0.5625..<0.645833:
+                partialServing = 6
+            case 0.645833..<0.70833:
+                partialServing = 7
+            case 0.70833..<0.8125:
+                partialServing = 8
+            case 0.8125..<0.9375:
+                partialServing = 9
+            case 0.9375...1:
+                partialServing = 0
+                fullServing = fullServing + 1
+            default:
+                print("not working")
+            }
+            //            print("\(fullServing) \(partialServing) \(unit)")
+            
+            servingPicker.selectRow(fullServing, inComponent: 0, animated: false)
+            servingPicker.selectRow(Int(partialServing), inComponent: 1, animated: false)
+            servingPicker.selectRow(0, inComponent: 2, animated: false)
             
         } else if let enteredFood = food {
             
@@ -202,6 +232,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             newFood.protein = foodToBeAdded.proteinPerBaseUnit * servingInUnits * unitConversion
             newFood.alcohol = foodToBeAdded.alcoholPerBaseUnit * servingInUnits * unitConversion
             newFood.timing = timing!
+            
+            print("\(foodToBeAdded.caloriesPerBaseUnit) \(servingInUnits) \(unitConversion)")
             
             let dateFormat: DateFormatter = {
                 let df = DateFormatter()
