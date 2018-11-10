@@ -62,10 +62,26 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             cell.cookedLabel.text = ""
         }
-        cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.acceptedUnits.first?.conversionToBaseUnit)! * (food.defaultServing))))"
-        cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
-
-        return cell
+        
+        if food.acceptedUnits.isEmpty {
+            let foodUnits = realm.objects(UnitOfMeasure.self).filter("foodId = %@", food.id)
+            for unit in foodUnits {
+                do {
+                    try realm.write {
+                        food.acceptedUnits.append(unit)
+                    }
+                } catch {
+                    print("Error saving new items, \(error)")
+                }
+            }
+            cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.acceptedUnits.first?.conversionToBaseUnit)! * (food.defaultServing))))"
+            cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
+        } else {
+            cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.acceptedUnits.first?.conversionToBaseUnit)! * (food.defaultServing))))"
+            cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
+            
+        }
+            return cell
     }
     
     // MARK: - TableView Delegate Methods

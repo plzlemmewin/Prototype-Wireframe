@@ -163,7 +163,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             caloriesField.text = "\(roundToTens(x: item.calories))"
             servingSizeField.text = "\(item.servingSize) \(item.unit)"
         } else {
-            totalCalories = (foodToAdd?.acceptedUnits.first?.conversionToBaseUnit)! * foodToAdd!.caloriesPerBaseUnit
+            totalCalories = (foodToAdd?.acceptedUnits.first?.conversionToBaseUnit)! * foodToAdd!.caloriesPerBaseUnit * (foodToAdd?.defaultServing)!
             caloriesField.text = "\(roundToTens(x: totalCalories))"
             servingSizeField.text = "\(foodToAdd!.defaultServing) \(foodToAdd!.defaultUnit)"
         }
