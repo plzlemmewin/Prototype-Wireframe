@@ -1115,21 +1115,17 @@
                     <navigationItem key="navigationItem" id="937-gn-loq">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="DMVSq" id="E3Y-lO-6rh">
                             <connections>
-                                <action selector="previousDayPressed:" destination="WIe-dI-HIP" id="Pw5-8a-6dc"/>
+                                <action selector="previousDayPressed:" destination="WIe-dI-HIP" id="IjU-R6-uaW"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="DMVSq-right" id="3UX-3F-zCi">
                             <connections>
-                                <action selector="nextDayPressed:" destination="WIe-dI-HIP" id="gKF-Nf-F6X"/>
+                                <action selector="nextDayPressed:" destination="WIe-dI-HIP" id="Jpq-MI-EFz"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="caloriesIn" destination="yxY-74-E4f" id="xxu-W9-0GQ"/>
-                        <outlet property="caloriesOut" destination="OZy-hw-MR2" id="geo-Xf-tbe"/>
-                        <outlet property="logTableView" destination="POR-uK-Y8u" id="ixY-82-Y4B"/>
-                        <outlet property="netCalories" destination="Oba-Bd-aKs" id="OXD-jF-fAO"/>
-                        <outlet property="targetCalories" destination="8ni-zF-o1F" id="guN-Zq-Acz"/>
+                        <outlet property="foodTableView" destination="POR-uK-Y8u" id="rv0-Gs-8DA"/>
                         <segue destination="kyd-zX-cvf" kind="presentation" identifier="addFood" id="9aq-xW-ORG"/>
                     </connections>
                 </viewController>

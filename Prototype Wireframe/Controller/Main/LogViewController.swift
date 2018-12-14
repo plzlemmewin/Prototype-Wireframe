@@ -8,11 +8,23 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
-class LogViewController: UITableViewController {
+class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let realm = try! Realm()
     var userFoods: List<Food>!
+    var dateOffset: Int = 0
+    
+    let dateFormat: DateFormatter = {
+        let df = DateFormatter()
+        df.dateStyle = .medium
+        df.timeStyle = .none
+        return df
+    }()
+
+    
+    @IBOutlet var foodTableView: UITableView!
     
     //MARK: Class Properties
     let sectionHeaderHeight: CGFloat = 35
@@ -35,31 +47,35 @@ class LogViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        foodTableView.delegate = self
+        foodTableView.dataSource = self
+        
         loadUserData()
-        //  print("\(userFoods)")
+//        print("\(userFoods)")
         
         //        tableView.rowHeight = UITableViewAutomaticDimension
         //        tableView.estimatedRowHeight = 65
-        tableView.rowHeight = 55
+        foodTableView.rowHeight = 85
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationItem.title = "Today"
-        
         sortData()
-        tableView.reloadData()
+        updateLabels()
+        foodTableView.reloadData()
+        
     }
     
     
     // MARK: TableViewController Methods
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return Meals.snacks.rawValue + 1
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //       return foodDatabase.foodList.count
         if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
             return mealData.count
@@ -68,11 +84,11 @@ class LogViewController: UITableViewController {
         return 1
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return sectionHeaderHeight
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: sectionHeaderHeight))
         view.backgroundColor = UIColor(red: 118/255, green: 214/255, blue: 255/255, alpha: 1)
@@ -98,13 +114,13 @@ class LogViewController: UITableViewController {
         if let section = Meals(rawValue: section) {
             switch section {
             case .breakfast:
-                nameLabel.text = "Breakfast:  \(totalCalories)"
+                nameLabel.text = "Breakfast:  \(roundToTens(x: totalCalories))"
             case .lunch:
-                nameLabel.text = "Lunch: \(totalCalories)"
+                nameLabel.text = "Lunch: \(roundToTens(x: totalCalories))"
             case .dinner:
-                nameLabel.text = "Dinner: \(totalCalories)"
+                nameLabel.text = "Dinner: \(roundToTens(x: totalCalories))"
             case .snacks:
-                nameLabel.text = "Snacks: \(totalCalories)"
+                nameLabel.text = "Snacks: \(roundToTens(x: totalCalories))"
             }
         }
         
@@ -120,17 +136,27 @@ class LogViewController: UITableViewController {
         return view
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! UserFoodCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! UserFoodCell
+//
+//        if let section = Meals(rawValue: indexPath.section), let food = data[section]?[indexPath.row] {
+//            cell.idLabel.text = food.name
+//            cell.calorieLabel.text = "\(food.calories)"
+//            cell.detailLabel.text = "\(food.servingSize) \(food.unit)"
+//        } else {
+//            cell.idLabel.text = "Add a Food"
+//        }
+        
+        
+        let cell = foodTableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! SwipeTableViewCell
         
         if let section = Meals(rawValue: indexPath.section), let food = data[section]?[indexPath.row] {
-            cell.idLabel.text = food.name
-            cell.calorieLabel.text = "\(food.calories)"
-            cell.detailLabel.text = "\(food.servingSize) \(food.unit)"
-        } else {
-            cell.idLabel.text = "Add a Food"
+        
+            cell.textLabel?.text = "\(food.name)"
+            cell.detailTextLabel?.text = "\(roundToTens(x: food.calories))"
         }
         
+        cell.delegate = self
         return cell
     }
     
@@ -138,16 +164,17 @@ class LogViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "showFood"?:
-            if let row = tableView.indexPathForSelectedRow?.row {
-                let food = userFoods[row]
+            if let section = Meals(rawValue: (foodTableView.indexPathForSelectedRow?.section)!), let foodToBeEditted = data[section]?[(foodTableView.indexPathForSelectedRow?.row)!] {
                 let detailVC = segue.destination as! DetailViewController
-                detailVC.food = food
+                detailVC.food = foodToBeEditted
                 detailVC.navigationItem.title = "Edit Food"
             }
         case "addFood"?:
+            let currentDate = Date()
             let destinationNavigationC = segue.destination as! UINavigationController
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController
             targetController.selectedMeal = (sender as! UIButton).tag
+            targetController.logDate = Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!
         //            print("\(targetController.selectedMeal)")
         default:
             preconditionFailure("Unexpected segue identifier")
@@ -165,9 +192,104 @@ class LogViewController: UITableViewController {
     
     func loadUserData() {
         
+        let currentDate = Date()
         
-        userFoods = realm.objects(UserData.self).first?.dailyData.first?.data
-        tableView.reloadData()
+        let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!))
+        
+        if let existingData =
+            realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data {
+            
+//            print("\(existingData)")
+            userFoods = existingData
+            
+        } else {
+            let newDate = DailyData()
+            newDate.date = dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+            newDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
+            do {
+                try realm.write {
+                    realm.objects(UserData.self).first?.dailyData.append(newDate)
+                }
+            } catch {
+                print("Error creating new date, \(error)")
+            }
+            userFoods = realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data
+        }
+        
+        updateLabels()
+        foodTableView.reloadData()
+        
+    }
+    
+    private func roundToTens(x: Double) -> Int {
+        return 10 * Int(round(x / 10.0))
+    }
+    
+    
+    @IBAction func nextDayPressed(_ sender: UIBarButtonItem) {
+        dateOffset = dateOffset + 1
+        loadUserData()
+        foodTableView.reloadData()
+    }
+    
+    @IBAction func previousDayPressed(_ sender: UIBarButtonItem) {
+        dateOffset = dateOffset - 1
+        loadUserData()
+        foodTableView.reloadData()
+    }
+    
+    func updateLabels() {
+        setNavTitle()
+    }
+    
+    func setNavTitle() {
+        if dateOffset == 0 {
+            navigationItem.title = "Today"
+        } else {
+            let currentDate = Date()
+            navigationItem.title = dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+            print("\(navigationItem.title!)")
+        }
+    }
+    
+}
+
+//MARK: - Swipe Cell Delegate Methods
+
+extension LogViewController: SwipeTableViewCellDelegate {
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            // handle action by updating model with deletion
+            
+            if let section = Meals(rawValue: indexPath.section), let foodForDeletion = self.data[section]?[indexPath.row] {
+
+                print("deleted \(foodForDeletion) at \(indexPath)")
+                do {
+                    try self.realm.write {
+                        self.realm.delete(foodForDeletion)
+                    }
+                } catch {
+                    print("Error deleting: \(error)")
+                }
+                
+                self.loadUserData()
+                self.sortData()
+                print("completed")
+            }
+        }
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "delete-icon")
+        
+        return [deleteAction]
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        return options
     }
     
 }
