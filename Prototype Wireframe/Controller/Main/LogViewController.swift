@@ -216,6 +216,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             userFoods = realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data
         }
         
+        sortData()
         updateLabels()
         foodTableView.reloadData()
         
