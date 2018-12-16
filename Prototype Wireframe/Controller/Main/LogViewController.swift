@@ -62,8 +62,8 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        sortData()
-        updateLabels()
+        loadUserData()
+//        updateLabels()
         foodTableView.reloadData()
         
     }
@@ -218,7 +218,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
         sortData()
         updateLabels()
-        foodTableView.reloadData()
         
     }
     
@@ -277,7 +276,6 @@ extension LogViewController: SwipeTableViewCellDelegate {
                 }
                 
                 self.loadUserData()
-                self.sortData()
                 print("completed")
             }
         }
