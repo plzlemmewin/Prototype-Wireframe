@@ -177,12 +177,12 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f49-dL-Kfl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1867.2" y="-139.43028485757122"/>
+            <point key="canvasLocation" x="2064" y="-121"/>
         </scene>
-        <!--View Controller-->
+        <!--Line Chart View Controller-->
         <scene sceneID="Rbw-ju-wBy">
             <objects>
-                <viewController storyboardIdentifier="sb1" id="uu9-tY-fhm" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="sb1" id="uu9-tY-fhm" customClass="LineChartViewController" customModule="Prototype_Wireframe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="p5O-s3-3wC"/>
                         <viewControllerLayoutGuide type="bottom" id="aUn-Sb-T1K"/>
@@ -191,16 +191,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="330" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Line Chart" translatesAutoresizingMaskIntoConstraints="NO" id="GMM-Pp-hkX">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fgd-TX-hH4" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="0.0" width="330" height="300"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="aUn-Sb-T1K" firstAttribute="top" secondItem="Fgd-TX-hH4" secondAttribute="bottom" id="Dbc-UW-I5u"/>
+                            <constraint firstAttribute="trailing" secondItem="Fgd-TX-hH4" secondAttribute="trailing" id="Ts9-A4-CLx"/>
+                            <constraint firstItem="Fgd-TX-hH4" firstAttribute="top" secondItem="p5O-s3-3wC" secondAttribute="bottom" id="kI5-Zg-cU8"/>
+                            <constraint firstItem="Fgd-TX-hH4" firstAttribute="leading" secondItem="Ux4-Lp-5El" secondAttribute="leading" id="uJt-Me-AQW"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="chartView" destination="Fgd-TX-hH4" id="aMj-ZP-LN1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lcE-7I-OOY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2486.4000000000001" y="-139.43028485757122"/>
+            <point key="canvasLocation" x="2641.5999999999999" y="-121.4392803598201"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="vUq-r3-ymc">
@@ -226,10 +235,10 @@
             </objects>
             <point key="canvasLocation" x="3209.5999999999999" y="-121.4392803598201"/>
         </scene>
-        <!--View Controller-->
+        <!--Horizontal Bar Chart View Controller-->
         <scene sceneID="ylx-Tk-0xp">
             <objects>
-                <viewController storyboardIdentifier="sb3" id="Sj8-K9-ycG" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="sb3" id="Sj8-K9-ycG" customClass="HorizontalBarChartViewController" customModule="Prototype_Wireframe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="19h-hU-5Cf"/>
                         <viewControllerLayoutGuide type="bottom" id="wSO-dv-kGh"/>
@@ -238,13 +247,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="330" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Bar Chart" translatesAutoresizingMaskIntoConstraints="NO" id="0Wc-Bx-qRa">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XND-4N-HUB" customClass="HorizontalBarChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="0.0" width="330" height="300"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="XND-4N-HUB" firstAttribute="top" secondItem="19h-hU-5Cf" secondAttribute="bottom" id="AZ5-Yu-kWc"/>
+                            <constraint firstItem="XND-4N-HUB" firstAttribute="leading" secondItem="3Ni-YE-Ur9" secondAttribute="leading" id="LZg-QE-igk"/>
+                            <constraint firstAttribute="trailing" secondItem="XND-4N-HUB" secondAttribute="trailing" id="iOh-Xg-Xcw"/>
+                            <constraint firstItem="wSO-dv-kGh" firstAttribute="top" secondItem="XND-4N-HUB" secondAttribute="bottom" id="jKR-2P-CHx"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="horizontalBarChartView" destination="XND-4N-HUB" id="WYB-3U-7IJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FM9-E2-ISy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1263,10 +1281,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Bar Chart" width="346" height="262"/>
         <image name="DMVSq" width="13" height="21"/>
         <image name="DMVSq-right" width="13" height="21"/>
-        <image name="Line Chart" width="474" height="363"/>
         <image name="Pie Chart" width="308" height="307"/>
         <image name="adviceIcon" width="36" height="36"/>
         <image name="goalIcon" width="36" height="36"/>
