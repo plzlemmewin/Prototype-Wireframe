@@ -211,10 +211,10 @@
             </objects>
             <point key="canvasLocation" x="2641.5999999999999" y="-121.4392803598201"/>
         </scene>
-        <!--View Controller-->
+        <!--Pie Chart View Controller-->
         <scene sceneID="vUq-r3-ymc">
             <objects>
-                <viewController storyboardIdentifier="sb2" id="fB0-UT-ucH" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="sb2" id="fB0-UT-ucH" customClass="PieChartViewController" customModule="Prototype_Wireframe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cmc-KT-lr1"/>
                         <viewControllerLayoutGuide type="bottom" id="Jkz-nE-sS7"/>
@@ -223,13 +223,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="330" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Pie Chart" translatesAutoresizingMaskIntoConstraints="NO" id="hPP-1S-DsK">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q2k-iQ-11c" customClass="PieChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="0.0" width="330" height="300"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Q2k-iQ-11c" firstAttribute="leading" secondItem="WYm-TK-Pgq" secondAttribute="leading" id="5E9-SR-drA"/>
+                            <constraint firstItem="Q2k-iQ-11c" firstAttribute="top" secondItem="cmc-KT-lr1" secondAttribute="bottom" id="Psa-4O-g5X"/>
+                            <constraint firstAttribute="trailing" secondItem="Q2k-iQ-11c" secondAttribute="trailing" id="bYI-G4-Sqn"/>
+                            <constraint firstItem="Jkz-nE-sS7" firstAttribute="top" secondItem="Q2k-iQ-11c" secondAttribute="bottom" id="cQw-wf-Sqf"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="chartView" destination="Q2k-iQ-11c" id="S4K-Ct-y8s"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Nn-ji-pWB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1283,7 +1292,6 @@
     <resources>
         <image name="DMVSq" width="13" height="21"/>
         <image name="DMVSq-right" width="13" height="21"/>
-        <image name="Pie Chart" width="308" height="307"/>
         <image name="adviceIcon" width="36" height="36"/>
         <image name="goalIcon" width="36" height="36"/>
         <image name="logIcon" width="36" height="36"/>

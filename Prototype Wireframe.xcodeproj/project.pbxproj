@@ -32,6 +32,7 @@
 		04BC8C9621B6CF4900833CEB /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC8C9521B6CF4900833CEB /* DBFoodCell.swift */; };
 		04BC8C9821B6D08E00833CEB /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC8C9721B6D08E00833CEB /* LogViewController.swift */; };
 		04BF8912214EB77C0095A21E /* DailyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF8911214EB77C0095A21E /* DailyData.swift */; };
+		04D14F2421D5656E0047B57D /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D14F2321D5656E0047B57D /* PieChartViewController.swift */; };
 		04E2FC1721C728C300DE3E28 /* HorizontalBarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2FC1621C728C300DE3E28 /* HorizontalBarChartViewController.swift */; };
 		5E5899CDE2922C2E7804D75F /* Pods_Prototype_WireframeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF7BB278175FA58CC231DDE /* Pods_Prototype_WireframeUITests.framework */; };
 		99FA5798A947C67AF6FBEF2B /* Pods_Prototype_WireframeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */; };
@@ -88,6 +89,7 @@
 		04BC8C9521B6CF4900833CEB /* DBFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFoodCell.swift; sourceTree = "<group>"; };
 		04BC8C9721B6D08E00833CEB /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		04BF8911214EB77C0095A21E /* DailyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyData.swift; sourceTree = "<group>"; };
+		04D14F2321D5656E0047B57D /* PieChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
 		04E2FC1621C728C300DE3E28 /* HorizontalBarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalBarChartViewController.swift; sourceTree = "<group>"; };
 		13D1421FC4B8EC3BE7941F61 /* Pods-Prototype WireframeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeUITests/Pods-Prototype WireframeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Prototype_WireframeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,6 +261,7 @@
 			children = (
 				04252E6721C763A10080476C /* BaseChartsViewController.swift */,
 				04E2FC1621C728C300DE3E28 /* HorizontalBarChartViewController.swift */,
+				04D14F2321D5656E0047B57D /* PieChartViewController.swift */,
 				04266F7B21C8A69A00D661BE /* LineChartViewController.swift */,
 			);
 			path = ChartViewControllers;
@@ -532,6 +535,7 @@
 				04266F7C21C8A69A00D661BE /* LineChartViewController.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
 				04E2FC1721C728C300DE3E28 /* HorizontalBarChartViewController.swift in Sources */,
+				04D14F2421D5656E0047B57D /* PieChartViewController.swift in Sources */,
 				04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */,
 				04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */,
 				04BC8C9621B6CF4900833CEB /* DBFoodCell.swift in Sources */,

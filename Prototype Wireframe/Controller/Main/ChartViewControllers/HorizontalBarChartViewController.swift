@@ -8,9 +8,26 @@
 
 import Foundation
 import Charts
+import RealmSwift
 
 class HorizontalBarChartViewController: BaseChartsViewController {
+    
+    let realm = try! Realm()
     @IBOutlet weak var horizontalBarChartView: HorizontalBarChartView!
+    var data = [String: Int]()
+    
+    let dateFormatterDB: DateFormatter = {
+        let df = DateFormatter()
+        df.dateStyle = .medium
+        df.timeStyle = .none
+        return df
+    }()
+    
+    let dateFormatterPredicate: DateFormatter = {
+       let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df
+    }()
     
     
     override func viewDidLoad() {
@@ -63,7 +80,7 @@ class HorizontalBarChartViewController: BaseChartsViewController {
         horizontalBarChartView.fitBars = true
         
         updateChartData()
-
+        dataPrepared()
     
     }
     
@@ -95,6 +112,52 @@ class HorizontalBarChartViewController: BaseChartsViewController {
         data.barWidth = barWidth
         
         horizontalBarChartView.data = data
+    }
+    
+    func loadData() {
+        
+        
+
+        var rawData: Results<DailyData>!
+        
+        let currentDate = Date()
+        
+        var dbStartDate: String
+        var dbEndDate: String
+
+        dbEndDate = dateFormatterDB.string(from: currentDate)
+        dbStartDate = dateFormatterDB.string(from: Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!)
+        
+        var predicateStartDate = dateFormatterPredicate.string(from: dateFormatterDB.date(from: dbStartDate)!)
+        var predicateEndDate = dateFormatterPredicate.string(from: dateFormatterDB.date(from: dbEndDate)!)
+        
+        
+//        switch option {
+//        case .goalStart:
+//            startDate =
+//            endDate = dateFormat.string(from: currentDate)
+//        case .week:
+//            startDate = dateFormat.string(from: currentDate)
+//            endDate = dateFormat.string(from: currentDate)
+//        case .month:
+//            startDate =
+//            endDate = dateFormat.string(from: currentDate)
+//        default:
+//            print("not working")
+//        }
+
+        let predicate = NSPredicate(format: "date > %@ && date < %@", predicateStartDate, predicateEndDate)
+
+        rawData = realm.objects(DailyData.self).filter(predicate)
+//        print("\(String(describing: rawData))")
+        print("\(predicate)")
+        print("\(predicate) \(dbStartDate) \(dbEndDate) \(predicateStartDate) \(predicateEndDate)")
+
+
+    }
+
+    func dataPrepared() {
+        loadData()
     }
     
 }
