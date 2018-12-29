@@ -213,12 +213,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
      
         let dbDate = dateFormatterUser.date(from: formattedDate)
         
-        print("\(modifiedDate)")
-        print("\(formattedDate)")
-        print("\(dbDate)")
-        
-//        let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!))
-        
         let predicate = NSPredicate(format: "date = %@", dbDate as! NSDate)
         
         if let existingData =
