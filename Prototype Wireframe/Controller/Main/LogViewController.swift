@@ -16,10 +16,23 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var userFoods: List<Food>!
     var dateOffset: Int = 0
     
-    let dateFormat: DateFormatter = {
+    let dateFormatterInitial: DateFormatter = {
         let df = DateFormatter()
         df.dateStyle = .medium
         df.timeStyle = .none
+        return df
+    }()
+    
+    let dateFormatterUser: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "MMM dd, yyyy"
+        return df
+    }()
+    
+    let dateFormatterSave: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "MM/dd/yyyy, HH:mm:ssZ"
+//        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return df
     }()
 
@@ -174,7 +187,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let destinationNavigationC = segue.destination as! UINavigationController
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController
             targetController.selectedMeal = (sender as! UIButton).tag
-            targetController.logDate = Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!
+            targetController.logDate = dateFormatterUser.date(from: dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!))
         //            print("\(targetController.selectedMeal)")
         default:
             preconditionFailure("Unexpected segue identifier")
@@ -193,8 +206,20 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     func loadUserData() {
         
         let currentDate = Date()
+        let modifiedDate = Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!
         
-        let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!))
+        let formattedDate = dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+        
+     
+        let dbDate = dateFormatterUser.date(from: formattedDate)
+        
+        print("\(modifiedDate)")
+        print("\(formattedDate)")
+        print("\(dbDate)")
+        
+//        let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!))
+        
+        let predicate = NSPredicate(format: "date = %@", dbDate as! NSDate)
         
         if let existingData =
             realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data {
@@ -204,7 +229,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             
         } else {
             let newDate = DailyData()
-            newDate.date = dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+            newDate.date = dbDate!
             newDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
             do {
                 try realm.write {
@@ -247,7 +272,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             navigationItem.title = "Today"
         } else {
             let currentDate = Date()
-            navigationItem.title = dateFormat.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+            navigationItem.title = dateFormatterUser.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
             print("\(navigationItem.title!)")
         }
     }

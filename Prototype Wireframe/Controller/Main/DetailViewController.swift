@@ -234,15 +234,9 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             newFood.timing = timing!
             
             print("\(foodToBeAdded.caloriesPerBaseUnit) \(servingInUnits) \(unitConversion)")
-            
-            let dateFormat: DateFormatter = {
-                let df = DateFormatter()
-                df.dateStyle = .medium
-                df.timeStyle = .none
-                return df
-            }()
+            print("\(logDate!)")
            
-            let predicate = NSPredicate(format: "date = %@", dateFormat.string(from: logDate!))
+            let predicate = NSPredicate(format: "date = %@", logDate as! NSDate)
             
             do {
                 try realm.write {
