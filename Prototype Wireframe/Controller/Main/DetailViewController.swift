@@ -145,8 +145,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             
             mappedDBFood = realm.objects(DBFood.self).filter("id = \(enteredFood.id)").first
             var supportedUnits = [String]()
-            for unit in (mappedDBFood?.acceptedUnits)! {
-                supportedUnits.append(unit.unit)
+            for unitOfMeasure in (mappedDBFood?.acceptedUnits)! {
+                supportedUnits.append(unitOfMeasure.unit)
             }
             
             servingPicker.selectRow(supportedUnits.index(of: "\(unit)")!, inComponent: 2, animated: false)

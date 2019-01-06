@@ -29,12 +29,11 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return df
     }()
     
-    let dateFormatterSave: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "MM/dd/yyyy, HH:mm:ssZ"
-//        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return df
-    }()
+//    let dateFormatterSave: DateFormatter = {
+//        let df = DateFormatter()
+//        df.dateFormat = "MM/dd/yyyy, HH:mm:ssZ"
+//        return df
+//    }()
 
     
     @IBOutlet var foodTableView: UITableView!

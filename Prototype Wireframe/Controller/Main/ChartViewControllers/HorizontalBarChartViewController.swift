@@ -13,19 +13,21 @@ import RealmSwift
 class HorizontalBarChartViewController: BaseChartsViewController {
     
     let realm = try! Realm()
-    @IBOutlet weak var horizontalBarChartView: HorizontalBarChartView!
-    var data = [String: Int]()
+    var rawData: Results<DailyData>!
+    var data = [String: Double]()
     
-    let dateFormatterDB: DateFormatter = {
+    @IBOutlet weak var horizontalBarChartView: HorizontalBarChartView!
+    
+    let dateFormatterInitial: DateFormatter = {
         let df = DateFormatter()
         df.dateStyle = .medium
         df.timeStyle = .none
         return df
     }()
     
-    let dateFormatterPredicate: DateFormatter = {
-       let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
+    let dateFormatterUser: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "MMM dd, yyyy"
         return df
     }()
     
@@ -78,9 +80,9 @@ class HorizontalBarChartViewController: BaseChartsViewController {
 //        horizontalBarChartView.legend = 1
         
         horizontalBarChartView.fitBars = true
-        
-        updateChartData()
+       
         dataPrepared()
+        updateChartData()
     
     }
     
@@ -100,11 +102,10 @@ class HorizontalBarChartViewController: BaseChartsViewController {
         let yVals = (0..<count).map { (i) -> BarChartDataEntry in
             let mult = range + 1
             let val = Double(arc4random_uniform(mult))
-//            return BarChartDataEntry(x: Double(i)*spaceForBar, y: val, icon: #imageLiteral(resourceName: "icon"))
             return BarChartDataEntry(x: Double(i)*spaceForBar, y: val)
         }
         
-        let set1 = BarChartDataSet(values: yVals, label: "DataSet")
+        let set1 = BarChartDataSet(values: yVals, label: "Total Calories Consumed")
         set1.drawIconsEnabled = false
         
         let data = BarChartData(dataSet: set1)
@@ -115,23 +116,18 @@ class HorizontalBarChartViewController: BaseChartsViewController {
     }
     
     func loadData() {
-        
-        
-
-        var rawData: Results<DailyData>!
+    
+        var dbStartDate: Date!
+        var dbEndDate: Date!
         
         let currentDate = Date()
+        let formattedCurrentDate = dateFormatterInitial.string(from: currentDate)
+        let formattedStartDate = dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!)
         
-        var dbStartDate: String
-        var dbEndDate: String
 
-        dbEndDate = dateFormatterDB.string(from: currentDate)
-        dbStartDate = dateFormatterDB.string(from: Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!)
-        
-        var predicateStartDate = dateFormatterPredicate.string(from: dateFormatterDB.date(from: dbStartDate)!)
-        var predicateEndDate = dateFormatterPredicate.string(from: dateFormatterDB.date(from: dbEndDate)!)
-        
-        
+        dbEndDate = dateFormatterUser.date(from: formattedCurrentDate)
+        dbStartDate = dateFormatterUser.date(from: formattedStartDate)
+    
 //        switch option {
 //        case .goalStart:
 //            startDate =
@@ -146,18 +142,32 @@ class HorizontalBarChartViewController: BaseChartsViewController {
 //            print("not working")
 //        }
 
-        let predicate = NSPredicate(format: "date > %@ && date < %@", predicateStartDate, predicateEndDate)
+        let predicate = NSPredicate(format: "date >= %@ && date <= %@", dbStartDate as! NSDate, dbEndDate as! NSDate)
 
         rawData = realm.objects(DailyData.self).filter(predicate)
-//        print("\(String(describing: rawData))")
-        print("\(predicate)")
-        print("\(predicate) \(dbStartDate) \(dbEndDate) \(predicateStartDate) \(predicateEndDate)")
 
+//        print("\(predicate) \(dbStartDate) \(dbEndDate)")
+        print("\(rawData)")
 
     }
 
     func dataPrepared() {
+        
+//        var totalCaloriesFromFood = [Double]()
         loadData()
+        for date in rawData {
+
+            for food in date.data {
+//                print("\(food) \(date.date)")
+                if let keyExists = data[food.name] {
+                   data[food.name] = keyExists + food.calories
+                } else {
+                    data[food.name] = food.calories
+                }
+            }
+        }
+
+        print("\(data)")
     }
     
 }

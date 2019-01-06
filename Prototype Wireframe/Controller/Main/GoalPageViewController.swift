@@ -124,7 +124,7 @@ class GoalPageViewController: UIPageViewController, UIPageViewControllerDelegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
         self.pageControl.currentPage = orderedViewControllers.index(of: pageContentViewController)!
-        print("\(pageControl.currentPage)")
+//        print("\(pageControl.currentPage)")
     }
 
     /*
