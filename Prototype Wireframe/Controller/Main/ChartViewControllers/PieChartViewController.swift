@@ -11,6 +11,32 @@ import Charts
 import RealmSwift
 
 class PieChartViewController: BaseChartsViewController {
+    
+    
+    let realm = try! Realm()
+    
+    var rawData: Results<DailyData>!
+    
+    var fatsPercent: Double = 0.0
+    var carbsPercent: Double = 0.0
+    var proteinPercent: Double = 0.0
+    
+    var macros = ["Fats": 0.0, "Carbs": 0.0, "Protein": 0.0]
+    
+    
+    let dateFormatterInitial: DateFormatter = {
+        let df = DateFormatter()
+        df.dateStyle = .medium
+        df.timeStyle = .none
+        return df
+    }()
+    
+    let dateFormatterUser: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "MMM dd, yyyy"
+        return df
+    }()
+    
 
     @IBOutlet weak var chartView: PieChartView!
     
@@ -38,7 +64,7 @@ class PieChartViewController: BaseChartsViewController {
         chartView.isUserInteractionEnabled = false
         
         let l = chartView.legend
-        l.horizontalAlignment = .right
+        l.horizontalAlignment = .left
         l.verticalAlignment = .top
         l.orientation = .vertical
         l.xEntrySpace = 7
@@ -48,10 +74,16 @@ class PieChartViewController: BaseChartsViewController {
         
         // entry label styling
         chartView.entryLabelColor = .white
-        chartView.entryLabelFont = .systemFont(ofSize: 12, weight: .light)
+        chartView.entryLabelFont = .systemFont(ofSize: 18, weight: .light)
         
+        chartView.centerText = "Macro\nBreadown"
         
-        updateChartData()
+        setUpChart()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setUpChart()
     }
     
     override func updateChartData() {
@@ -61,20 +93,26 @@ class PieChartViewController: BaseChartsViewController {
         }
         
         
-        self.setDataCount(12, range: UInt32(31))
+        self.setDataCount(macros, range: UInt32(31))
         
     }
     
-    func setDataCount(_ count: Int, range: UInt32) {
-        let entries = (0..<count).map { (i) -> PieChartDataEntry in
-            // IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
-            return PieChartDataEntry(value: Double(arc4random_uniform(range) + range / 5),
-                                     label: parties[i % parties.count])
+    func setDataCount(_ macros: [String: Double], range: UInt32) {
+//        let entries = (0..<count).map { (i) -> PieChartDataEntry in
+//            // IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
+//            return PieChartDataEntry(value: Double(arc4random_uniform(range) + range / 5),
+//                                     label: parties[i % parties.count])
+//
+//
+//        }
+        var entries = [PieChartDataEntry]()
         
-            
+        for (key, value) in macros {
+            let entry = PieChartDataEntry(value: value, label: key)
+            entries.append(entry)
         }
         
-        let set = PieChartDataSet(values: entries, label: "Election Results")
+        let set = PieChartDataSet(values: entries, label: "Macros")
         set.drawIconsEnabled = false
         set.sliceSpace = 2
         
@@ -95,13 +133,72 @@ class PieChartViewController: BaseChartsViewController {
         pFormatter.percentSymbol = " %"
         data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
         
-        data.setValueFont(.systemFont(ofSize: 11, weight: .light))
+        data.setValueFont(.systemFont(ofSize: 13, weight: .regular))
         data.setValueTextColor(.white)
         
         chartView.data = data
         chartView.highlightValues(nil)
     }
     
+    func loadData() {
+        
+        var dbStartDate: Date!
+        var dbEndDate: Date!
+        
+        let currentDate = Date()
+        let formattedCurrentDate = dateFormatterInitial.string(from: currentDate)
+        let formattedStartDate = dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!)
+        
+        
+        dbEndDate = dateFormatterUser.date(from: formattedCurrentDate)
+        dbStartDate = dateFormatterUser.date(from: formattedStartDate)
+        
+        let predicate = NSPredicate(format: "date >= %@ && date <= %@", dbStartDate as! NSDate, dbEndDate as! NSDate)
+        
+        rawData = realm.objects(DailyData.self).filter(predicate)
+        
+        print("\(rawData)")
+        
+    }
     
+    func dataPrepared() {
+        
+        var fats: Double = 0.0
+        var carbs: Double = 0.0
+        var protein: Double = 0.0
+        var totalMacros: Double = 0.0
+        
+        loadData()
+        
+        for date in rawData {
+            for food in date.data {
+                fats += food.fats
+                carbs += food.carbs
+                protein += food.protein
+            }
+        }
+        
+        totalMacros = fats + carbs + protein
+        
+        fatsPercent = fats / totalMacros
+        carbsPercent = carbs / totalMacros
+        proteinPercent = protein / totalMacros
+        
+        macros["fats"] = fatsPercent
+        macros["carbs"] = carbsPercent
+        macros["protein"] = proteinPercent
+        
+//        print("\(fats) \(carbs) \(protein) \(totalMacros)")
+//        print("\(fatsPercent) \(carbsPercent) \(proteinPercent)")
+        print("\(macros)")
+        
+        
+        
+    }
+    
+    func setUpChart() {
+        dataPrepared()
+        updateChartData()
+    }
     
 }

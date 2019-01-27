@@ -98,22 +98,46 @@ class HorizontalBarChartViewController: BaseChartsViewController {
     func setDataCount(_ count: Int, range: UInt32) {
         let barWidth = 9.0
         let spaceForBar = 10.0
-        
+
         let yVals = (0..<count).map { (i) -> BarChartDataEntry in
             let mult = range + 1
             let val = Double(arc4random_uniform(mult))
             return BarChartDataEntry(x: Double(i)*spaceForBar, y: val)
         }
-        
+
         let set1 = BarChartDataSet(values: yVals, label: "Total Calories Consumed")
         set1.drawIconsEnabled = false
-        
+
         let data = BarChartData(dataSet: set1)
         data.setValueFont(UIFont(name:"HelveticaNeue-Light", size:10)!)
         data.barWidth = barWidth
-        
+
         horizontalBarChartView.data = data
     }
+    
+//    func setDataCount() {
+//        let barWidth = 9.0
+//        let spaceForBar = 10.0
+//
+//        var barChartDataSet = [BarChartDataEntry]()
+//
+//        for (food, calories) in data {
+//            BarChartDataEntry(x: 1, y: calories)
+//            barChartDataSet[x] =
+//        }
+//
+//        let set1 = BarChartDataSet(values: barChartDataSet, label: "Total Calories Consumed")
+//        set1.drawIconsEnabled = false
+//
+//        let dataSet = BarChartData(dataSet: set1)
+//        dataSet.setValueFont(UIFont(name:"HelveticaNeue-Light", size:10)!)
+//        dataSet.barWidth = barWidth
+//
+//        horizontalBarChartView.data = dataSet
+//
+//
+//    }
+
     
     func loadData() {
     
@@ -147,7 +171,7 @@ class HorizontalBarChartViewController: BaseChartsViewController {
         rawData = realm.objects(DailyData.self).filter(predicate)
 
 //        print("\(predicate) \(dbStartDate) \(dbEndDate)")
-        print("\(rawData)")
+//        print("\(rawData)")
 
     }
 
