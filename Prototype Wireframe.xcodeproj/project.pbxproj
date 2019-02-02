@@ -231,6 +231,7 @@
 		04CBAFB920B88416001491E9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				04F1D08F22060ADC00A3FF07 /* Formatter Model */,
 				0499103120CAE1A00096858A /* Database Model  */,
 			);
 			path = Model;
@@ -265,6 +266,13 @@
 				04266F7B21C8A69A00D661BE /* LineChartViewController.swift */,
 			);
 			path = ChartViewControllers;
+			sourceTree = "<group>";
+		};
+		04F1D08F22060ADC00A3FF07 /* Formatter Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Formatter Model";
 			sourceTree = "<group>";
 		};
 		903540BDB2D7D30B58B5F055 /* Frameworks */ = {

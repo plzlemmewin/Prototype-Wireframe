@@ -134,7 +134,7 @@ class PieChartViewController: BaseChartsViewController {
         data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
         
         data.setValueFont(.systemFont(ofSize: 13, weight: .regular))
-        data.setValueTextColor(.white)
+        data.setValueTextColor(.black)
         
         chartView.data = data
         chartView.highlightValues(nil)
@@ -184,9 +184,9 @@ class PieChartViewController: BaseChartsViewController {
         carbsPercent = carbs / totalMacros
         proteinPercent = protein / totalMacros
         
-        macros["fats"] = fatsPercent
-        macros["carbs"] = carbsPercent
-        macros["protein"] = proteinPercent
+        macros["Fats"] = fatsPercent
+        macros["Carbs"] = carbsPercent
+        macros["Protein"] = proteinPercent
         
 //        print("\(fats) \(carbs) \(protein) \(totalMacros)")
 //        print("\(fatsPercent) \(carbsPercent) \(proteinPercent)")
