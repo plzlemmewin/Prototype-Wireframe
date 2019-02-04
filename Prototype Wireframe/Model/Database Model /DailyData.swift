@@ -12,6 +12,7 @@ import RealmSwift
 class DailyData: Object {
     @objc dynamic var date = Date()
     @objc dynamic var dailyCaloricTarget: Int = 0
+    @objc dynamic var weight: Double = 0
     let data = List<Food>()
 }
 

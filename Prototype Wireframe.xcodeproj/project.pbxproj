@@ -34,6 +34,7 @@
 		04BF8912214EB77C0095A21E /* DailyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF8911214EB77C0095A21E /* DailyData.swift */; };
 		04D14F2421D5656E0047B57D /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D14F2321D5656E0047B57D /* PieChartViewController.swift */; };
 		04E2FC1721C728C300DE3E28 /* HorizontalBarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2FC1621C728C300DE3E28 /* HorizontalBarChartViewController.swift */; };
+		04F1D09122060B8B00A3FF07 /* LineChartXAxisFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1D09022060B8B00A3FF07 /* LineChartXAxisFormatter.swift */; };
 		5E5899CDE2922C2E7804D75F /* Pods_Prototype_WireframeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCF7BB278175FA58CC231DDE /* Pods_Prototype_WireframeUITests.framework */; };
 		99FA5798A947C67AF6FBEF2B /* Pods_Prototype_WireframeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */; };
 		D26ABB6730E5047E9DE87EC1 /* Pods_Prototype_Wireframe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB2BB8C522B6456DD732DEFA /* Pods_Prototype_Wireframe.framework */; };
@@ -91,6 +92,7 @@
 		04BF8911214EB77C0095A21E /* DailyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyData.swift; sourceTree = "<group>"; };
 		04D14F2321D5656E0047B57D /* PieChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
 		04E2FC1621C728C300DE3E28 /* HorizontalBarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalBarChartViewController.swift; sourceTree = "<group>"; };
+		04F1D09022060B8B00A3FF07 /* LineChartXAxisFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartXAxisFormatter.swift; sourceTree = "<group>"; };
 		13D1421FC4B8EC3BE7941F61 /* Pods-Prototype WireframeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeUITests/Pods-Prototype WireframeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4B80F1FEECCF48F4CDA0CBDA /* Pods_Prototype_WireframeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Prototype_WireframeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FF7D87D7226CC5664567E7B /* Pods-Prototype WireframeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Prototype WireframeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Prototype WireframeTests/Pods-Prototype WireframeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 		04F1D08F22060ADC00A3FF07 /* Formatter Model */ = {
 			isa = PBXGroup;
 			children = (
+				04F1D09022060B8B00A3FF07 /* LineChartXAxisFormatter.swift */,
 			);
 			path = "Formatter Model";
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				04BC8C9221B6CDA800833CEB /* DBFood.swift in Sources */,
 				04BC8C8E21B6CB2E00833CEB /* Food.swift in Sources */,
 				046C05B120BE2F3C00AC1ECA /* UserFoodCell.swift in Sources */,
+				04F1D09122060B8B00A3FF07 /* LineChartXAxisFormatter.swift in Sources */,
 				04266F7C21C8A69A00D661BE /* LineChartViewController.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
 				04E2FC1721C728C300DE3E28 /* HorizontalBarChartViewController.swift in Sources */,

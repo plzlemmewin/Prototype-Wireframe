@@ -7,11 +7,30 @@
 //
 
 import UIKit
+import RealmSwift
 import Charts
 
 class LineChartViewController: BaseChartsViewController {
     
+    let realm = try! Realm()
+    var rawData: Results<DailyData>!
+    var data = [String: String]()
     @IBOutlet weak var chartView: LineChartView!
+    
+    let dateFormatterInitial: DateFormatter = {
+        let df = DateFormatter()
+        df.dateStyle = .medium
+        df.timeStyle = .none
+        return df
+    }()
+    
+    let dateFormatterUser: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "MMM dd, yyyy"
+        return df
+    }()
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +62,8 @@ class LineChartViewController: BaseChartsViewController {
         leftAxis.axisMinimum = 0 
         
         chartView.rightAxis.enabled = false
+        
+        dataPrepared()
         updateChartData()
     }
     
@@ -91,15 +112,35 @@ class LineChartViewController: BaseChartsViewController {
         chartView.data = data
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func loadData() {
+        
+        var dbStartDate: Date!
+        var dbEndDate: Date!
+        
+        let currentDate = Date()
+        let formattedCurrentDate = dateFormatterInitial.string(from: currentDate)
+        let formattedStartDate = dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!)
+        
+        
+        dbEndDate = dateFormatterUser.date(from: formattedCurrentDate)
+        dbStartDate = dateFormatterUser.date(from: formattedStartDate)
+        
+        let predicate = NSPredicate(format: "date >= %@ && date <= %@", dbStartDate as! NSDate, dbEndDate as! NSDate)
+        
+        rawData = realm.objects(DailyData.self).filter(predicate)
+        
+        //        print("\(predicate) \(dbStartDate) \(dbEndDate)")
+        //        print("\(rawData)")
+        
     }
-    */
+    
+    func dataPrepared() {
+        loadData()
+        
+        
+        
+    }
+
 
 }
