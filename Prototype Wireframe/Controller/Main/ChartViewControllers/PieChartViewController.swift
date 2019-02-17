@@ -93,11 +93,11 @@ class PieChartViewController: BaseChartsViewController {
         }
         
         
-        self.setDataCount(macros, range: UInt32(31))
+        self.setDataCount(macros)
         
     }
     
-    func setDataCount(_ macros: [String: Double], range: UInt32) {
+    func setDataCount(_ macros: [String: Double]) {
 //        let entries = (0..<count).map { (i) -> PieChartDataEntry in
 //            // IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
 //            return PieChartDataEntry(value: Double(arc4random_uniform(range) + range / 5),

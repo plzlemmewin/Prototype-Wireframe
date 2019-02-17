@@ -10,11 +10,16 @@ import UIKit
 import RealmSwift
 import Charts
 
+struct WeightAndDate {
+    var date: Date
+    var weight: Double
+}
+
 class LineChartViewController: BaseChartsViewController {
     
     let realm = try! Realm()
     var rawData: Results<DailyData>!
-    var data = [String: String]()
+    var data = [WeightAndDate]()
     @IBOutlet weak var chartView: LineChartView!
     
     let dateFormatterInitial: DateFormatter = {
@@ -131,14 +136,20 @@ class LineChartViewController: BaseChartsViewController {
         rawData = realm.objects(DailyData.self).filter(predicate)
         
         //        print("\(predicate) \(dbStartDate) \(dbEndDate)")
-        //        print("\(rawData)")
+                print("\(rawData)")
         
     }
     
     func dataPrepared() {
+        
         loadData()
         
+        for date in rawData {
+            let newWeightOfDate = WeightAndDate(date: date.date, weight: date.weight)
+            data.append(newWeightOfDate)
+        }
         
+        print(data)
         
     }
 
