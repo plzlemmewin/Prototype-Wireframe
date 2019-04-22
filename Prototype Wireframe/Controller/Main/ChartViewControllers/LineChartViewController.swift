@@ -68,6 +68,11 @@ class LineChartViewController: BaseChartsViewController {
         
         chartView.rightAxis.enabled = false
         
+//        dataPrepared()
+//        updateChartData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         dataPrepared()
         updateChartData()
     }
@@ -78,20 +83,58 @@ class LineChartViewController: BaseChartsViewController {
             return
         }
         
-        self.setDataCount(12, range: 155)
+        self.setDataCount(data)
     }
     
-    func setDataCount(_ count: Int, range: UInt32) {
-        let values = (0..<count).map { (i) -> ChartDataEntry in
-            let val = Double(arc4random_uniform(range) + 3)
-            return ChartDataEntry(x: Double(i), y: val)
-//            return ChartDataEntry(x: Double(i), y: val, icon: #imageLiteral(resourceName: "icon"))
+    func setDataCount(_ dataSet: [WeightAndDate]) {
+//        let values = (0..<count).map { (i) -> ChartDataEntry in
+//            let val = Double(arc4random_uniform(range) + 3)
+//            return ChartDataEntry(x: Double(i), y: val)
+////            return ChartDataEntry(x: Double(i), y: val, icon: #imageLiteral(resourceName: "icon"))
+//        }
+        
+        var referenceTimeInterval: TimeInterval = 0
+        if let minTimeInterval = (dataSet.map { $0.date.timeIntervalSince1970}).min() {
+            referenceTimeInterval = minTimeInterval
         }
         
-        let set1 = LineChartDataSet(values: values, label: "DataSet 1")
+//        Define chart xValues formatter
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        formatter.locale = Locale.current
+        
+        let xValuesNumberFormatter = ChartXAxisFormatter(referenceTimeInterval: referenceTimeInterval, dateFormatter: formatter)
+        
+        
+        var entries = [ChartDataEntry]()
+
+        for dataPoint in dataSet {
+            let timeInterval = dataPoint.date.timeIntervalSince1970
+            let xValue = (timeInterval - referenceTimeInterval) / (3600 * 24)
+            
+            let yValue = dataPoint.weight
+            let entry = ChartDataEntry(x: xValue, y: yValue)
+            entries.append(entry)
+            
+        
+        }
+        
+        print("\(entries)")
+        
+        
+        let xAxis = chartView.xAxis
+        xAxis.labelPosition = .bottom
+//        xAxis.labelCount = entries.count
+        xAxis.drawLabelsEnabled = true
+        xAxis.drawLimitLinesBehindDataEnabled = true
+        xAxis.avoidFirstLastClippingEnabled = true
+        xAxis.valueFormatter = xValuesNumberFormatter
+        
+        let set1 = LineChartDataSet(values: entries, label: "Weight")
         set1.drawIconsEnabled = false
         
-//
+
 //        set1.lineDashLengths = [5, 2.5]
 //        set1.highlightLineDashLengths = [5, 2.5]
         set1.setColor(.black)
@@ -103,6 +146,7 @@ class LineChartViewController: BaseChartsViewController {
         set1.formLineDashLengths = [5, 2.5]
         set1.formLineWidth = 1
         set1.formSize = 15
+        
         
         let gradientColors = [ChartColorTemplates.colorFromString("#00ff0000").cgColor,
                               ChartColorTemplates.colorFromString("#ffff0000").cgColor]
@@ -136,7 +180,7 @@ class LineChartViewController: BaseChartsViewController {
         rawData = realm.objects(DailyData.self).filter(predicate)
         
         //        print("\(predicate) \(dbStartDate) \(dbEndDate)")
-                print("\(rawData)")
+//                print("\(rawData)")
         
     }
     
@@ -149,6 +193,9 @@ class LineChartViewController: BaseChartsViewController {
             data.append(newWeightOfDate)
         }
         
+        data.sort { $0.date < $1.date }
+        
+
         print(data)
         
     }

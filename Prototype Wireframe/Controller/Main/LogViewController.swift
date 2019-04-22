@@ -62,9 +62,10 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
         foodTableView.delegate = self
         foodTableView.dataSource = self
-        
-        loadUserData()
-//        print("\(userFoods)")
+
+        setUpUser()
+//        loadUserData()
+
         
         //        tableView.rowHeight = UITableViewAutomaticDimension
         //        tableView.estimatedRowHeight = 65
@@ -202,6 +203,31 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         performSegue(withIdentifier: "addFood", sender: sender)
     }
     
+    
+    func setUpUser() {
+        
+        if realm.objects(UserData.self).first != nil {
+            loadUserData()
+        } else {
+            let newUser = UserData()
+            newUser.name = "Jaime"
+            newUser.goal = "Strength"
+            newUser.currentTDEE = 2150
+            newUser.currentCaloricTarget = 2350
+        
+            do {
+                try realm.write {
+                    realm.add(newUser)
+                }
+            } catch {
+                print("Error creating new date, \(error)")
+            }
+        }
+        
+        
+        
+    }
+    
     func loadUserData() {
         
         let currentDate = Date()
@@ -224,6 +250,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let newDate = DailyData()
             newDate.date = dbDate!
             newDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
+            newDate.weight = Double(143 + arc4random_uniform(7))
             do {
                 try realm.write {
                     realm.objects(UserData.self).first?.dailyData.append(newDate)

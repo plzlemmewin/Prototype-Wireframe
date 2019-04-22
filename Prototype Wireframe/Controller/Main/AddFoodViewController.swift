@@ -32,7 +32,8 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         foodTableView.rowHeight = 55
         
         print("\(String(describing: selectedMeal))")
-        loadDatabase()
+        setUpDB()
+//        loadDatabase()
     }
     
     // MARK: - TableView Datasource Methods
@@ -127,6 +128,63 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBAction func cancelPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
+    // MARK: - Tempporary Food Database Loading
+    func setUpDB() {
+        
+        if realm.objects(DBFood.self).first != nil {
+            loadDatabase()
+        } else {
+            let initialDB = InitialDBSetUp()
+            for food in initialDB.foodList {
+                let dBFood = DBFood()
+                dBFood.id = food.id
+                dBFood.name = food.name
+                dBFood.brand = food.brand
+                dBFood.cooked = food.cooked
+                dBFood.defaultServing = food.defaultServing
+                dBFood.defaultUnit = food.defaultUnit
+                dBFood.caloriesPerBaseUnit = food.caloriesPerBaseUnit
+                dBFood.fatsPerBaseUnit = food.fatsPerBaseUnit
+                dBFood.carbsPerBaseUnit = food.carbsPerBaseUnit
+                dBFood.proteinPerBaseUnit = food.proteinPerBaseUnit
+                dBFood.alcoholPerBaseUnit = food.alcoholPerBaseUnit
+                dBFood.breakfast = food.breakfast
+                dBFood.lunch = food.lunch
+                dBFood.dinner = food.dinner
+                dBFood.snack = food.snack
+                dBFood.main = food.main
+                dBFood.side = food.side
+                dBFood.cuisine = food.cuisine
+                for unit in food.acceptedUnits {
+                    let dBMeasurement = UnitOfMeasure()
+                    dBMeasurement.foodId = unit.foodId
+                    dBMeasurement.conversionToBaseUnit = unit.conversionToBaseUnit
+                    dBMeasurement.unit = unit.unit
+                    do {
+                        try realm.write {
+                            realm.add(dBMeasurement)
+                        }
+                    } catch {
+                        print("Error creating new date, \(error)")
+                    }
+                }
+                
+                do {
+                    try realm.write {
+                        realm.add(dBFood)
+                    }
+                } catch {
+                    print("Error creating new date, \(error)")
+                }
+            }
+            
+            loadDatabase()
+        }
+        
+    }
+    
+    
     
     func loadDatabase() {
         

@@ -444,13 +444,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JuJ-YQ-nvr">
-                                <rect key="frame" x="24" y="80" width="327" height="29"/>
+                                <rect key="frame" x="24" y="36" width="327" height="29"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="AjK-87-Vgz">
-                                <rect key="frame" x="24" y="129" width="327" height="481"/>
+                                <rect key="frame" x="24" y="85" width="327" height="574"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DuZ-rg-UiA">
                                         <rect key="frame" x="0.0" y="0.0" width="327" height="30"/>
@@ -496,7 +496,7 @@
                                         <rect key="frame" x="0.0" y="80" width="327" height="216"/>
                                     </pickerView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="25" verticalHuggingPriority="249" text="Date Added" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eR1-9L-Ymi">
-                                        <rect key="frame" x="0.0" y="306" width="327" height="175"/>
+                                        <rect key="frame" x="0.0" y="306" width="327" height="268"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1301,8 +1301,8 @@
         <image name="resouresIcon" width="36" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9aq-xW-ORG"/>
+        <segue reference="9x3-XQ-H69"/>
         <segue reference="6ZJ-8N-aUe"/>
-        <segue reference="6FK-Dp-PZm"/>
+        <segue reference="wtU-fn-VpR"/>
     </inferredMetricsTieBreakers>
 </document>
