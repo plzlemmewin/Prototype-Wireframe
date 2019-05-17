@@ -12,10 +12,27 @@ import SwipeCellKit
 
 class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    //MARK: Class PropertiesVariables & Constants
+    @IBOutlet var foodTableView: UITableView!
+    
+    
+    /* Realm Initializers */
     let realm = try! Realm()
+    
+    // Full list of a user's foods for the respective date, sorted via the sort function.
     var userFoods: List<Food>!
+    
+    /* Food Setup */
+    var data = [Meals: [Food]]()
+    enum Meals: Int {
+        case breakfast = 0, lunch, dinner, snacks
+    }
+    
+    /* Date Setup */
+    // Keeps track of how many days ahead or behind of today's date that the user is on
     var dateOffset: Int = 0
     
+    // Used for internal date calculation/saving
     let dateFormatterInitial: DateFormatter = {
         let df = DateFormatter()
         df.dateStyle = .medium
@@ -23,52 +40,28 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return df
     }()
     
+    // Used for the date in the Nav Bar. Format: Jul 25, 2019
     let dateFormatterUser: DateFormatter = {
         let df = DateFormatter()
         df.dateFormat = "MMM dd, yyyy"
         return df
     }()
-    
-//    let dateFormatterSave: DateFormatter = {
-//        let df = DateFormatter()
-//        df.dateFormat = "MM/dd/yyyy, HH:mm:ssZ"
-//        return df
-//    }()
 
-    
-    @IBOutlet var foodTableView: UITableView!
     
     //MARK: Class Properties
     let sectionHeaderHeight: CGFloat = 35
     
-    enum Meals: Int {
-        case breakfast = 0, lunch, dinner, snacks
-    }
     
-    var data = [Meals: [Food]]()
-    
-    func sortData() {
-        data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
-        data[.lunch] = userFoods.filter {$0.timing == "lunch"}
-        data[.dinner] = userFoods.filter{$0.timing == "dinner"}
-        data[.snacks] = userFoods.filter{$0.timing == "snacks"}
-        print("\(data[.breakfast])")
-    }
-    
-    //MARK: Loading Methods
-    
+    //MARK: View Loading & Appearing
     override func viewDidLoad() {
         super.viewDidLoad()
         
         foodTableView.delegate = self
         foodTableView.dataSource = self
 
-        setUpUser()
-//        loadUserData()
+        // temporarily using setupuser to allow for dummy data before we can pull data from the backend db using the API
+        setUpUser()   // replace with loadUserData() once API is complete
 
-        
-        //        tableView.rowHeight = UITableViewAutomaticDimension
-        //        tableView.estimatedRowHeight = 65
         foodTableView.rowHeight = 85
     }
     
@@ -76,7 +69,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         super.viewWillAppear(animated)
         
         loadUserData()
-//        updateLabels()
         foodTableView.reloadData()
         
     }
@@ -84,6 +76,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     // MARK: TableViewController Methods
     
+    // Sets the number of sections in table equal to the declared enumeration.
     func numberOfSections(in tableView: UITableView) -> Int {
         return Meals.snacks.rawValue + 1
     }
@@ -97,6 +90,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return 1
     }
     
+    // Sets the section header height equal to the property declared within Class Properties
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return sectionHeaderHeight
     }
@@ -115,6 +109,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         addButton.tag = section
         addButton.addTarget(self, action: #selector(self.addNewFood), for: .touchUpInside)
         
+        // Calculate calories in header
         var totalCalories: Double = 0
         if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
             for value in mealData {
@@ -137,7 +132,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
         }
         
-        /*NEED TO REVIST AND ADJUST HEADER LABEL AND CALORIE LABEL TO BE DYNAMIC*/
+        /*Header Label Outlines - Testing Purposes*/
         //        nameLabel.layer.borderWidth = 1.0
         //        nameLabel.layer.borderColor = UIColor.black.cgColor
         //        addButton.layer.borderWidth = 1.0
@@ -150,21 +145,10 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! UserFoodCell
-//
-//        if let section = Meals(rawValue: indexPath.section), let food = data[section]?[indexPath.row] {
-//            cell.idLabel.text = food.name
-//            cell.calorieLabel.text = "\(food.calories)"
-//            cell.detailLabel.text = "\(food.servingSize) \(food.unit)"
-//        } else {
-//            cell.idLabel.text = "Add a Food"
-//        }
-        
         
         let cell = foodTableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! SwipeTableViewCell
         
         if let section = Meals(rawValue: indexPath.section), let food = data[section]?[indexPath.row] {
-        
             cell.textLabel?.text = "\(food.name)"
             cell.detailTextLabel?.text = "\(roundToTens(x: food.calories))"
         }
@@ -173,7 +157,82 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return cell
     }
     
+    
+    //MARK: Data Loading Functions
+    
+    func loadUserData() {
+        
+        let currentDate = Date()
+        let modifiedDate = dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+        let dbDate = dateFormatterUser.date(from: modifiedDate)!
+        
+        let predicate = NSPredicate(format: "date = %@", dbDate as NSDate)
+        
+        if let existingData =
+            realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data {
+            userFoods = existingData
+        } else {
+            createNewLogForDate(date: dbDate)
+            userFoods = realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data
+        }
+        
+        sortData()
+        updateLabels()
+        
+    }
+    
+    // Creates a log for the date accessed
+    func createNewLogForDate(date: Date) {
+        let newLogForDate = DailyData()
+        // Need a method to grab the user's object
+        newLogForDate.date = date
+        newLogForDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
+        newLogForDate.weight = Double(143 + arc4random_uniform(7))
+        do {
+            try realm.write {
+                realm.objects(UserData.self).first?.dailyData.append(newLogForDate)
+            }
+        } catch {
+            print("Error creating new date, \(error)")
+        }
+    }
+    
+    // Splits a user's food by meals for use with the TableView methods
+    func sortData() {
+        data[.breakfast] = userFoods.filter { $0.timing == "breakfast" }
+        data[.lunch] = userFoods.filter {$0.timing == "lunch"}
+        data[.dinner] = userFoods.filter{$0.timing == "dinner"}
+        data[.snacks] = userFoods.filter{$0.timing == "snacks"}
+    }
+    
+    
+    //MARK: Dummy Data Setup (before the backend/client API is set up, load dummy data)
+    
+    // Load dummy data
+    func setUpUser() {
+        
+        if realm.objects(UserData.self).first != nil {
+            loadUserData()
+        } else {
+            let newUser = UserData()
+            newUser.name = "Jaime"
+            newUser.goal = "Strength"
+            newUser.currentTDEE = 2150
+            newUser.currentCaloricTarget = 2350
+            
+            do {
+                try realm.write {
+                    realm.add(newUser)
+                }
+            } catch {
+                print("Error creating new date, \(error)")
+            }
+        }
+    }
+
+    
     // MARK: Segue Methods
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "showFood"?:
@@ -188,7 +247,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController
             targetController.selectedMeal = (sender as! UIButton).tag
             targetController.logDate = dateFormatterUser.date(from: dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!))
-        //            print("\(targetController.selectedMeal)")
         default:
             preconditionFailure("Unexpected segue identifier")
         }
@@ -198,108 +256,58 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     @objc func addNewFood(_ sender: UIButton) {
-        let section = sender.tag
-        
         performSegue(withIdentifier: "addFood", sender: sender)
     }
     
     
-    func setUpUser() {
-        
-        if realm.objects(UserData.self).first != nil {
-            loadUserData()
-        } else {
-            let newUser = UserData()
-            newUser.name = "Jaime"
-            newUser.goal = "Strength"
-            newUser.currentTDEE = 2150
-            newUser.currentCaloricTarget = 2350
-        
-            do {
-                try realm.write {
-                    realm.add(newUser)
-                }
-            } catch {
-                print("Error creating new date, \(error)")
-            }
-        }
-        
-        
-        
-    }
+
+    //MARK: - User Navigation Functions
     
-    func loadUserData() {
-        
-        let currentDate = Date()
-        let modifiedDate = Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!
-        
-        let formattedDate = dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
-        
-     
-        let dbDate = dateFormatterUser.date(from: formattedDate)
-        
-        let predicate = NSPredicate(format: "date = %@", dbDate as! NSDate)
-        
-        if let existingData =
-            realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data {
-            
-//            print("\(existingData)")
-            userFoods = existingData
-            
-        } else {
-            let newDate = DailyData()
-            newDate.date = dbDate!
-            newDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
-            newDate.weight = Double(143 + arc4random_uniform(7))
-            do {
-                try realm.write {
-                    realm.objects(UserData.self).first?.dailyData.append(newDate)
-                }
-            } catch {
-                print("Error creating new date, \(error)")
-            }
-            userFoods = realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data
-        }
-        
-        sortData()
-        updateLabels()
-        
-    }
-    
-    private func roundToTens(x: Double) -> Int {
-        return 10 * Int(round(x / 10.0))
-    }
-    
-    
+    // Loads the next day's data.
     @IBAction func nextDayPressed(_ sender: UIBarButtonItem) {
         dateOffset = dateOffset + 1
         loadUserData()
         foodTableView.reloadData()
     }
     
+    // Loads the previous day's data.
     @IBAction func previousDayPressed(_ sender: UIBarButtonItem) {
         dateOffset = dateOffset - 1
         loadUserData()
         foodTableView.reloadData()
     }
     
-    func updateLabels() {
-        setNavTitle()
+    
+    //MARK: - User Facing Functions
+    
+    // Rounds calculations to the nearest 10. -- DONE
+    private func roundToTens(x: Double) -> Int {
+        return 10 * Int(round(x / 10.0))
     }
     
+    // Refreshes all labels are change. *Incomplete - missing summary labels (Calories Remaining, etc.)*
+    func updateLabels() {
+        setNavTitle()
+        // function for updating summary labels
+    }
+    
+    // Changes the title
     func setNavTitle() {
         if dateOffset == 0 {
             navigationItem.title = "Today"
         } else {
             let currentDate = Date()
             navigationItem.title = dateFormatterUser.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
-            print("\(navigationItem.title!)")
         }
     }
     
 }
 
-//MARK: - Swipe Cell Delegate Methods
+/***************************************************************/
+// Extension Functionality
+/***************************************************************/
+
+//MARK: - SwipeCell Class
 
 extension LogViewController: SwipeTableViewCellDelegate {
     
@@ -311,7 +319,6 @@ extension LogViewController: SwipeTableViewCellDelegate {
             
             if let section = Meals(rawValue: indexPath.section), let foodForDeletion = self.data[section]?[indexPath.row] {
 
-                print("deleted \(foodForDeletion) at \(indexPath)")
                 do {
                     try self.realm.write {
                         self.realm.delete(foodForDeletion)
@@ -321,7 +328,6 @@ extension LogViewController: SwipeTableViewCellDelegate {
                 }
                 
                 self.loadUserData()
-                print("completed")
             }
         }
         // customize the action appearance
