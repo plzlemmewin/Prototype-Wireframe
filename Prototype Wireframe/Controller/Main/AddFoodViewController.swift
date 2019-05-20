@@ -11,18 +11,21 @@ import RealmSwift
 
 class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let realm = try! Realm()
-    
-    //    var foodDatabase = FoodDatabase()
-    var foodDatabase: Results<DBFood>!
-
+    //MARK: Variables & Constants
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var foodTableView: UITableView!
     
-
+    // Data passed over from addFood segue
     var selectedMeal: Int?
     var logDate: Date?
     
+    /* Realm Initializers */
+    let realm = try! Realm()
+    
+    // Raw List of Database Foods
+    var foodDatabase: Results<DBFood>!
+
+    //MARK: View Loading & Appearing
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,12 +34,11 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         foodTableView.rowHeight = 55
         
-        print("\(String(describing: selectedMeal))")
-        setUpDB()
-//        loadDatabase()
+        // Placeholder function to load dummy database
+        setUpDB() // To be replaced with: loadDatabase()
     }
     
-    // MARK: - TableView Datasource Methods
+    //MARK: - TableView Datasource Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return foodDatabase.count
@@ -64,6 +66,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.cookedLabel.text = ""
         }
         
+        // Grabs the list of accepted units if unavailable
         if food.acceptedUnits.isEmpty {
             let foodUnits = realm.objects(UnitOfMeasure.self).filter("foodId = %@", food.id)
             for unit in foodUnits {
@@ -85,51 +88,21 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
     }
     
-    // MARK: - TableView Delegate Methods
+    //MARK: - TableView Delegate Methods
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "FoodDetail", sender: self)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "FoodDetail"?:
-            if let row = foodTableView.indexPathForSelectedRow?.row {
-                let food = foodDatabase[row]
-
-                let detailVC = segue.destination as! DetailViewController
-                detailVC.foodToAdd = food
-                detailVC.navigationItem.title = "Add Food"
-                detailVC.logDate = self.logDate
-                switch selectedMeal! {
-                case 0:
-                    detailVC.timing = "breakfast"
-                case 1:
-                    detailVC.timing = "lunch"
-                case 2:
-                    detailVC.timing = "dinner"
-                case 3:
-                    detailVC.timing = "snacks"
-                default:
-                    detailVC.timing = ""
-                }
-                
-            }
-        default:
-            preconditionFailure("Unexpected segue identifier")
-        }
-        let backItem = UIBarButtonItem()
-        backItem.title = "Back"
-        navigationItem.backBarButtonItem = backItem
+    //MARK: - Load Data
+    
+    //Load Database
+    func loadDatabase() {
+        foodDatabase = realm.objects(DBFood.self)
+        foodTableView.reloadData()
     }
     
-    // MARK: - Navigation Methods
-    
-    @IBAction func cancelPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: - Tempporary Food Database Loading
+    //Temporary dummy data set up
     func setUpDB() {
         
         if realm.objects(DBFood.self).first != nil {
@@ -178,21 +151,54 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
                     print("Error creating new date, \(error)")
                 }
             }
-            
             loadDatabase()
         }
         
     }
     
-    
-    
-    func loadDatabase() {
-        
-        foodDatabase = realm.objects(DBFood.self)
-        foodTableView.reloadData()
-        
+    //MARK: Navigation Methods
+
+    // Segue to DetailViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "FoodDetail"?:
+            if let row = foodTableView.indexPathForSelectedRow?.row {
+                let food = foodDatabase[row]
+                
+                let detailVC = segue.destination as! DetailViewController
+                detailVC.foodToAdd = food
+                detailVC.navigationItem.title = "Add Food"
+                detailVC.logDate = self.logDate
+                switch selectedMeal! {
+                case 0:
+                    detailVC.timing = "breakfast"
+                case 1:
+                    detailVC.timing = "lunch"
+                case 2:
+                    detailVC.timing = "dinner"
+                case 3:
+                    detailVC.timing = "snacks"
+                default:
+                    detailVC.timing = ""
+                }
+                
+            }
+        default:
+            preconditionFailure("Unexpected segue identifier")
+        }
+        let backItem = UIBarButtonItem()
+        backItem.title = "Back"
+        navigationItem.backBarButtonItem = backItem
     }
     
+    // Return to user's log
+    @IBAction func cancelPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: - User Facing Functions
+    
+    // Rounds calculations to the nearest 10. -- DONE
     private func roundToTens(x: Double) -> Int {
         return 10 * Int(round(x / 10.0))
     }
@@ -200,12 +206,17 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 }
 
+/***************************************************************/
+// Extension Functionality
+/***************************************************************/
+
+//MARK: - Search Bar
+
 extension AddFoodViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         foodDatabase = foodDatabase!.filter("name CONTAINS[cd] %@", searchBar.text!)// .sorted(byKeyPath: "name", ascending: true)
-        
         foodTableView.reloadData()
     }
     

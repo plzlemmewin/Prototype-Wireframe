@@ -12,7 +12,7 @@ import SwipeCellKit
 
 class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    //MARK: Class PropertiesVariables & Constants
+    //MARK: Variables & Constants
     @IBOutlet var foodTableView: UITableView!
     
     
@@ -74,7 +74,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     
-    // MARK: TableViewController Methods
+    //MARK: TableViewController Methods
     
     // Sets the number of sections in table equal to the declared enumeration.
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -206,9 +206,9 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     
-    //MARK: Dummy Data Setup (before the backend/client API is set up, load dummy data)
+    //MARK: Dummy User Setup (before the backend/client API is set up, load dummy user)
     
-    // Load dummy data
+    // Load dummy user
     func setUpUser() {
         
         if realm.objects(UserData.self).first != nil {
@@ -231,14 +231,14 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
 
     
-    // MARK: Segue Methods
+    //MARK: Segue Methods
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "showFood"?:
             if let section = Meals(rawValue: (foodTableView.indexPathForSelectedRow?.section)!), let foodToBeEditted = data[section]?[(foodTableView.indexPathForSelectedRow?.row)!] {
                 let detailVC = segue.destination as! DetailViewController
-                detailVC.food = foodToBeEditted
+                detailVC.foodToEdit = foodToBeEditted
                 detailVC.navigationItem.title = "Edit Food"
             }
         case "addFood"?:
