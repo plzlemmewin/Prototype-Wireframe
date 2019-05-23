@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		04252E6821C763A10080476C /* BaseChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04252E6721C763A10080476C /* BaseChartsViewController.swift */; };
 		04266F7C21C8A69A00D661BE /* LineChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266F7B21C8A69A00D661BE /* LineChartViewController.swift */; };
+		042C015E2296068900523DE6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C015D2296068900523DE6 /* User.swift */; };
+		042C016022960F8F00523DE6 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C015F22960F8F00523DE6 /* Helper.swift */; };
+		042C01622296102100523DE6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C01612296102100523DE6 /* Constants.swift */; };
 		042D5E3920E047D0004604BD /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042D5E3820E047D0004604BD /* UserData.swift */; };
 		045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */; };
 		04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A73208D3C23006A2434 /* AppDelegate.swift */; };
@@ -64,6 +67,9 @@
 /* Begin PBXFileReference section */
 		04252E6721C763A10080476C /* BaseChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseChartsViewController.swift; sourceTree = "<group>"; };
 		04266F7B21C8A69A00D661BE /* LineChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartViewController.swift; sourceTree = "<group>"; };
+		042C015D2296068900523DE6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		042C015F22960F8F00523DE6 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		042C01612296102100523DE6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		042D5E3820E047D0004604BD /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		043A3BBD21C71930009A8E98 /* Charts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Charts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +146,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		042C015C2296063F00523DE6 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				042C015D2296068900523DE6 /* User.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		04679A67208D3C23006A2434 = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +179,9 @@
 		04679A72208D3C23006A2434 /* Prototype Wireframe */ = {
 			isa = PBXGroup;
 			children = (
+				042C015F22960F8F00523DE6 /* Helper.swift */,
+				04679A73208D3C23006A2434 /* AppDelegate.swift */,
+				042C01612296102100523DE6 /* Constants.swift */,
 				04679A7F208D3C23006A2434 /* Info.plist */,
 				0471104F20C383080049D29C /* GoogleService-Info.plist */,
 				0499103220CAE1D30096858A /* Supporting Files */,
@@ -244,6 +261,7 @@
 		04CBAFB920B88416001491E9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				042C015C2296063F00523DE6 /* User */,
 				04F1D08F22060ADC00A3FF07 /* Formatter Model */,
 				0499103120CAE1A00096858A /* Database Model  */,
 			);
@@ -263,7 +281,6 @@
 		04CBAFBC20B88443001491E9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				04679A73208D3C23006A2434 /* AppDelegate.swift */,
 				0471105420C39B8A0049D29C /* Main */,
 				0471105320C39B6F0049D29C /* LoginFlow */,
 			);
@@ -510,6 +527,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Prototype Wireframe/Pods-Prototype Wireframe-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
@@ -517,12 +535,14 @@
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
@@ -530,6 +550,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -551,6 +572,8 @@
 				0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */,
 				042D5E3920E047D0004604BD /* UserData.swift in Sources */,
 				04BC8C9821B6D08E00833CEB /* LogViewController.swift in Sources */,
+				042C01622296102100523DE6 /* Constants.swift in Sources */,
+				042C015E2296068900523DE6 /* User.swift in Sources */,
 				04BC8C9421B6CE6900833CEB /* UnitOfMeasure.swift in Sources */,
 				04679A76208D3C23006A2434 /* GoalViewController.swift in Sources */,
 				04BC8C9221B6CDA800833CEB /* DBFood.swift in Sources */,
@@ -560,6 +583,7 @@
 				04266F7C21C8A69A00D661BE /* LineChartViewController.swift in Sources */,
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
 				0482A93F224EEB770045DDE2 /* InitialMeasurements.swift in Sources */,
+				042C016022960F8F00523DE6 /* Helper.swift in Sources */,
 				04E2FC1721C728C300DE3E28 /* HorizontalBarChartViewController.swift in Sources */,
 				04D14F2421D5656E0047B57D /* PieChartViewController.swift in Sources */,
 				04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */,

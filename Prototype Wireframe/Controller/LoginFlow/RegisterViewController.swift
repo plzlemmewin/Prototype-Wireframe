@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SVProgressHUD
+import Alamofire
 
 class RegisterViewController: UIViewController {
     
@@ -26,28 +27,64 @@ class RegisterViewController: UIViewController {
     @IBAction func registerPressed(_ sender: AnyObject) {
         
         SVProgressHUD.show()
+        signUp(username: emailTextField.text!, password: passwordTextField.text!)
         
-        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
-            
-            if error != nil {
-                print(error!)
-                SVProgressHUD.dismiss()
-                
-                let alert = UIAlertController(title: "Registration Failed", message: "Registration Unsucessful", preferredStyle: .alert)
-                let ok = UIAlertAction(title: "Try Again", style: .default, handler: nil)
-                alert.addAction(ok)
-                self.present(alert, animated: true, completion: nil)
-                
-            } else {
-                print("Registration successful!")
-                
-                SVProgressHUD.dismiss()
-                
-                self.performSegue(withIdentifier: "goToMain", sender: self)
-            }
-        }
+        
+        // FireBase Auth Method
+//        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
+//
+//            if error != nil {
+//                print(error!)
+//                SVProgressHUD.dismiss()
+//
+//                let alert = UIAlertController(title: "Registration Failed", message: "Registration Unsucessful", preferredStyle: .alert)
+//                let ok = UIAlertAction(title: "Try Again", style: .default, handler: nil)
+//                alert.addAction(ok)
+//                self.present(alert, animated: true, completion: nil)
+//
+//            } else {
+//                print("Registration successful!")
+//
+//                SVProgressHUD.dismiss()
+//
+//                self.performSegue(withIdentifier: "goToMain", sender: self)
+//            }
+//        }
         
     }
+    
+    /*Signup with username and password*/
+    func signUp(username: String, password: String) {
+        let params = ["username": username, "password": password] as [String:Any]
+        Alamofire.request(API_HOST + "/signup", method: .post, parameters: params).responseData
+            { response in switch response.result {
+            case .success(let data):
+                switch response.response?.statusCode ?? -1 {
+                case 200:
+                    do {
+                        User.current = try JSONDecoder().decode(User.self, from: data)
+                        self.emailTextField.text = ""
+                        self.passwordTextField.text = ""
+                        SVProgressHUD.dismiss()
+                        self.performSegue(withIdentifier: "goToMain", sender: nil)
+                    } catch {
+                        SVProgressHUD.dismiss()
+                        Helper.showAlert(viewController: self,title: "Oops!",message: error.localizedDescription)
+                    }
+                case 401:
+                    SVProgressHUD.dismiss()
+                    Helper.showAlert(viewController: self, title: "Oops", message: "Username Taken")
+                default:
+                    SVProgressHUD.dismiss()
+                    Helper.showAlert(viewController: self, title: "Oops", message: "Unexpected Error")
+                }
+            case .failure(let error):
+                SVProgressHUD.dismiss()
+                Helper.showAlert(viewController: self,title: "Oops!",message: error.localizedDescription)
+                }
+        }
+    }
+    
     
 }
 
