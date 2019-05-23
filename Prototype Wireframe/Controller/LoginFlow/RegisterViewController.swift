@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 import SVProgressHUD
 import Alamofire
 
@@ -25,32 +24,8 @@ class RegisterViewController: UIViewController {
     }
     
     @IBAction func registerPressed(_ sender: AnyObject) {
-        
         SVProgressHUD.show()
         signUp(username: emailTextField.text!, password: passwordTextField.text!)
-        
-        
-        // FireBase Auth Method
-//        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
-//
-//            if error != nil {
-//                print(error!)
-//                SVProgressHUD.dismiss()
-//
-//                let alert = UIAlertController(title: "Registration Failed", message: "Registration Unsucessful", preferredStyle: .alert)
-//                let ok = UIAlertAction(title: "Try Again", style: .default, handler: nil)
-//                alert.addAction(ok)
-//                self.present(alert, animated: true, completion: nil)
-//
-//            } else {
-//                print("Registration successful!")
-//
-//                SVProgressHUD.dismiss()
-//
-//                self.performSegue(withIdentifier: "goToMain", sender: self)
-//            }
-//        }
-        
     }
     
     /*Signup with username and password*/
