@@ -50,6 +50,7 @@ class LoginViewController: UIViewController {
                     Helper.showAlert(viewController: self, title: "Oops", message: "Unexpected Error")
                 }
             case .failure(let error):
+                SVProgressHUD.dismiss()
                 Helper.showAlert(viewController: self,title: "Oops!",message: error.localizedDescription)
                 }
         }

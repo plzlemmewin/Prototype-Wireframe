@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 import RealmSwift
 
 @UIApplicationMain
@@ -29,11 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Error initializing new realm: \(error)")
         }
-        
-        
-        // Initialize and configure Firebase
-        FirebaseApp.configure()
-        
         
         return true
     }

@@ -36,8 +36,11 @@ class GoalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("\(User.current!)")
+        print("\(User.current.id)")
+        print("\(User.current.username)")
 
-        updateData()
     }
     
     
@@ -45,6 +48,29 @@ class GoalViewController: UIViewController {
         chartLabel.text = chartNameArray[0]
         summaryLabel.text = personalTrainerComment[0]
     }
+    
+    /*Load User Data*/
+//    func loadData() {
+//        let params = ["username": username,"password": password] as [String:Any]
+//        Alamofire.request(API_HOST + "/login", method: .post, parameters: params).responseData
+//            { response in switch response.result {
+//            case .success(let data):
+//                switch response.response?.statusCode ?? -1 {
+//                case 200:
+//                    SVProgressHUD.dismiss()
+//                    self.didLogin(userData: data)
+//                case 401:
+//                    SVProgressHUD.dismiss()
+//                    Helper.showAlert(viewController: self, title: "Oops", message: "Username or Password Incorrect")
+//                default:
+//                    SVProgressHUD.dismiss()
+//                    Helper.showAlert(viewController: self, title: "Oops", message: "Unexpected Error")
+//                }
+//            case .failure(let error):
+//                Helper.showAlert(viewController: self,title: "Oops!",message: error.localizedDescription)
+//                }
+//        }
+//    }
 
 }
 
