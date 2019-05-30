@@ -9,10 +9,14 @@
 import UIKit
 import RealmSwift
 import SwipeCellKit
+import Alamofire
+import SwiftyJSON
 
 class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //MARK: Variables & Constants
+    let userDataURL = API_HOST + "/my-dailydata"
+    let foodLogURL = API_HOST + "/my-foodlog"
     @IBOutlet var foodTableView: UITableView!
     
     
@@ -31,6 +35,13 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     /* Date Setup */
     // Keeps track of how many days ahead or behind of today's date that the user is on
     var dateOffset: Int = 0
+    
+    // Used for networking calls
+    let baseDateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df
+    }()
     
     // Used for internal date calculation/saving
     let dateFormatterInitial: DateFormatter = {
@@ -60,7 +71,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         foodTableView.dataSource = self
 
         // temporarily using setupuser to allow for dummy data before we can pull data from the backend db using the API
-        setUpUser()   // replace with loadUserData() once API is complete
+        // setUpUser()   // replace with loadUserData() once API is complete
 
         foodTableView.rowHeight = 85
     }
@@ -163,39 +174,65 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     func loadUserData() {
         
         let currentDate = Date()
-        let modifiedDate = dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
-        let dbDate = dateFormatterUser.date(from: modifiedDate)!
-        
-        let predicate = NSPredicate(format: "date = %@", dbDate as NSDate)
-        
-        if let existingData =
-            realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data {
-            userFoods = existingData
-        } else {
-            createNewLogForDate(date: dbDate)
-            userFoods = realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data
+        let modifiedDate = baseDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+        let params: [String: Any] = ["user": User.current.username, "date": modifiedDate]
+
+
+        userFoods = List<Food>() /* Test Data */
+
+        Alamofire.request(userDataURL, method: .get, parameters: params).responseJSON {
+            response in
+                if response.result.isSuccess {
+                    let dailyDataJSON: JSON  = JSON(response.result.value!)
+                    print("\(dailyDataJSON)")
+                } else {
+                    print("no bueno")
+                }
         }
         
+
         sortData()
         updateLabels()
+        
+        
+        // Old Method
+        //        let dbDate = dateFormatterUser.date(from: modifiedDate)!
+        //
+        //        let predicate = NSPredicate(format: "date = %@", dbDate as NSDate)
+        //
+        //        if let existingData =
+        //            realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data {
+        //            userFoods = existingData
+        //        } else {
+        //            createNewLogForDate(date: dbDate)
+        //            userFoods = realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data
+        //        }
+        
         
     }
     
     // Creates a log for the date accessed
-    func createNewLogForDate(date: Date) {
-        let newLogForDate = DailyData()
-        // Need a method to grab the user's object
-        newLogForDate.date = date
-        newLogForDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
-        newLogForDate.weight = Double(143 + arc4random_uniform(7))
-        do {
-            try realm.write {
-                realm.objects(UserData.self).first?.dailyData.append(newLogForDate)
-            }
-        } catch {
-            print("Error creating new date, \(error)")
-        }
-    }
+    
+    // Realm Version
+//    func createNewLogForDate(date: Date) {
+//        let newLogForDate = DailyData()
+//        // Need a method to grab the user's object
+//        newLogForDate.date = date
+//        newLogForDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
+//        newLogForDate.weight = Double(143 + arc4random_uniform(7))
+//        do {
+//            try realm.write {
+//                realm.objects(UserData.self).first?.dailyData.append(newLogForDate)
+//            }
+//        } catch {
+//            print("Error creating new date, \(error)")
+//        }
+//    }
+    
+    
+    
+    
+    
     
     // Splits a user's food by meals for use with the TableView methods
     func sortData() {
@@ -211,23 +248,26 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     // Load dummy user
     func setUpUser() {
         
-        if realm.objects(UserData.self).first != nil {
-            loadUserData()
-        } else {
-            let newUser = UserData()
-            newUser.name = "Jaime"
-            newUser.goal = "Strength"
-            newUser.currentTDEE = 2150
-            newUser.currentCaloricTarget = 2350
-            
-            do {
-                try realm.write {
-                    realm.add(newUser)
-                }
-            } catch {
-                print("Error creating new date, \(error)")
-            }
-        }
+//        if realm.objects(UserData.self).first != nil {
+//            loadUserData()
+//        } else {
+//            let newUser = UserData()
+//            newUser.name = "Jaime"
+//            newUser.goal = "Strength"
+//            newUser.currentTDEE = 2150
+//            newUser.currentCaloricTarget = 2350
+//
+//            do {
+//                try realm.write {
+//                    realm.add(newUser)
+//                }
+//            } catch {
+//                print("Error creating new date, \(error)")
+//            }
+//        }
+        
+        loadUserData()
+        
     }
 
     

@@ -38,6 +38,7 @@ class RegisterViewController: UIViewController {
                 case 200:
                     do {
                         User.current = try JSONDecoder().decode(User.self, from: data)
+                        print("\(response)")
                         self.emailTextField.text = ""
                         self.passwordTextField.text = ""
                         SVProgressHUD.dismiss()
