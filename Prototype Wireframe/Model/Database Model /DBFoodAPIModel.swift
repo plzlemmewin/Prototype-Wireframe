@@ -1,5 +1,5 @@
 //
-//  FoodAPIModel.swift
+//  DBFoodAPIModel.swift
 //  Prototype Wireframe
 //
 //  Created by MAC on 6/3/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FoodAPIModel: NSObject {
+class DBFoodAPIModel: NSObject {
     let id: Int
     let name: String
     let brand: String?

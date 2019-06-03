@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		041A166D22A54FF600CC6E91 /* FoodAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A166C22A54FF600CC6E91 /* FoodAPIModel.swift */; };
+		041A166D22A54FF600CC6E91 /* DBFoodAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A166C22A54FF600CC6E91 /* DBFoodAPIModel.swift */; };
 		04252E6821C763A10080476C /* BaseChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04252E6721C763A10080476C /* BaseChartsViewController.swift */; };
 		04266F7C21C8A69A00D661BE /* LineChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266F7B21C8A69A00D661BE /* LineChartViewController.swift */; };
 		042C015E2296068900523DE6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C015D2296068900523DE6 /* User.swift */; };
@@ -67,7 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		041A166C22A54FF600CC6E91 /* FoodAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodAPIModel.swift; sourceTree = "<group>"; };
+		041A166C22A54FF600CC6E91 /* DBFoodAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFoodAPIModel.swift; sourceTree = "<group>"; };
 		04252E6721C763A10080476C /* BaseChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseChartsViewController.swift; sourceTree = "<group>"; };
 		04266F7B21C8A69A00D661BE /* LineChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartViewController.swift; sourceTree = "<group>"; };
 		042C015D2296068900523DE6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -242,7 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				04BC8C8D21B6CB2E00833CEB /* Food.swift */,
-				041A166C22A54FF600CC6E91 /* FoodAPIModel.swift */,
+				041A166C22A54FF600CC6E91 /* DBFoodAPIModel.swift */,
 				04BC8C9121B6CDA800833CEB /* DBFood.swift */,
 				04BC8C9321B6CE6900833CEB /* UnitOfMeasure.swift */,
 				042D5E3820E047D0004604BD /* UserData.swift */,
@@ -591,7 +591,7 @@
 				0482A93D224EE7E30045DDE2 /* InitialFood.swift in Sources */,
 				046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */,
 				04252E6821C763A10080476C /* BaseChartsViewController.swift in Sources */,
-				041A166D22A54FF600CC6E91 /* FoodAPIModel.swift in Sources */,
+				041A166D22A54FF600CC6E91 /* DBFoodAPIModel.swift in Sources */,
 				045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */,
 				0471105820C39C080049D29C /* LoginViewController.swift in Sources */,
 				04BF8912214EB77C0095A21E /* DailyData.swift in Sources */,

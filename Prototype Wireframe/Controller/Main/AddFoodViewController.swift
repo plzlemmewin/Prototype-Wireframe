@@ -15,8 +15,8 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     //MARK: Variables & Constants
     let foodDBURL = API_HOST + "/foods"
     
-    var transferredDBSnapshot = [FoodAPIModel]()
-    var foodDatabase = [FoodAPIModel]() {
+    var transferredDBSnapshot = [DBFoodAPIModel]()
+    var foodDatabase = [DBFoodAPIModel]() {
         didSet {
             foodTableView.reloadData()
         }
@@ -113,7 +113,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
                         let newUnit = Unit(unitName: name, baseUnits: conversion)
                         units.append(newUnit)
                     }
-                    let newFood = FoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, supportedUnits: units)
+                    let newFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, supportedUnits: units)
                     self.foodDatabase.append(newFood)
                 }
                 self.transferredDBSnapshot = self.foodDatabase
