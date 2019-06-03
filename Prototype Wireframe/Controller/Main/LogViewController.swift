@@ -177,8 +177,8 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         let modifiedDate = baseDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
         let params: [String: Any] = ["user": User.current.username, "date": modifiedDate]
 
-
-        userFoods = List<Food>() /* Test Data */
+        /* Test Data */
+        userFoods = List<Food>()
 
         Alamofire.request(userDataURL, method: .get, parameters: params).responseJSON {
             response in
@@ -190,6 +190,18 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 }
         }
         
+        Alamofire.request(foodLogURL, method: .get, parameters: params).responseJSON {
+            response in
+            if response.result.isSuccess {
+                let foodLogJSON: JSON  = JSON(response.result.value!)
+                print("\(foodLogJSON)")
+                print("success!")
+            } else {
+                print("thumbs down from me")
+            }
+        }
+        
+        print("all done!")
 
         sortData()
         updateLabels()

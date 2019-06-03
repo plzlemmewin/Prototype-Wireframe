@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041A166D22A54FF600CC6E91 /* FoodAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A166C22A54FF600CC6E91 /* FoodAPIModel.swift */; };
 		04252E6821C763A10080476C /* BaseChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04252E6721C763A10080476C /* BaseChartsViewController.swift */; };
 		04266F7C21C8A69A00D661BE /* LineChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266F7B21C8A69A00D661BE /* LineChartViewController.swift */; };
 		042C015E2296068900523DE6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C015D2296068900523DE6 /* User.swift */; };
 		042C016022960F8F00523DE6 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C015F22960F8F00523DE6 /* Helper.swift */; };
 		042C01622296102100523DE6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C01612296102100523DE6 /* Constants.swift */; };
+		042C817F22A5885D004BE1A5 /* UnitsAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C817E22A5885D004BE1A5 /* UnitsAPIModel.swift */; };
 		042D5E3920E047D0004604BD /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042D5E3820E047D0004604BD /* UserData.swift */; };
 		045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */; };
 		04679A74208D3C23006A2434 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04679A73208D3C23006A2434 /* AppDelegate.swift */; };
@@ -65,11 +67,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		041A166C22A54FF600CC6E91 /* FoodAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodAPIModel.swift; sourceTree = "<group>"; };
 		04252E6721C763A10080476C /* BaseChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseChartsViewController.swift; sourceTree = "<group>"; };
 		04266F7B21C8A69A00D661BE /* LineChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartViewController.swift; sourceTree = "<group>"; };
 		042C015D2296068900523DE6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		042C015F22960F8F00523DE6 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		042C01612296102100523DE6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		042C817E22A5885D004BE1A5 /* UnitsAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsAPIModel.swift; sourceTree = "<group>"; };
 		042D5E3820E047D0004604BD /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		043A3BBD21C71930009A8E98 /* Charts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Charts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodViewController.swift; sourceTree = "<group>"; };
@@ -238,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				04BC8C8D21B6CB2E00833CEB /* Food.swift */,
+				041A166C22A54FF600CC6E91 /* FoodAPIModel.swift */,
 				04BC8C9121B6CDA800833CEB /* DBFood.swift */,
 				04BC8C9321B6CE6900833CEB /* UnitOfMeasure.swift */,
 				042D5E3820E047D0004604BD /* UserData.swift */,
@@ -245,6 +250,7 @@
 				0482A93A224EE7580045DDE2 /* InitialDBSetUp.swift */,
 				0482A93C224EE7E30045DDE2 /* InitialFood.swift */,
 				0482A93E224EEB770045DDE2 /* InitialMeasurements.swift */,
+				042C817E22A5885D004BE1A5 /* UnitsAPIModel.swift */,
 			);
 			path = "Database Model ";
 			sourceTree = "<group>";
@@ -576,6 +582,7 @@
 				04679AAA209505E8006A2434 /* GoalPageViewController.swift in Sources */,
 				0482A93F224EEB770045DDE2 /* InitialMeasurements.swift in Sources */,
 				042C016022960F8F00523DE6 /* Helper.swift in Sources */,
+				042C817F22A5885D004BE1A5 /* UnitsAPIModel.swift in Sources */,
 				04E2FC1721C728C300DE3E28 /* HorizontalBarChartViewController.swift in Sources */,
 				04D14F2421D5656E0047B57D /* PieChartViewController.swift in Sources */,
 				04AC4D7A20C710D3003D5762 /* MenuBar.swift in Sources */,
@@ -584,6 +591,7 @@
 				0482A93D224EE7E30045DDE2 /* InitialFood.swift in Sources */,
 				046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */,
 				04252E6821C763A10080476C /* BaseChartsViewController.swift in Sources */,
+				041A166D22A54FF600CC6E91 /* FoodAPIModel.swift in Sources */,
 				045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */,
 				0471105820C39C080049D29C /* LoginViewController.swift in Sources */,
 				04BF8912214EB77C0095A21E /* DailyData.swift in Sources */,

@@ -7,11 +7,21 @@
 //
 
 import UIKit
-import RealmSwift
+import Alamofire
+import SwiftyJSON
 
 class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //MARK: Variables & Constants
+    let foodDBURL = API_HOST + "/foods"
+    
+    var transferredDBSnapshot = [FoodAPIModel]()
+    var foodDatabase = [FoodAPIModel]() {
+        didSet {
+            foodTableView.reloadData()
+        }
+    }
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var foodTableView: UITableView!
     
@@ -19,11 +29,6 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     var selectedMeal: Int?
     var logDate: Date?
     
-    /* Realm Initializers */
-    let realm = try! Realm()
-    
-    // Raw List of Database Foods
-    var foodDatabase: Results<DBFood>!
 
     //MARK: View Loading & Appearing
     override func viewDidLoad() {
@@ -35,57 +40,46 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         foodTableView.rowHeight = 55
         
         // Placeholder function to load dummy database
-        setUpDB() // To be replaced with: loadDatabase()
+        // setUpDB() // To be replaced with:
+        loadDatabase()
     }
     
-    //MARK: - TableView Datasource Methods
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
     
+    
+    //MARK: - TableView Datasource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return foodDatabase.count
+        return self.foodDatabase.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddFoodCell", for: indexPath) as! DBFoodCell
-
         let food = foodDatabase[indexPath.row]
-
+        
         cell.idLabel.text = food.name
-        if let brand = food.brand {
+        if let brand = food.brand, brand != "" {
             cell.brandLabel.text = brand
         } else {
             cell.brandLabel.text = ""
         }
-        if let variant = food.variant {
+        if let variant = food.variant, variant != "" {
             cell.variantLabel.text = ", \(variant)"
         } else {
             cell.variantLabel.text = ""
         }
-        if let cooked = food.cooked {
-            cell.cookedLabel.text = "\(cooked), "
+        if let cooked = food.cooked, cooked != "" {
+            cell.cookedLabel.text = ", \(cooked), "
         } else {
             cell.cookedLabel.text = ""
         }
         
-        // Grabs the list of accepted units if unavailable
-        if food.acceptedUnits.isEmpty {
-            let foodUnits = realm.objects(UnitOfMeasure.self).filter("foodId = %@", food.id)
-            for unit in foodUnits {
-                do {
-                    try realm.write {
-                        food.acceptedUnits.append(unit)
-                    }
-                } catch {
-                    print("Error saving new items, \(error)")
-                }
-            }
-            cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.acceptedUnits.first?.conversionToBaseUnit)! * (food.defaultServing))))"
-            cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
-        } else {
-            cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.acceptedUnits.first?.conversionToBaseUnit)! * (food.defaultServing))))"
-            cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
-            
-        }
-            return cell
+        cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.units.last?.conversionToBaseUnit)! * (food.defaultServing))))"
+        cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
+        
+        return cell
+        
     }
     
     //MARK: - TableView Delegate Methods
@@ -98,98 +92,71 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     //Load Database
     func loadDatabase() {
-        foodDatabase = realm.objects(DBFood.self)
-        foodTableView.reloadData()
-    }
-    
-    //Temporary dummy data set up
-    func setUpDB() {
         
-        if realm.objects(DBFood.self).first != nil {
-            loadDatabase()
-        } else {
-            let initialDB = InitialDBSetUp()
-            for food in initialDB.foodList {
-                let dBFood = DBFood()
-                dBFood.id = food.id
-                dBFood.name = food.name
-                dBFood.brand = food.brand
-                dBFood.cooked = food.cooked
-                dBFood.defaultServing = food.defaultServing
-                dBFood.defaultUnit = food.defaultUnit
-                dBFood.caloriesPerBaseUnit = food.caloriesPerBaseUnit
-                dBFood.fatsPerBaseUnit = food.fatsPerBaseUnit
-                dBFood.carbsPerBaseUnit = food.carbsPerBaseUnit
-                dBFood.proteinPerBaseUnit = food.proteinPerBaseUnit
-                dBFood.alcoholPerBaseUnit = food.alcoholPerBaseUnit
-                dBFood.breakfast = food.breakfast
-                dBFood.lunch = food.lunch
-                dBFood.dinner = food.dinner
-                dBFood.snack = food.snack
-                dBFood.main = food.main
-                dBFood.side = food.side
-                dBFood.cuisine = food.cuisine
-                for unit in food.acceptedUnits {
-                    let dBMeasurement = UnitOfMeasure()
-                    dBMeasurement.foodId = unit.foodId
-                    dBMeasurement.conversionToBaseUnit = unit.conversionToBaseUnit
-                    dBMeasurement.unit = unit.unit
-                    do {
-                        try realm.write {
-                            realm.add(dBMeasurement)
-                        }
-                    } catch {
-                        print("Error creating new date, \(error)")
+        Alamofire.request(foodDBURL, method: .get).responseJSON {
+            response in
+            if response.result.isSuccess {
+                let data: JSON  = JSON(response.result.value!)
+                for (_, obj) in data {
+                    let id = obj["food_id"].intValue
+                    let name = obj["name"].stringValue
+                    let brand = obj["brand"].stringValue
+                    let variant = obj["variant"].stringValue
+                    let cooked = obj["cooked"].stringValue
+                    let defaultServing = obj["default_serving"].doubleValue
+                    let defaultUnit = obj["default_unit"].stringValue
+                    let caloriesPerBaseUnit = obj["calories_per_base_unit"].doubleValue
+                    var units = [Unit]()
+                    for (_, unit) in obj["units"] {
+                        let name = unit["unit"].stringValue
+                        let conversion = unit["conversion_to_base_unit"].doubleValue
+                        let newUnit = Unit(unitName: name, baseUnits: conversion)
+                        units.append(newUnit)
                     }
+                    let newFood = FoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, supportedUnits: units)
+                    self.foodDatabase.append(newFood)
                 }
-                
-                do {
-                    try realm.write {
-                        realm.add(dBFood)
-                    }
-                } catch {
-                    print("Error creating new date, \(error)")
-                }
+                self.transferredDBSnapshot = self.foodDatabase
+            } else {
+                print("Error")
             }
-            loadDatabase()
         }
-        
     }
     
     //MARK: Navigation Methods
 
     // Segue to DetailViewController
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "FoodDetail"?:
-            if let row = foodTableView.indexPathForSelectedRow?.row {
-                let food = foodDatabase[row]
-                
-                let detailVC = segue.destination as! DetailViewController
-                detailVC.foodToAdd = food
-                detailVC.navigationItem.title = "Add Food"
-                detailVC.logDate = self.logDate
-                switch selectedMeal! {
-                case 0:
-                    detailVC.timing = "breakfast"
-                case 1:
-                    detailVC.timing = "lunch"
-                case 2:
-                    detailVC.timing = "dinner"
-                case 3:
-                    detailVC.timing = "snacks"
-                default:
-                    detailVC.timing = ""
-                }
-                
-            }
-        default:
-            preconditionFailure("Unexpected segue identifier")
-        }
-        let backItem = UIBarButtonItem()
-        backItem.title = "Back"
-        navigationItem.backBarButtonItem = backItem
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        switch segue.identifier {
+//        case "FoodDetail"?:
+//            if let row = foodTableView.indexPathForSelectedRow?.row {
+//                let food = foodDatabase[row]
+//
+//                let detailVC = segue.destination as! DetailViewController
+//                detailVC.foodToAdd = food
+//                detailVC.navigationItem.title = "Add Food"
+//                detailVC.logDate = self.logDate
+//                switch selectedMeal! {
+//                case 0:
+//                    detailVC.timing = "breakfast"
+//                case 1:
+//                    detailVC.timing = "lunch"
+//                case 2:
+//                    detailVC.timing = "dinner"
+//                case 3:
+//                    detailVC.timing = "snacks"
+//                default:
+//                    detailVC.timing = ""
+//                }
+//
+//            }
+//        default:
+//            preconditionFailure("Unexpected segue identifier")
+//        }
+//        let backItem = UIBarButtonItem()
+//        backItem.title = "Back"
+//        navigationItem.backBarButtonItem = backItem
+//    }
     
     // Return to user's log
     @IBAction func cancelPressed(_ sender: Any) {
@@ -213,28 +180,20 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
 //MARK: - Search Bar
 
 extension AddFoodViewController: UISearchBarDelegate {
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        foodDatabase = foodDatabase!.filter("name CONTAINS[cd] %@", searchBar.text!)// .sorted(byKeyPath: "name", ascending: true)
+        foodDatabase = foodDatabase.filter{ $0.name.range(of: searchBar.text!, options: [.caseInsensitive, .diacriticInsensitive]) != nil}
         foodTableView.reloadData()
     }
-    
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            loadDatabase()
-            
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-// This is A QUICK FIX. THIS WHOLE SECTION IS NOT THE RIGHT WAY TO ADDRESS THIS ISSUE.
+            foodDatabase = transferredDBSnapshot
         } else {
-            loadDatabase()
-            foodDatabase = foodDatabase!.filter("name CONTAINS[cd] %@", searchBar.text!)// .sorted(byKeyPath: "name", ascending: true)
-            
+        foodDatabase = transferredDBSnapshot
+        foodDatabase = foodDatabase.filter{ $0.name.range(of: searchBar.text!, options: [.caseInsensitive, .diacriticInsensitive]) != nil}
             foodTableView.reloadData()
-            
         }
-        
+
     }
 }
