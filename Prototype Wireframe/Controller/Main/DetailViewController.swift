@@ -32,9 +32,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     var unit: String = ""
     var totalCalories: Double = 0
     
-    /* Realm Initializers */
-    let realm = try! Realm()
-    
     /* Identifying adding new food or editing existing food */
     var timing: String?
     var logDate: String?
@@ -225,9 +222,11 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     // Loads Accepted Units based on the food item pulled
     private func conversionListSetup(conversionListArray: inout [String]) {
         if let foodFromDatabase = foodToAdd {
-            foodFromDatabase.units.reverse()
+//            foodFromDatabase.units.reverse()
             for unit in foodFromDatabase.units {
                 conversionListArray.append(unit.unit)
+                print("\(unit.unit) and \(unit.conversionToBaseUnit)")
+                print(conversionListArray)
             }
             mappedDBFood = foodFromDatabase
         } else if let existingFood = foodToEdit {
@@ -286,10 +285,10 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         servingInUnits = (foodToAdd?.defaultServing ?? foodToEdit?.servingSize)!
         unit = (foodToAdd?.defaultUnit ?? foodToEdit?.unit)!
         var fullServing = Int(servingInUnits)
-        let partialServing = servingInUnits - Double(fullServing)
+        var partialServing = servingInUnits - Double(fullServing)
         var partialPickerPosition = 0
         
-        convertValueToPartialServingPicker(partialValue: partialServing, partialPicker: &partialPickerPosition, fullServingValue: &fullServing)
+        convertValueToPartialServingPicker(partialValue: &partialServing, partialPicker: &partialPickerPosition, fullServingValue: &fullServing)
         
         servingPicker.selectRow(fullServing, inComponent: 0, animated: false)
         servingPicker.selectRow(partialPickerPosition, inComponent: 1, animated: false)
@@ -313,10 +312,14 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         case 2:
             let newlySelectedUnitConversionToBase = mappedDBFood!.units[servingPicker.selectedRow(inComponent: component)].conversionToBaseUnit
             
+            
             servingInUnits = totalCalories / (newlySelectedUnitConversionToBase * caloriesPerBaseUnit)
+            print("total calories: \(totalCalories), servingInUnits: \(servingInUnits)")
             fullServing = Int(servingInUnits.rounded(.down))
             partialServing = servingInUnits - Double(fullServing)
-            convertValueToPartialServingPicker(partialValue: partialServing, partialPicker: &partialPickerPosition, fullServingValue: &fullServing)
+            print("full servings: \(fullServing), partialServings: \(partialServing)")
+            convertValueToPartialServingPicker(partialValue: &partialServing, partialPicker: &partialPickerPosition, fullServingValue: &fullServing)
+            
 
             servingPicker.selectRow(fullServing, inComponent: 0, animated: true)
             servingPicker.selectRow(partialPickerPosition, inComponent: 1, animated: true)
@@ -325,6 +328,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             print("error")
         }
         servingInUnits = Double(fullServing) + partialServing
+        print("After In&Out function state:: full servings: \(fullServing), partialServings: \(partialServing), servingInUnits: \(servingInUnits)")
         totalCalories = servingInUnits * caloriesPerBaseUnit * unitConversion
         caloriesField.text = String(roundToTens(x: totalCalories))
         
@@ -359,7 +363,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     }
     
     // Decimal Value to Partial Serving UIPicker conversion
-    func convertValueToPartialServingPicker(partialValue: Double, partialPicker: inout Int, fullServingValue: inout Int) {
+    func convertValueToPartialServingPicker(partialValue: inout Double, partialPicker: inout Int, fullServingValue: inout Int) {
         switch partialValue {
         case 0..<0.0625:
             partialPicker = 0
@@ -383,6 +387,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             partialPicker = 9
         case 0.9375...1:
             partialPicker = 0
+            partialValue = 0
             fullServingValue = fullServingValue + 1
         default:
             print("not working")

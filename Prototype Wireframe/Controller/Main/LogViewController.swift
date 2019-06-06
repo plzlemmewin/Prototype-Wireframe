@@ -19,10 +19,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var modifiedDate = ""
     @IBOutlet var foodTableView: UITableView!
     
-    
-    /* Realm Initializers */
-    let realm = try! Realm()
-    
     // Full list of a user's foods for the respective date, sorted via the sort function.
     var userFoods = [UserFoodAPIModel]() {
         didSet {
@@ -231,7 +227,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 //                detailVC.navigationItem.title = "Edit Food"
 //            }
         case "addFood"?:
-            let currentDate = Date()
             let destinationNavigationC = segue.destination as! UINavigationController
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController
             targetController.selectedMeal = (sender as! UIButton).tag
