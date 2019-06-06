@@ -27,7 +27,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // Data passed over from addFood segue
     var selectedMeal: Int?
-    var logDate: Date?
+    var logDate: String?
     
 
     //MARK: View Loading & Appearing
@@ -39,8 +39,6 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         foodTableView.rowHeight = 55
         
-        // Placeholder function to load dummy database
-        // setUpDB() // To be replaced with:
         loadDatabase()
     }
     
@@ -106,6 +104,10 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
                     let defaultServing = obj["default_serving"].doubleValue
                     let defaultUnit = obj["default_unit"].stringValue
                     let caloriesPerBaseUnit = obj["calories_per_base_unit"].doubleValue
+                    let fatsPerBaseUnit = obj["fats_per_base_unit"].doubleValue
+                    let carbsPerBaseUnit = obj["carbs_per_base_unit"].doubleValue
+                    let proteinPerBaseUnit = obj["protein_per_base_unit"].doubleValue
+                    let alcoholPerBaseUnit = obj["alcohol_per_base_unit"].doubleValue
                     var units = [Unit]()
                     for (_, unit) in obj["units"] {
                         let name = unit["unit"].stringValue
@@ -113,7 +115,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
                         let newUnit = Unit(unitName: name, baseUnits: conversion)
                         units.append(newUnit)
                     }
-                    let newFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, supportedUnits: units)
+                    let newFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
                     self.foodDatabase.append(newFood)
                 }
                 self.transferredDBSnapshot = self.foodDatabase
@@ -126,37 +128,37 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
     //MARK: Navigation Methods
 
     // Segue to DetailViewController
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        switch segue.identifier {
-//        case "FoodDetail"?:
-//            if let row = foodTableView.indexPathForSelectedRow?.row {
-//                let food = foodDatabase[row]
-//
-//                let detailVC = segue.destination as! DetailViewController
-//                detailVC.foodToAdd = food
-//                detailVC.navigationItem.title = "Add Food"
-//                detailVC.logDate = self.logDate
-//                switch selectedMeal! {
-//                case 0:
-//                    detailVC.timing = "breakfast"
-//                case 1:
-//                    detailVC.timing = "lunch"
-//                case 2:
-//                    detailVC.timing = "dinner"
-//                case 3:
-//                    detailVC.timing = "snacks"
-//                default:
-//                    detailVC.timing = ""
-//                }
-//
-//            }
-//        default:
-//            preconditionFailure("Unexpected segue identifier")
-//        }
-//        let backItem = UIBarButtonItem()
-//        backItem.title = "Back"
-//        navigationItem.backBarButtonItem = backItem
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "FoodDetail"?:
+            if let row = foodTableView.indexPathForSelectedRow?.row {
+                let food = foodDatabase[row]
+
+                let detailVC = segue.destination as! DetailViewController
+                detailVC.foodToAdd = food
+                detailVC.navigationItem.title = "Add Food"
+                detailVC.logDate = self.logDate
+                switch selectedMeal! {
+                case 0:
+                    detailVC.timing = "breakfast"
+                case 1:
+                    detailVC.timing = "lunch"
+                case 2:
+                    detailVC.timing = "dinner"
+                case 3:
+                    detailVC.timing = "snacks"
+                default:
+                    detailVC.timing = ""
+                }
+
+            }
+        default:
+            preconditionFailure("Unexpected segue identifier")
+        }
+        let backItem = UIBarButtonItem()
+        backItem.title = "Back"
+        navigationItem.backBarButtonItem = backItem
+    }
     
     // Return to user's log
     @IBAction func cancelPressed(_ sender: Any) {

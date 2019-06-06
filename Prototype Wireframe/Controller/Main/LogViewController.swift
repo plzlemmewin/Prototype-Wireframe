@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 import SwipeCellKit
 import Alamofire
 import SwiftyJSON
@@ -17,6 +16,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     //MARK: Variables & Constants
     let userDataURL = API_HOST + "/my-dailydata"
     let foodLogURL = API_HOST + "/my-foodlog"
+    var modifiedDate = ""
     @IBOutlet var foodTableView: UITableView!
     
     
@@ -24,10 +24,17 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     let realm = try! Realm()
     
     // Full list of a user's foods for the respective date, sorted via the sort function.
-    var userFoods: List<Food>!
+    var userFoods = [UserFoodAPIModel]() {
+        didSet {
+            sortData()
+            updateLabels()
+            foodTableView.reloadData()
+        }
+    }
+    
     
     /* Food Setup */
-    var data = [Meals: [Food]]()
+    var data = [Meals: [UserFoodAPIModel]]()
     enum Meals: Int {
         case breakfast = 0, lunch, dinner, snacks
     }
@@ -43,13 +50,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return df
     }()
     
-    // Used for internal date calculation/saving
-    let dateFormatterInitial: DateFormatter = {
-        let df = DateFormatter()
-        df.dateStyle = .medium
-        df.timeStyle = .none
-        return df
-    }()
     
     // Used for the date in the Nav Bar. Format: Jul 25, 2019
     let dateFormatterUser: DateFormatter = {
@@ -69,9 +69,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
         foodTableView.delegate = self
         foodTableView.dataSource = self
-
-        // temporarily using setupuser to allow for dummy data before we can pull data from the backend db using the API
-        // setUpUser()   // replace with loadUserData() once API is complete
 
         foodTableView.rowHeight = 85
     }
@@ -93,7 +90,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //       return foodDatabase.foodList.count
         if let tableSection = Meals(rawValue: section), let mealData = data[tableSection] {
             return mealData.count
             
@@ -174,77 +170,47 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     func loadUserData() {
         
         let currentDate = Date()
-        let modifiedDate = baseDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+        modifiedDate = baseDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!)
+        print("\(modifiedDate)")
         let params: [String: Any] = ["user": User.current.username, "date": modifiedDate]
-
-        /* Test Data */
-        userFoods = List<Food>()
-
-        Alamofire.request(userDataURL, method: .get, parameters: params).responseJSON {
-            response in
-                if response.result.isSuccess {
-                    let dailyDataJSON: JSON  = JSON(response.result.value!)
-                    print("\(dailyDataJSON)")
-                } else {
-                    print("no bueno")
-                }
-        }
+        userFoods.removeAll()
         
         Alamofire.request(foodLogURL, method: .get, parameters: params).responseJSON {
             response in
             if response.result.isSuccess {
-                let foodLogJSON: JSON  = JSON(response.result.value!)
-                print("\(foodLogJSON)")
-                print("success!")
+                let data: JSON  = JSON(response.result.value!)
+                print("\(data)")
+                for (_, obj) in data {
+                    let id = obj["food_id"].intValue
+                    let name = obj["name"].stringValue
+                    let brand = obj["brand"].stringValue
+                    let variant = obj["variant"].stringValue
+                    let cooked = obj["cooked"].stringValue
+                    let servingSize = obj["serving_size"].doubleValue
+                    let unit = obj["unit"].stringValue
+                    let calories = obj["calories"].doubleValue
+                    let fats = obj["fats"].doubleValue
+                    let carbs = obj["carbs"].doubleValue
+                    let protein = obj["protein"].doubleValue
+                    let alcohol = obj["alcohol"].doubleValue
+                    let timing = obj["timing"].stringValue
+                    let newFood = UserFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, servingSizeSetUp: servingSize, unitSetUp: unit, caloriesSetUp: calories, fatsSetUp: fats, carbsSetUp: carbs, proteinSetUp: protein, alcoholSetUp: alcohol, timingSetUp: timing)
+                    print("\(newFood.name)")
+                    self.userFoods.append(newFood)
+                }
+                print("\(self.userFoods) #2")
             } else {
-                print("thumbs down from me")
+                print("Error")
             }
+            
         }
         
-        print("all done!")
+        print("\(userFoods)")
 
         sortData()
         updateLabels()
         
-        
-        // Old Method
-        //        let dbDate = dateFormatterUser.date(from: modifiedDate)!
-        //
-        //        let predicate = NSPredicate(format: "date = %@", dbDate as NSDate)
-        //
-        //        if let existingData =
-        //            realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data {
-        //            userFoods = existingData
-        //        } else {
-        //            createNewLogForDate(date: dbDate)
-        //            userFoods = realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data
-        //        }
-        
-        
     }
-    
-    // Creates a log for the date accessed
-    
-    // Realm Version
-//    func createNewLogForDate(date: Date) {
-//        let newLogForDate = DailyData()
-//        // Need a method to grab the user's object
-//        newLogForDate.date = date
-//        newLogForDate.dailyCaloricTarget = (realm.objects(UserData.self).first?.currentCaloricTarget)!
-//        newLogForDate.weight = Double(143 + arc4random_uniform(7))
-//        do {
-//            try realm.write {
-//                realm.objects(UserData.self).first?.dailyData.append(newLogForDate)
-//            }
-//        } catch {
-//            print("Error creating new date, \(error)")
-//        }
-//    }
-    
-    
-    
-    
-    
     
     // Splits a user's food by meals for use with the TableView methods
     func sortData() {
@@ -254,51 +220,22 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         data[.snacks] = userFoods.filter{$0.timing == "snacks"}
     }
     
-    
-    //MARK: Dummy User Setup (before the backend/client API is set up, load dummy user)
-    
-    // Load dummy user
-    func setUpUser() {
-        
-//        if realm.objects(UserData.self).first != nil {
-//            loadUserData()
-//        } else {
-//            let newUser = UserData()
-//            newUser.name = "Jaime"
-//            newUser.goal = "Strength"
-//            newUser.currentTDEE = 2150
-//            newUser.currentCaloricTarget = 2350
-//
-//            do {
-//                try realm.write {
-//                    realm.add(newUser)
-//                }
-//            } catch {
-//                print("Error creating new date, \(error)")
-//            }
-//        }
-        
-        loadUserData()
-        
-    }
-
-    
     //MARK: Segue Methods
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-        case "showFood"?:
-            if let section = Meals(rawValue: (foodTableView.indexPathForSelectedRow?.section)!), let foodToBeEditted = data[section]?[(foodTableView.indexPathForSelectedRow?.row)!] {
-                let detailVC = segue.destination as! DetailViewController
-                detailVC.foodToEdit = foodToBeEditted
-                detailVC.navigationItem.title = "Edit Food"
-            }
+//        case "showFood"?:
+//            if let section = Meals(rawValue: (foodTableView.indexPathForSelectedRow?.section)!), let foodToBeEditted = data[section]?[(foodTableView.indexPathForSelectedRow?.row)!] {
+//                let detailVC = segue.destination as! DetailViewController
+//                detailVC.foodToEdit = foodToBeEditted
+//                detailVC.navigationItem.title = "Edit Food"
+//            }
         case "addFood"?:
             let currentDate = Date()
             let destinationNavigationC = segue.destination as! UINavigationController
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController
             targetController.selectedMeal = (sender as! UIButton).tag
-            targetController.logDate = dateFormatterUser.date(from: dateFormatterInitial.string(from: Calendar.current.date(byAdding: .day, value: dateOffset, to: currentDate)!))
+            targetController.logDate = modifiedDate
         default:
             preconditionFailure("Unexpected segue identifier")
         }
@@ -310,7 +247,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     @objc func addNewFood(_ sender: UIButton) {
         performSegue(withIdentifier: "addFood", sender: sender)
     }
-    
     
 
     //MARK: - User Navigation Functions
@@ -368,19 +304,19 @@ extension LogViewController: SwipeTableViewCellDelegate {
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
-            
-            if let section = Meals(rawValue: indexPath.section), let foodForDeletion = self.data[section]?[indexPath.row] {
-
-                do {
-                    try self.realm.write {
-                        self.realm.delete(foodForDeletion)
-                    }
-                } catch {
-                    print("Error deleting: \(error)")
-                }
-                
-                self.loadUserData()
-            }
+            print("delete!")
+//            if let section = Meals(rawValue: indexPath.section), let foodForDeletion = self.data[section]?[indexPath.row] {
+//
+//                do {
+//                    try self.realm.write {
+//                        self.realm.delete(foodForDeletion)
+//                    }
+//                } catch {
+//                    print("Error deleting: \(error)")
+//                }
+//
+//                self.loadUserData()
+//            }
         }
         // customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")

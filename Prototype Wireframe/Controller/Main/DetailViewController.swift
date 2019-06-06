@@ -7,12 +7,15 @@
 //
 
 import UIKit
-import RealmSwift
+import Alamofire
+import SwiftyJSON
 
 class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerViewDelegate, UIPickerViewDataSource {
 
     //MARK: Variables & Constants
-    
+    let foodDBURL = API_HOST + "/foods"
+    let foodLogURL = API_HOST + "/my-foodlog/"
+
     /* Views */
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var nameLabel: UILabel!
@@ -34,13 +37,13 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     
     /* Identifying adding new food or editing existing food */
     var timing: String?
-    var logDate: Date?
+    var logDate: String?
     
-    var foodToAdd: DBFood?
-    var foodToEdit: Food?
+    var foodToAdd: DBFoodAPIModel?
+    var foodToEdit: UserFoodAPIModel?
     
     // Mapping from the 'Food' class to the 'DBFood' class
-    var mappedDBFood: DBFood?
+    var mappedDBFood: DBFoodAPIModel?
     
     
     //MARK: View Loading & Appearing
@@ -69,57 +72,102 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     }
 
     //MARK: - Saving Data
+    func saveNewFood(food: UserFoodAPIModel) {
+        
+        let params: [String: Any] = ["user": User.current.username, "date": logDate!, "food_id": food.id, "name": food.name, "brand": food.brand,
+                                     "variant": food.variant, "cooked": food.cooked, "serving_size": food.servingSize, "unit": food.unit, "calories": food.calories,
+                                     "fats": food.fats, "carbs": food.carbs, "protein": food.protein, "alcohol": food.alcohol, "timing": food.timing]
+        
+        Alamofire.request(foodLogURL, method: .post, parameters: params).responseJSON {
+            response in
+            if response.result.isSuccess {
+                let responseJSON: JSON  = JSON(response.result.value!)
+                print("\(responseJSON)")
+
+            } else {
+                print("Error")
+            }
+        }
+        
+        print("all done!")
+        dismiss(animated: true, completion: nil)
+    }
+    
+//    func editExistingFood() {
+//        _ = navigationController?.popViewController(animated: true)
+//        print("process complete")
+//    }
+    
+    
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
-        if let foodToBeAdded = foodToAdd, let unitConversion = foodToAdd?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
-            
-            let newFood = Food()
-            newFood.id = foodToBeAdded.id
-            newFood.name = foodToBeAdded.name
-            newFood.brand = foodToBeAdded.brand
-            newFood.cooked = foodToBeAdded.cooked
-            newFood.servingSize = servingInUnits
-            newFood.unit = "\(foodToBeAdded.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].unit)"
-            newFood.calories = foodToBeAdded.caloriesPerBaseUnit * servingInUnits * unitConversion
-            newFood.fats = foodToBeAdded.fatsPerBaseUnit * servingInUnits * unitConversion
-            newFood.carbs = foodToBeAdded.carbsPerBaseUnit * servingInUnits * unitConversion
-            newFood.protein = foodToBeAdded.proteinPerBaseUnit * servingInUnits * unitConversion
-            newFood.alcohol = foodToBeAdded.alcoholPerBaseUnit * servingInUnits * unitConversion
-            newFood.timing = timing!
-            
-            print("\(foodToBeAdded.caloriesPerBaseUnit) \(servingInUnits) \(unitConversion)")
-            print("\(logDate!)")
-           
-            let predicate = NSPredicate(format: "date = %@", logDate as! NSDate)
-            
-            do {
-                try realm.write {
-                    realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data.append(newFood)
-                }
-            } catch {
-                print("Error saving new items, \(error)")
-            } 
-            dismiss(animated: true, completion: nil)
-        } else if let foodToBeEditedInfo = mappedDBFood, let unitConversion = mappedDBFood?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
-            print("starting process")
-            do {
-                try realm.write {
-                    print("in process")
-                    foodToEdit!.calories = totalCalories
-                    foodToEdit!.servingSize = servingInUnits
-                    foodToEdit!.unit = "\(foodToBeEditedInfo.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].unit)"
-                    foodToEdit!.fats = foodToBeEditedInfo.caloriesPerBaseUnit * servingInUnits * unitConversion
-                    foodToEdit!.carbs = foodToBeEditedInfo.carbsPerBaseUnit * servingInUnits * unitConversion
-                    foodToEdit!.protein = foodToBeEditedInfo.proteinPerBaseUnit * servingInUnits * unitConversion
-                    foodToEdit!.alcohol = foodToBeEditedInfo.alcoholPerBaseUnit * servingInUnits * unitConversion
-                }
-                
-            } catch {
-                print("Error saving new items, \(error)")
-            }
-            _ = navigationController?.popViewController(animated: true)
-            print("process complete")
+        
+        if let foodToBeAdded = foodToAdd, let unitConversion = foodToAdd?.units[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
+            let foodUnit = "\(foodToBeAdded.units[servingPicker.selectedRow(inComponent: 2)].unit)"
+            let calories = foodToBeAdded.caloriesPerBaseUnit * servingInUnits * unitConversion
+            let fats = foodToBeAdded.fatsPerBaseUnit * servingInUnits * unitConversion
+            let carbs = foodToBeAdded.carbsPerBaseUnit * servingInUnits * unitConversion
+            let protein = foodToBeAdded.proteinPerBaseUnit * servingInUnits * unitConversion
+            let alcohol = foodToBeAdded.alcoholPerBaseUnit * servingInUnits * unitConversion
+            let timing = self.timing!
+            let newFood = UserFoodAPIModel(idSetUp: foodToBeAdded.id, nameSetUp: foodToBeAdded.name, servingSizeSetUp: servingInUnits, unitSetUp: foodUnit, caloriesSetUp: calories, fatsSetUp: fats, carbsSetUp: carbs, proteinSetUp: protein, alcoholSetUp: alcohol, timingSetUp: timing)
+            saveNewFood(food: newFood)
+        } else {
+            print("In Progress")
+            // Adding the Edit Functionality shortly
+//            editExistingFood()
         }
+    
+//        Old Realm method
+//        if let foodToBeAdded = foodToAdd, let unitConversion = foodToAdd?.units[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
+//
+//            let newFood = Food()
+//            newFood.id = foodToBeAdded.id
+//            newFood.name = foodToBeAdded.name
+//            newFood.brand = foodToBeAdded.brand
+//            newFood.cooked = foodToBeAdded.cooked
+//            newFood.servingSize = servingInUnits
+//            newFood.unit = "\(foodToBeAdded.units[servingPicker.selectedRow(inComponent: 2)].unit)"
+//            newFood.calories = foodToBeAdded.caloriesPerBaseUnit * servingInUnits * unitConversion
+//            newFood.fats = foodToBeAdded.fatsPerBaseUnit * servingInUnits * unitConversion
+//            newFood.carbs = foodToBeAdded.carbsPerBaseUnit * servingInUnits * unitConversion
+//            newFood.protein = foodToBeAdded.proteinPerBaseUnit * servingInUnits * unitConversion
+//            newFood.alcohol = foodToBeAdded.alcoholPerBaseUnit * servingInUnits * unitConversion
+//            newFood.timing = timing!
+//
+//            print("\(foodToBeAdded.caloriesPerBaseUnit) \(servingInUnits) \(unitConversion)")
+//            print("\(logDate!)")
+//
+//            let predicate = NSPredicate(format: "date = %@", logDate as! NSDate)
+//
+//            do {
+//                try realm.write {
+//                    realm.objects(UserData.self).first?.dailyData.filter(predicate).first?.data.append(newFood)
+//                }
+//            } catch {
+//                print("Error saving new items, \(error)")
+//            }
+//            dismiss(animated: true, completion: nil)
+//        } else if let foodToBeEditedInfo = mappedDBFood, let unitConversion = mappedDBFood?.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit {
+//            print("starting process")
+//            do {
+//                try realm.write {
+//                    print("in process")
+//                    foodToEdit!.calories = totalCalories
+//                    foodToEdit!.servingSize = servingInUnits
+//                    foodToEdit!.unit = "\(foodToBeEditedInfo.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].unit)"
+//                    foodToEdit!.fats = foodToBeEditedInfo.caloriesPerBaseUnit * servingInUnits * unitConversion
+//                    foodToEdit!.carbs = foodToBeEditedInfo.carbsPerBaseUnit * servingInUnits * unitConversion
+//                    foodToEdit!.protein = foodToBeEditedInfo.proteinPerBaseUnit * servingInUnits * unitConversion
+//                    foodToEdit!.alcohol = foodToBeEditedInfo.alcoholPerBaseUnit * servingInUnits * unitConversion
+//                }
+//
+//            } catch {
+//                print("Error saving new items, \(error)")
+//            }
+//            _ = navigationController?.popViewController(animated: true)
+//            print("process complete")
+//        }
     }
     
     
@@ -157,6 +205,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                        partialServings,
                        conversionList,
         ]
+        
     }
     
     func fullServingSetup (fullServingsArray: inout [String]) {
@@ -176,16 +225,60 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     // Loads Accepted Units based on the food item pulled
     private func conversionListSetup(conversionListArray: inout [String]) {
         if let foodFromDatabase = foodToAdd {
-            for unit in foodFromDatabase.acceptedUnits {
+            foodFromDatabase.units.reverse()
+            for unit in foodFromDatabase.units {
                 conversionListArray.append(unit.unit)
             }
+            mappedDBFood = foodFromDatabase
         } else if let existingFood = foodToEdit {
-            mappedDBFood = realm.objects(DBFood.self).filter("id = \(existingFood.id)").first
-            for unit in (mappedDBFood?.acceptedUnits)! {
-                conversionListArray.append(unit.unit)
+            // Old Method
+            //            mappedDBFood = realm.objects(DBFood.self).filter("id = \(existingFood.id)").first
+            //            for unit in (mappedDBFood?.acceptedUnits)! {
+            //                conversionListArray.append(unit.unit)
+            let foodId = existingFood.id
+            var supportedUnits = [String]()
+            var returnedFoods = [DBFoodAPIModel]()
+            let params = ["foodId": foodId] as [String:Any]
+            Alamofire.request(foodDBURL, method: .post, parameters: params).responseJSON {
+                response in
+                if response.result.isSuccess {
+                    let data: JSON  = JSON(response.result.value!)
+                    for (_, obj) in data {
+                        let id = obj["food_id"].intValue
+                        let name = obj["name"].stringValue
+                        let brand = obj["brand"].stringValue
+                        let variant = obj["variant"].stringValue
+                        let cooked = obj["cooked"].stringValue
+                        let defaultServing = obj["default_serving"].doubleValue
+                        let defaultUnit = obj["default_unit"].stringValue
+                        let caloriesPerBaseUnit = obj["calories_per_base_unit"].doubleValue
+                        let fatsPerBaseUnit = obj["fats_per_base_unit"].doubleValue
+                        let carbsPerBaseUnit = obj["carbs_per_base_unit"].doubleValue
+                        let proteinPerBaseUnit = obj["protein_per_base_unit"].doubleValue
+                        let alcoholPerBaseUnit = obj["alcohol_per_base_unit"].doubleValue
+                        var units = [Unit]()
+                        for (_, unit) in obj["units"] {
+                            let name = unit["unit"].stringValue
+                            let conversion = unit["conversion_to_base_unit"].doubleValue
+                            let newUnit = Unit(unitName: name, baseUnits: conversion)
+                            supportedUnits.append(name)
+                            units.append(newUnit)
+                        }
+                        let newFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
+                        returnedFoods.append(newFood)
+                    }
+                    supportedUnits.reverse()
+                } else {
+                    print("Error")
+                }
             }
+            conversionListArray = supportedUnits
+            print("\(returnedFoods)")
+            mappedDBFood = returnedFoods.first!
+            mappedDBFood?.units.reverse()
         }
     }
+    
     
     // Load UIPicker components in the right placement
     func setInitialUIPicker() {
@@ -206,9 +299,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     // Handles conversion of UIPicker when user switches a unit
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        let foodItem = (foodToAdd ?? mappedDBFood)!
-        let unitConversion = foodItem.acceptedUnits[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit
-        let caloriesPerBaseUnit = foodItem.caloriesPerBaseUnit
+        let unitConversion = mappedDBFood!.units[servingPicker.selectedRow(inComponent: 2)].conversionToBaseUnit
+        let caloriesPerBaseUnit = mappedDBFood!.caloriesPerBaseUnit
         var fullServing: Int = Int(servingInUnits.rounded(.down))
         var partialServing: Double = servingInUnits - Double(fullServing)
         var partialPickerPosition = 0
@@ -219,7 +311,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         case 1:
             convertPartialServingPickerToValue(selection: servingData[component][servingPicker.selectedRow(inComponent: component)], output: &partialServing)
         case 2:
-            let newlySelectedUnitConversionToBase = foodItem.acceptedUnits[servingPicker.selectedRow(inComponent: component)].conversionToBaseUnit
+            let newlySelectedUnitConversionToBase = mappedDBFood!.units[servingPicker.selectedRow(inComponent: component)].conversionToBaseUnit
             
             servingInUnits = totalCalories / (newlySelectedUnitConversionToBase * caloriesPerBaseUnit)
             fullServing = Int(servingInUnits.rounded(.down))
@@ -309,7 +401,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             caloriesField.text = "\(roundToTens(x: item.calories))"
             servingSizeField.text = "\(item.servingSize) \(item.unit)"
         } else {
-            totalCalories = (foodToAdd?.acceptedUnits.first?.conversionToBaseUnit)! * foodToAdd!.caloriesPerBaseUnit * (foodToAdd?.defaultServing)!
+            totalCalories = (foodToAdd?.units.first?.conversionToBaseUnit)! * foodToAdd!.caloriesPerBaseUnit * (foodToAdd?.defaultServing)!
             caloriesField.text = "\(roundToTens(x: totalCalories))"
             servingSizeField.text = "\(foodToAdd!.defaultServing) \(foodToAdd!.defaultUnit)"
         }

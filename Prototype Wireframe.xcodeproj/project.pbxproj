@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		041A166D22A54FF600CC6E91 /* DBFoodAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A166C22A54FF600CC6E91 /* DBFoodAPIModel.swift */; };
+		0423FA7F22A6D60000AA5FC5 /* UserFoodAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423FA7E22A6D60000AA5FC5 /* UserFoodAPIModel.swift */; };
 		04252E6821C763A10080476C /* BaseChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04252E6721C763A10080476C /* BaseChartsViewController.swift */; };
 		04266F7C21C8A69A00D661BE /* LineChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04266F7B21C8A69A00D661BE /* LineChartViewController.swift */; };
 		042C015E2296068900523DE6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042C015D2296068900523DE6 /* User.swift */; };
@@ -68,6 +69,7 @@
 
 /* Begin PBXFileReference section */
 		041A166C22A54FF600CC6E91 /* DBFoodAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFoodAPIModel.swift; sourceTree = "<group>"; };
+		0423FA7E22A6D60000AA5FC5 /* UserFoodAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFoodAPIModel.swift; sourceTree = "<group>"; };
 		04252E6721C763A10080476C /* BaseChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseChartsViewController.swift; sourceTree = "<group>"; };
 		04266F7B21C8A69A00D661BE /* LineChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartViewController.swift; sourceTree = "<group>"; };
 		042C015D2296068900523DE6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -150,6 +152,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0423FA7D22A6D2FE00AA5FC5 /* Archived */ = {
+			isa = PBXGroup;
+			children = (
+				0482A93C224EE7E30045DDE2 /* InitialFood.swift */,
+				0482A93E224EEB770045DDE2 /* InitialMeasurements.swift */,
+				0482A93A224EE7580045DDE2 /* InitialDBSetUp.swift */,
+			);
+			path = Archived;
+			sourceTree = "<group>";
+		};
 		042C015C2296063F00523DE6 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,16 +253,15 @@
 		0499103120CAE1A00096858A /* Database Model  */ = {
 			isa = PBXGroup;
 			children = (
+				0423FA7D22A6D2FE00AA5FC5 /* Archived */,
 				04BC8C8D21B6CB2E00833CEB /* Food.swift */,
 				041A166C22A54FF600CC6E91 /* DBFoodAPIModel.swift */,
 				04BC8C9121B6CDA800833CEB /* DBFood.swift */,
 				04BC8C9321B6CE6900833CEB /* UnitOfMeasure.swift */,
 				042D5E3820E047D0004604BD /* UserData.swift */,
 				04BF8911214EB77C0095A21E /* DailyData.swift */,
-				0482A93A224EE7580045DDE2 /* InitialDBSetUp.swift */,
-				0482A93C224EE7E30045DDE2 /* InitialFood.swift */,
-				0482A93E224EEB770045DDE2 /* InitialMeasurements.swift */,
 				042C817E22A5885D004BE1A5 /* UnitsAPIModel.swift */,
+				0423FA7E22A6D60000AA5FC5 /* UserFoodAPIModel.swift */,
 			);
 			path = "Database Model ";
 			sourceTree = "<group>";
@@ -568,6 +579,7 @@
 				0482A93B224EE7580045DDE2 /* InitialDBSetUp.swift in Sources */,
 				0471104E20C37EE10049D29C /* WelcomeViewController.swift in Sources */,
 				0471105220C39B4B0049D29C /* RegisterViewController.swift in Sources */,
+				0423FA7F22A6D60000AA5FC5 /* UserFoodAPIModel.swift in Sources */,
 				042D5E3920E047D0004604BD /* UserData.swift in Sources */,
 				04BC8C9821B6D08E00833CEB /* LogViewController.swift in Sources */,
 				042C01622296102100523DE6 /* Constants.swift in Sources */,
