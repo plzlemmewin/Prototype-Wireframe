@@ -220,12 +220,12 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-//        case "showFood"?:
-//            if let section = Meals(rawValue: (foodTableView.indexPathForSelectedRow?.section)!), let foodToBeEditted = data[section]?[(foodTableView.indexPathForSelectedRow?.row)!] {
-//                let detailVC = segue.destination as! DetailViewController
-//                detailVC.foodToEdit = foodToBeEditted
-//                detailVC.navigationItem.title = "Edit Food"
-//            }
+        case "showFood"?:
+            if let section = Meals(rawValue: (foodTableView.indexPathForSelectedRow?.section)!), let foodToBeEditted = data[section]?[(foodTableView.indexPathForSelectedRow?.row)!] {
+                let detailVC = segue.destination as! DetailViewController
+                detailVC.foodToEdit = foodToBeEditted
+                detailVC.navigationItem.title = "Edit Food"
+            }
         case "addFood"?:
             let destinationNavigationC = segue.destination as! UINavigationController
             let targetController = destinationNavigationC.topViewController as! AddFoodViewController

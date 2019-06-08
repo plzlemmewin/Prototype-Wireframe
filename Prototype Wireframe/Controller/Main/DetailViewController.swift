@@ -26,7 +26,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     
     /* Variables & Constants */
     // UIPicker Components
-    var servingData: [[String]] = [[String]]()
+    var servingData: [[String]] = [[String]]() 
     
     var servingInUnits: Double = 0
     var unit: String = ""
@@ -42,6 +42,13 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     // Mapping from the 'Food' class to the 'DBFood' class
     var mappedDBFood: DBFoodAPIModel?
     
+    var foodLoadedTracker = false {
+        didSet {
+            uiPickerSetup()
+            setInitialUIPicker()
+        }
+    }
+
     
     //MARK: View Loading & Appearing
     override func viewDidLoad() {
@@ -222,7 +229,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     // Loads Accepted Units based on the food item pulled
     private func conversionListSetup(conversionListArray: inout [String]) {
         if let foodFromDatabase = foodToAdd {
-//            foodFromDatabase.units.reverse()
             for unit in foodFromDatabase.units {
                 conversionListArray.append(unit.unit)
                 print("\(unit.unit) and \(unit.conversionToBaseUnit)")
@@ -230,15 +236,13 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             }
             mappedDBFood = foodFromDatabase
         } else if let existingFood = foodToEdit {
-            // Old Method
-            //            mappedDBFood = realm.objects(DBFood.self).filter("id = \(existingFood.id)").first
-            //            for unit in (mappedDBFood?.acceptedUnits)! {
-            //                conversionListArray.append(unit.unit)
+            if mappedDBFood != nil {
+                print("fully loaded")
+            } else {
             let foodId = existingFood.id
             var supportedUnits = [String]()
-            var returnedFoods = [DBFoodAPIModel]()
             let params = ["foodId": foodId] as [String:Any]
-            Alamofire.request(foodDBURL, method: .post, parameters: params).responseJSON {
+            Alamofire.request(foodDBURL, method: .get, parameters: params).responseJSON {
                 response in
                 if response.result.isSuccess {
                     let data: JSON  = JSON(response.result.value!)
@@ -263,8 +267,11 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                             supportedUnits.append(name)
                             units.append(newUnit)
                         }
-                        let newFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
-                        returnedFoods.append(newFood)
+                        let returnedFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
+                        self.mappedDBFood = returnedFood
+                        if self.foodLoadedTracker == false {
+                            self.foodLoadedTracker = true
+                        }
                     }
                     supportedUnits.reverse()
                 } else {
@@ -272,9 +279,8 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                 }
             }
             conversionListArray = supportedUnits
-            print("\(returnedFoods)")
-            mappedDBFood = returnedFoods.first!
-            mappedDBFood?.units.reverse()
+            }
+            
         }
     }
     
@@ -283,7 +289,10 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     func setInitialUIPicker() {
         
         servingInUnits = (foodToAdd?.defaultServing ?? foodToEdit?.servingSize)!
-        unit = (foodToAdd?.defaultUnit ?? foodToEdit?.unit)!
+        unit = foodToAdd?.defaultUnit ?? foodToEdit?.unit ?? "Loading"
+        var unitList = servingData.last
+        print(unitList)
+        
         var fullServing = Int(servingInUnits)
         var partialServing = servingInUnits - Double(fullServing)
         var partialPickerPosition = 0
@@ -292,7 +301,12 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         
         servingPicker.selectRow(fullServing, inComponent: 0, animated: false)
         servingPicker.selectRow(partialPickerPosition, inComponent: 1, animated: false)
-        servingPicker.selectRow(servingData.last!.index(of: "\(unit)")!, inComponent: 2, animated: false)
+        if unitList!.isEmpty {
+            unitList!.append("Loading")
+            servingPicker.selectRow(0, inComponent: 2, animated: false)
+        } else {
+            servingPicker.selectRow(servingData.last!.index(of: "\(unit)")!, inComponent: 2, animated: false)
+        }
     }
     
     // Handles conversion of UIPicker when user switches a unit

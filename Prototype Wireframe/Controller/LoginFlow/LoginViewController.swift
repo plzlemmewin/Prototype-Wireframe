@@ -41,7 +41,6 @@ class LoginViewController: UIViewController {
                 switch response.response?.statusCode ?? -1 {
                 case 200:
                     SVProgressHUD.dismiss()
-                    print("\(response) LOOK HERE!!!!!" )
                     self.didLogin(userData: data)
                 case 401:
                     SVProgressHUD.dismiss()

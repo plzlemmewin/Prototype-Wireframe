@@ -73,7 +73,7 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.cookedLabel.text = ""
         }
         
-        cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.units.last?.conversionToBaseUnit)! * (food.defaultServing))))"
+        cell.calorieLabel.text = "\(roundToTens(x: ((food.caloriesPerBaseUnit) * (food.units.first?.conversionToBaseUnit)! * (food.defaultServing))))"
         cell.servingSizeLabel.text = "\(food.defaultServing) \(food.defaultUnit)"
         
         return cell
