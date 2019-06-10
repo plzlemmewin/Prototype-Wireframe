@@ -43,16 +43,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     
     // Mapping from the 'Food' class to the 'DBFood' class
     var mappedDBFood: DBFoodAPIModel?
-        //        didSet {
-        //            uiPickerSetup()
-        //            setInitialUIPicker()
-        //        }
-        //    }
-
-    
-    var foodLoadedTracker = false
-    
-
     
     //MARK: View Loading & Appearing
     override func viewDidLoad() {
@@ -91,7 +81,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             if response.result.isSuccess {
                 let responseJSON: JSON  = JSON(response.result.value!)
                 print("\(responseJSON)")
-
+                
             } else {
                 print("Error")
             }
@@ -241,54 +231,50 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
             if mappedDBFood != nil {
                 print("fully loaded")
             } else {
-            let foodId = existingFood.id
-            var supportedUnits = [String]()
-            let params = ["foodId": foodId] as [String:Any]
-            Alamofire.request(foodDBURL, method: .get, parameters: params).responseJSON {
-                response in
-                if response.result.isSuccess {
-                    let data: JSON  = JSON(response.result.value!)
-                    for (_, obj) in data {
-                        let id = obj["food_id"].intValue
-                        let name = obj["name"].stringValue
-                        let brand = obj["brand"].stringValue
-                        let variant = obj["variant"].stringValue
-                        let cooked = obj["cooked"].stringValue
-                        let defaultServing = obj["default_serving"].doubleValue
-                        let defaultUnit = obj["default_unit"].stringValue
-                        let caloriesPerBaseUnit = obj["calories_per_base_unit"].doubleValue
-                        let fatsPerBaseUnit = obj["fats_per_base_unit"].doubleValue
-                        let carbsPerBaseUnit = obj["carbs_per_base_unit"].doubleValue
-                        let proteinPerBaseUnit = obj["protein_per_base_unit"].doubleValue
-                        let alcoholPerBaseUnit = obj["alcohol_per_base_unit"].doubleValue
-                        var units = [Unit]()
-                        for (_, unit) in obj["units"] {
-                            let name = unit["unit"].stringValue
-                            let conversion = unit["conversion_to_base_unit"].doubleValue
-                            let newUnit = Unit(unitName: name, baseUnits: conversion)
-                            supportedUnits.append(name)
-                            units.append(newUnit)
+                let foodId = existingFood.id
+                var supportedUnits = [String]()
+                let params = ["foodId": foodId] as [String:Any]
+                Alamofire.request(foodDBURL, method: .get, parameters: params).responseJSON {
+                    response in
+                    if response.result.isSuccess {
+                        let data: JSON  = JSON(response.result.value!)
+                        for (_, obj) in data {
+                            let id = obj["food_id"].intValue
+                            let name = obj["name"].stringValue
+                            let brand = obj["brand"].stringValue
+                            let variant = obj["variant"].stringValue
+                            let cooked = obj["cooked"].stringValue
+                            let defaultServing = obj["default_serving"].doubleValue
+                            let defaultUnit = obj["default_unit"].stringValue
+                            let caloriesPerBaseUnit = obj["calories_per_base_unit"].doubleValue
+                            let fatsPerBaseUnit = obj["fats_per_base_unit"].doubleValue
+                            let carbsPerBaseUnit = obj["carbs_per_base_unit"].doubleValue
+                            let proteinPerBaseUnit = obj["protein_per_base_unit"].doubleValue
+                            let alcoholPerBaseUnit = obj["alcohol_per_base_unit"].doubleValue
+                            var units = [Unit]()
+                            for (_, unit) in obj["units"] {
+                                let name = unit["unit"].stringValue
+                                let conversion = unit["conversion_to_base_unit"].doubleValue
+                                let newUnit = Unit(unitName: name, baseUnits: conversion)
+                                supportedUnits.append(name)
+                                units.append(newUnit)
+                            }
+                            let returnedFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
+                            self.mappedDBFood = returnedFood
+                            self.mappedDBFood?.units.reverse()
+                            for unit in self.mappedDBFood!.units {
+                                self.conversionList.append(unit.unit)
+                            }
+                            self.servingData[self.servingData.count - 1] = self.conversionList
+                            self.setInitialUIPicker()
+                            self.servingPicker.reloadAllComponents()
+                            print("set after data load")
                         }
-                        let returnedFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
-                        self.mappedDBFood = returnedFood
-                        print(self.mappedDBFood)
-                        self.mappedDBFood?.units.reverse()
-                        for unit in self.mappedDBFood!.units {
-                            self.conversionList.append(unit.unit)
-                        }
-                        print(self.conversionList)
-                        self.servingData[self.servingData.count - 1] = self.conversionList
-                        self.setInitialUIPicker()
-                        self.servingPicker.reloadAllComponents()
-                        print("set after data load")
+                        
+                    } else {
+                        print("Error")
                     }
-                    
-                } else {
-                    print("Error")
                 }
-            }
-//            fullyLoaded()
-//            conversionListArray = supportedUnits
             }
             
         }
@@ -301,8 +287,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         servingInUnits = (foodToAdd?.defaultServing ?? foodToEdit?.servingSize)!
         unit = foodToAdd?.defaultUnit ?? foodToEdit?.unit ?? "Loading"
         var unitList = servingData.last
-        print("\(unitList)")
-        
         var fullServing = Int(servingInUnits)
         var partialServing = servingInUnits - Double(fullServing)
         var partialPickerPosition = 0
@@ -418,15 +402,6 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         }
         
     }
-    
-//    func fullyLoaded() {
-//        if foodLoadedTracker == false {
-//            uiPickerSetup()
-//            setInitialUIPicker()
-//            servingPicker.reloadAllComponents()
-//        }
-//    }
-//
     
     //MARK: - User Facing Functions
     

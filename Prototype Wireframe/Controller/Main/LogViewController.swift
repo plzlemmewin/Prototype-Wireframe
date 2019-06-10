@@ -200,11 +200,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             } else {
                 print("Error")
             }
-            
         }
-        
-        print("\(userFoods)")
-
         sortData()
         updateLabels()
         
@@ -217,56 +213,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         data[.dinner] = userFoods.filter{$0.timing == "dinner"}
         data[.snacks] = userFoods.filter{$0.timing == "snacks"}
     }
-
-//    func getDBFood(food: UserFoodAPIModel, completionHandler: @escaping (DBFoodAPIModel) -> Void) {
-//
-//        let foodId = food.id
-//        var supportedUnits = [String]()
-//        let params = ["foodId": foodId] as [String:Any]
-//        Alamofire.request(foodDBURL, method: .get, parameters: params).responseJSON {
-//            response in
-//            if response.result.isSuccess {
-//                let data: JSON  = JSON(response.result.value!)
-//                for (_, obj) in data {
-//                    let id = obj["food_id"].intValue
-//                    let name = obj["name"].stringValue
-//                    let brand = obj["brand"].stringValue
-//                    let variant = obj["variant"].stringValue
-//                    let cooked = obj["cooked"].stringValue
-//                    let defaultServing = obj["default_serving"].doubleValue
-//                    let defaultUnit = obj["default_unit"].stringValue
-//                    let caloriesPerBaseUnit = obj["calories_per_base_unit"].doubleValue
-//                    let fatsPerBaseUnit = obj["fats_per_base_unit"].doubleValue
-//                    let carbsPerBaseUnit = obj["carbs_per_base_unit"].doubleValue
-//                    let proteinPerBaseUnit = obj["protein_per_base_unit"].doubleValue
-//                    let alcoholPerBaseUnit = obj["alcohol_per_base_unit"].doubleValue
-//                    var units = [Unit]()
-//                    for (_, unit) in obj["units"] {
-//                        let name = unit["unit"].stringValue
-//                        let conversion = unit["conversion_to_base_unit"].doubleValue
-//                        let newUnit = Unit(unitName: name, baseUnits: conversion)
-//                        supportedUnits.append(name)
-//                        units.append(newUnit)
-//                    }
-//                    let dbVersionOfFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
-//                    completionHandler(dbVersionOfFood)
-//
-//                    //                    returnedFood = dbVersionOfFood
-//                    //                    isSuccess = true
-//                }
-//
-//            }
-//        }
-////        var returnedFood = dbVersionOfFood
-////        var isSuccess = true
-////        completion(isSuccess, returnedFood)
-//    }
-    
-//    func completionHandler(userFood: DBFoodAPIModel) -> Void {
-//        print("Success")
-//        mappedFood = userFood
-//    }
-
     
     //MARK: Segue Methods
     
@@ -276,12 +222,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             if let section = Meals(rawValue: (foodTableView.indexPathForSelectedRow?.section)!), let foodToBeEditted = data[section]?[(foodTableView.indexPathForSelectedRow?.row)!] {
                 let detailVC = segue.destination as! DetailViewController
                 detailVC.foodToEdit = foodToBeEditted
-//                DispatchQueue.main.async {
-//                    self.getDBFood(food: foodToBeEditted, completionHandler: { (food) in
-//                        print("Success")
-//                        self.mappedFood = food
-//                    })
-//                }
                 detailVC.mappedDBFood = mappedFood
                 detailVC.navigationItem.title = "Edit Food"
             }
