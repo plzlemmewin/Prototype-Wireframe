@@ -15,6 +15,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     //MARK: Variables & Constants
     let foodDBURL = API_HOST + "/foods"
     let foodLogURL = API_HOST + "/my-foodlog/"
+    
 
     /* Views */
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -22,11 +23,12 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     @IBOutlet var servingSizeField: UITextField!
     @IBOutlet var caloriesField: UITextField!
     @IBOutlet var miscLabel: UILabel!
-    @IBOutlet var servingPicker: UIPickerView!
+    @IBOutlet weak var servingPicker: UIPickerView!
     
     /* Variables & Constants */
     // UIPicker Components
-    var servingData: [[String]] = [[String]]() 
+    var servingData: [[String]] = [[String]]()
+    var conversionList = [String]()
     
     var servingInUnits: Double = 0
     var unit: String = ""
@@ -41,13 +43,15 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     
     // Mapping from the 'Food' class to the 'DBFood' class
     var mappedDBFood: DBFoodAPIModel?
+        //        didSet {
+        //            uiPickerSetup()
+        //            setInitialUIPicker()
+        //        }
+        //    }
+
     
-    var foodLoadedTracker = false {
-        didSet {
-            uiPickerSetup()
-            setInitialUIPicker()
-        }
-    }
+    var foodLoadedTracker = false
+    
 
     
     //MARK: View Loading & Appearing
@@ -199,11 +203,11 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         
         var fullServings = [String]()
         var partialServings = [String]()
-        var conversionList = [String]()
+//        var conversionList = [String]()
         
         fullServingSetup(fullServingsArray: &fullServings)
         partialServingsSetup(partialServingsArray: &partialServings)
-        conversionListSetup(conversionListArray: &conversionList)
+        conversionListSetup()
         
         servingData = [fullServings,
                        partialServings,
@@ -227,12 +231,10 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
     }
     
     // Loads Accepted Units based on the food item pulled
-    private func conversionListSetup(conversionListArray: inout [String]) {
+    private func conversionListSetup() {
         if let foodFromDatabase = foodToAdd {
             for unit in foodFromDatabase.units {
-                conversionListArray.append(unit.unit)
-                print("\(unit.unit) and \(unit.conversionToBaseUnit)")
-                print(conversionListArray)
+                conversionList.append(unit.unit)
             }
             mappedDBFood = foodFromDatabase
         } else if let existingFood = foodToEdit {
@@ -269,16 +271,24 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
                         }
                         let returnedFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
                         self.mappedDBFood = returnedFood
-                        if self.foodLoadedTracker == false {
-                            self.foodLoadedTracker = true
+                        print(self.mappedDBFood)
+                        self.mappedDBFood?.units.reverse()
+                        for unit in self.mappedDBFood!.units {
+                            self.conversionList.append(unit.unit)
                         }
+                        print(self.conversionList)
+                        self.servingData[self.servingData.count - 1] = self.conversionList
+                        self.setInitialUIPicker()
+                        self.servingPicker.reloadAllComponents()
+                        print("set after data load")
                     }
-                    supportedUnits.reverse()
+                    
                 } else {
                     print("Error")
                 }
             }
-            conversionListArray = supportedUnits
+//            fullyLoaded()
+//            conversionListArray = supportedUnits
             }
             
         }
@@ -291,7 +301,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         servingInUnits = (foodToAdd?.defaultServing ?? foodToEdit?.servingSize)!
         unit = foodToAdd?.defaultUnit ?? foodToEdit?.unit ?? "Loading"
         var unitList = servingData.last
-        print(unitList)
+        print("\(unitList)")
         
         var fullServing = Int(servingInUnits)
         var partialServing = servingInUnits - Double(fullServing)
@@ -409,6 +419,14 @@ class DetailViewController: UIViewController, UITextFieldDelegate , UIPickerView
         
     }
     
+//    func fullyLoaded() {
+//        if foodLoadedTracker == false {
+//            uiPickerSetup()
+//            setInitialUIPicker()
+//            servingPicker.reloadAllComponents()
+//        }
+//    }
+//
     
     //MARK: - User Facing Functions
     
