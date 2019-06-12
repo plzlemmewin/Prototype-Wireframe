@@ -179,6 +179,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 let data: JSON  = JSON(response.result.value!)
                 print("\(data)")
                 for (_, obj) in data {
+                    let pk = obj["id"].intValue
                     let id = obj["food_id"].intValue
                     let name = obj["name"].stringValue
                     let brand = obj["brand"].stringValue
@@ -192,7 +193,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     let protein = obj["protein"].doubleValue
                     let alcohol = obj["alcohol"].doubleValue
                     let timing = obj["timing"].stringValue
-                    let newFood = UserFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, servingSizeSetUp: servingSize, unitSetUp: unit, caloriesSetUp: calories, fatsSetUp: fats, carbsSetUp: carbs, proteinSetUp: protein, alcoholSetUp: alcohol, timingSetUp: timing)
+                    let newFood = UserFoodAPIModel(pkSetup: pk, idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, servingSizeSetUp: servingSize, unitSetUp: unit, caloriesSetUp: calories, fatsSetUp: fats, carbsSetUp: carbs, proteinSetUp: protein, alcoholSetUp: alcohol, timingSetUp: timing)
                     print("\(newFood.name)")
                     self.userFoods.append(newFood)
                 }

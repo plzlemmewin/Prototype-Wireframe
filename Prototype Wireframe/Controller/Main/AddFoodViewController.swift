@@ -114,9 +114,9 @@ class AddFoodViewController: UIViewController, UITableViewDelegate, UITableViewD
                         let conversion = unit["conversion_to_base_unit"].doubleValue
                         let newUnit = Unit(unitName: name, baseUnits: conversion)
                         units.append(newUnit)
-                        units.reverse()
                     }
                     let newFood = DBFoodAPIModel(idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, defaultServingSetUp: defaultServing, defaultUnitSetUp: defaultUnit, caloriesPerBaseUnitSetUp: caloriesPerBaseUnit, fatsPerBaseUnitSetUp: fatsPerBaseUnit, carbsPerBaseUnitSetUp: carbsPerBaseUnit, proteinPerBaseUnitSetUp: proteinPerBaseUnit, alcoholPerBaseUnitSetUp: alcoholPerBaseUnit, supportedUnits: units)
+                    newFood.units.reverse()
                     self.foodDatabase.append(newFood)
                 }
                 self.transferredDBSnapshot = self.foodDatabase

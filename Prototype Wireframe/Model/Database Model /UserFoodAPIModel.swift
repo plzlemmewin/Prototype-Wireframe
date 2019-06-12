@@ -10,6 +10,7 @@ import Foundation
 
 class UserFoodAPIModel: NSObject {
     
+    let pk: Int
     let id: Int
     let name: String
     let brand: String?
@@ -24,8 +25,9 @@ class UserFoodAPIModel: NSObject {
     let alcohol: Double
     let timing: String
     
-    init(idSetUp: Int, nameSetUp: String, brandSetUp: String? = nil, variantSetUp: String? = nil, cookedSetUp: String? = nil, servingSizeSetUp: Double, unitSetUp: String, caloriesSetUp: Double, fatsSetUp: Double, carbsSetUp: Double, proteinSetUp: Double, alcoholSetUp: Double, timingSetUp: String) {
+    init(pkSetup: Int, idSetUp: Int, nameSetUp: String, brandSetUp: String? = nil, variantSetUp: String? = nil, cookedSetUp: String? = nil, servingSizeSetUp: Double, unitSetUp: String, caloriesSetUp: Double, fatsSetUp: Double, carbsSetUp: Double, proteinSetUp: Double, alcoholSetUp: Double, timingSetUp: String) {
         
+        pk = pkSetup
         id = idSetUp
         name = nameSetUp
         brand = brandSetUp
