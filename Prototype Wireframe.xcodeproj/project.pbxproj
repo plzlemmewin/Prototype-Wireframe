@@ -40,6 +40,7 @@
 		04BC8C9421B6CE6900833CEB /* UnitOfMeasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC8C9321B6CE6900833CEB /* UnitOfMeasure.swift */; };
 		04BC8C9621B6CF4900833CEB /* DBFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC8C9521B6CF4900833CEB /* DBFoodCell.swift */; };
 		04BC8C9821B6D08E00833CEB /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC8C9721B6D08E00833CEB /* LogViewController.swift */; };
+		04BE1DFD22BD806B00B8E345 /* RecommendationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BE1DFC22BD806B00B8E345 /* RecommendationViewController.swift */; };
 		04BF8912214EB77C0095A21E /* DailyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF8911214EB77C0095A21E /* DailyData.swift */; };
 		04D14F2421D5656E0047B57D /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D14F2321D5656E0047B57D /* PieChartViewController.swift */; };
 		04E2FC1721C728C300DE3E28 /* HorizontalBarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2FC1621C728C300DE3E28 /* HorizontalBarChartViewController.swift */; };
@@ -108,6 +109,7 @@
 		04BC8C9321B6CE6900833CEB /* UnitOfMeasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfMeasure.swift; sourceTree = "<group>"; };
 		04BC8C9521B6CF4900833CEB /* DBFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFoodCell.swift; sourceTree = "<group>"; };
 		04BC8C9721B6D08E00833CEB /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		04BE1DFC22BD806B00B8E345 /* RecommendationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationViewController.swift; sourceTree = "<group>"; };
 		04BF8911214EB77C0095A21E /* DailyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyData.swift; sourceTree = "<group>"; };
 		04D14F2321D5656E0047B57D /* PieChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
 		04E2FC1621C728C300DE3E28 /* HorizontalBarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalBarChartViewController.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			children = (
 				04E2FC1521C728AA00DE3E28 /* ChartViewControllers */,
 				04679A75208D3C23006A2434 /* GoalViewController.swift */,
+				04BE1DFC22BD806B00B8E345 /* RecommendationViewController.swift */,
 				04679AA9209505E8006A2434 /* GoalPageViewController.swift */,
 				046C05B220BE5EA600AC1ECA /* DetailViewController.swift */,
 				045A4B4020C5D81B00EE7DB5 /* AddFoodViewController.swift */,
@@ -603,6 +606,7 @@
 				0482A93D224EE7E30045DDE2 /* InitialFood.swift in Sources */,
 				046C05B320BE5EA600AC1ECA /* DetailViewController.swift in Sources */,
 				04252E6821C763A10080476C /* BaseChartsViewController.swift in Sources */,
+				04BE1DFD22BD806B00B8E345 /* RecommendationViewController.swift in Sources */,
 				041A166D22A54FF600CC6E91 /* DBFoodAPIModel.swift in Sources */,
 				045A4B4120C5D81B00EE7DB5 /* AddFoodViewController.swift in Sources */,
 				0471105820C39C080049D29C /* LoginViewController.swift in Sources */,

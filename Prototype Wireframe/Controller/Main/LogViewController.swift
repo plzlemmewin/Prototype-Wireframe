@@ -300,6 +300,7 @@ extension LogViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
             print("delete!")
+            // Old Realm Method
 //            if let section = Meals(rawValue: indexPath.section), let foodForDeletion = self.data[section]?[indexPath.row] {
 //
 //                do {
@@ -311,6 +312,11 @@ extension LogViewController: SwipeTableViewCellDelegate {
 //                }
 //
 //                self.loadUserData()
+//            }
+            //New Delete method
+//            if let section = Meals(rawValue: (self.foodTableView.indexPathForSelectedRow?.section)!), let foodToBeDeleted = self.data[section]?[(self.foodTableView.indexPathForSelectedRow?.row)!] {
+//
+//
 //            }
         }
         // customize the action appearance
