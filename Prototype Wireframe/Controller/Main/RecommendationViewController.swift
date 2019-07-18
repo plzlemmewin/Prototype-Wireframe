@@ -14,6 +14,7 @@ class RecommendationViewController: UIViewController {
     
     //MARK: Variables & Constants
     let recommendationURL = API_HOST + "/my-recommendations/"
+    var recommendations = [String]()
     @IBOutlet weak var textRecommendationTextField: UITextView!
     
     @IBAction func requestButton(_ sender: Any) {
@@ -31,6 +32,11 @@ class RecommendationViewController: UIViewController {
             if response.result.isSuccess {
                 let responseJSON: JSON  = JSON(response.result.value!)
                 print("\(responseJSON)")
+                for (_, obj) in responseJSON {
+                    let text = obj["text_eng"].stringValue
+                    self.recommendations.append(text)
+                }
+                self.textRecommendationTextField.text = self.recommendations[0]
             }
         }
     }
