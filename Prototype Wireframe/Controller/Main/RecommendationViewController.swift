@@ -15,6 +15,8 @@ class RecommendationViewController: UIViewController {
     //MARK: Variables & Constants
     let recommendationURL = API_HOST + "/my-recommendations/"
     var recommendations = [String]()
+    let placeholderMessage = "We don't have any recommendations for you at the moment. Check in again later!"
+    
     @IBOutlet weak var textRecommendationTextField: UITextView!
     
     @IBAction func requestButton(_ sender: Any) {
@@ -32,12 +34,32 @@ class RecommendationViewController: UIViewController {
             if response.result.isSuccess {
                 let responseJSON: JSON  = JSON(response.result.value!)
                 print("\(responseJSON)")
-                for (_, obj) in responseJSON {
+                if responseJSON.isEmpty {
+                    print("Empty Response")
+                    DispatchQueue.main.async {
+                        self.textRecommendationTextField.text = self.placeholderMessage
+                    }
+                } else {
+                    for (_, obj) in responseJSON {
                     let text = obj["text_eng"].stringValue
                     self.recommendations.append(text)
+                    }
                 }
-                self.textRecommendationTextField.text = self.recommendations[0]
+                // Need to handle empty response
+                self.updateLabels()
+            } else {
+                print("Error")
             }
         }
     }
+    
+    func updateLabels() {
+        if self.recommendations.isEmpty {
+            self.textRecommendationTextField.text = self.placeholderMessage
+        } else {
+            self.textRecommendationTextField.text = self.recommendations[0]
+        }
+    }
+    
 }
+
