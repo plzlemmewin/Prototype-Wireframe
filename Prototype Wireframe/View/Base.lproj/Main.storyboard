@@ -1148,6 +1148,9 @@
                                     <segment title="Male"/>
                                     <segment title="Female"/>
                                 </segments>
+                                <connections>
+                                    <action selector="genderButtonPressed:" destination="7Bz-bo-0Xv" eventType="valueChanged" id="7kB-t4-Hy2"/>
+                                </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iY1-jM-ZDp">
                                 <rect key="frame" x="211" y="194" width="117" height="30"/>
@@ -1161,11 +1164,17 @@
                                 <rect key="frame" x="211" y="240" width="117" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="My Height"/>
+                                <connections>
+                                    <action selector="heightButtonPressed:" destination="7Bz-bo-0Xv" eventType="touchUpInside" id="hiv-Ng-SOt"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Hh-BV-xE9">
                                 <rect key="frame" x="211" y="287" width="117" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="My Activity Level"/>
+                                <connections>
+                                    <action selector="activityLevelButtonPressed:" destination="7Bz-bo-0Xv" eventType="touchUpInside" id="D9U-0C-sGc"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

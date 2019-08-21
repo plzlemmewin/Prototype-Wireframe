@@ -299,7 +299,7 @@ extension LogViewController: SwipeTableViewCellDelegate {
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
-            print("delete!")
+            print("delete started!")
             // Old Realm Method
 //            if let section = Meals(rawValue: indexPath.section), let foodForDeletion = self.data[section]?[indexPath.row] {
 //
@@ -313,11 +313,26 @@ extension LogViewController: SwipeTableViewCellDelegate {
 //
 //                self.loadUserData()
 //            }
-            //New Delete method
+//            New Delete method
 //            if let section = Meals(rawValue: (self.foodTableView.indexPathForSelectedRow?.section)!), let foodToBeDeleted = self.data[section]?[(self.foodTableView.indexPathForSelectedRow?.row)!] {
 //
-//
-//            }
+            if let section = Meals(rawValue: indexPath.section), let foodToBeDeleted = self.data[section]?[indexPath.row] {
+                
+                let params: [String: Any] = ["id": foodToBeDeleted.pk]
+                let url = self.foodLogURL + "/\(foodToBeDeleted.pk)/"
+                self.data[section]?.remove(at: indexPath.row)
+                
+                Alamofire.request(url, method: .delete, parameters: params).responseJSON {
+                    response in
+                    if response.result.isSuccess {
+                        print("delete complete!")
+                    } else {
+                        print("Error")
+                    }
+//                    self.loadUserData()
+                }
+
+            }
         }
         // customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")
