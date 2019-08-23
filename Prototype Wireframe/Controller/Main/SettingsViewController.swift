@@ -14,12 +14,23 @@ class SettingsViewController: UIViewController {
     //MARK: Variables & Constants
     var id: Int = 0
     let profileURL = API_HOST + "/profile"
-    let editProfileURL = API_HOST + "/edit-profile"
     let activityLevelSelection = ["Sedentary", "Slightly Active", "Moderately Active", "Very Active", "Extremely Active"]
 //    var gender: String?
 //    var birthday: String?
 //    var height: Double?
 //    var activityLevel: String?
+    let picker: UIDatePicker = {
+        let pk = UIDatePicker()
+        pk.datePickerMode = .date
+        return pk
+    }()
+    
+    let toolBar: UIToolbar = {
+        let tb = UIToolbar()
+        tb.barStyle = .default
+        tb.isUserInteractionEnabled = true
+        return tb
+    }()
     
     @IBOutlet weak var birthdayButton: UIButton!
     @IBOutlet weak var heightButton: UIButton!
@@ -42,6 +53,21 @@ class SettingsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        picker.frame = CGRect(x: 0, y: self.view.frame.maxY - self.tabBarController!.tabBar.frame.size.height, width: self.view.frame.width, height: 200)
+        let defaultDate = baseDateFormatter.date(from: "1980-01-01")
+        picker.date = defaultDate!
+        
+        // Toolbar Set up
+        toolBar.frame = CGRect(x: 0, y: self.view.frame.maxY - self.tabBarController!.tabBar.frame.size.height, width: self.view.frame.width, height: 50)
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.dateModified))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(closeDatePicker))
+        
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        
+        self.view.addSubview(picker)
+        self.view.addSubview(toolBar)
     }
     
     //MARK: Loading Data
@@ -92,7 +118,35 @@ class SettingsViewController: UIViewController {
     
     @IBAction func birthdayButtonPressed(_ sender: Any) {
         
+        picker.frame = CGRect(x: 0, y: self.view.frame.maxY - 200 - self.tabBarController!.tabBar.frame.size.height, width: self.view.frame.width, height: 200)
+        toolBar.frame = CGRect(x: 0, y: self.view.frame.maxY - 250 - self.tabBarController!.tabBar.frame.size.height, width: self.view.frame.width, height: 50)
+        
     }
+    
+    @objc func dateModified(_ sender: Any) {
+        let birthday = baseDateFormatter.string(from: picker.date)
+        let params: [String: Any] = ["user": User.current.username, "birthday": birthday]
+        let url = profileURL + "/\(id)/"
+        
+        Alamofire.request(url, method: .patch, parameters: params).responseJSON {
+            response in
+            if response.result.isSuccess {
+                DispatchQueue.main.async {
+                    self.birthdayButton.setTitle(birthday, for: .normal)
+                }
+            } else {
+                print("Error")
+            }
+        }
+        closeDatePicker()
+    }
+    
+    @objc func closeDatePicker() {
+        picker.frame = CGRect(x: 0, y: self.view.frame.maxY - self.tabBarController!.tabBar.frame.size.height, width: self.view.frame.width, height: 200)
+        
+        toolBar.frame = CGRect(x: 0, y: self.view.frame.maxY - self.tabBarController!.tabBar.frame.size.height, width: self.view.frame.width, height: 50)
+    }
+    
     
     @IBAction func heightButtonPressed(_ sender: Any) {
         
@@ -121,3 +175,4 @@ class SettingsViewController: UIViewController {
     }
     
 }
+
