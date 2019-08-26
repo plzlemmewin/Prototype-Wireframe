@@ -34,6 +34,7 @@ class GoalViewController: UIViewController {
     
     @IBOutlet weak var chartName: UILabel!
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,5 +73,19 @@ class GoalViewController: UIViewController {
 //        }
 //    }
 
+    
+    @IBAction func goalInfoPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "goalStats", sender: self)
+    }
+
+    @IBAction func goalSelectionPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "goalSelection", sender: self)
+    }
+    
+    @IBAction func unwindToGoalVC(segue: UIStoryboardSegue) {
+        
+    }
+    
+    
 }
 
