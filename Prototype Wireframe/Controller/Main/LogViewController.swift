@@ -14,12 +14,13 @@ import SwiftyJSON
 class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //MARK: Variables & Constants
-    let userDataURL = API_HOST + "/my-dailydata"
+    let dailyDataURL = API_HOST + "/my-dailydata"
     let foodLogURL = API_HOST + "/my-foodlog"
     let foodDBURL = API_HOST + "/foods"
     var modifiedDate = ""
     var mappedFood: DBFoodAPIModel?
     @IBOutlet var foodTableView: UITableView!
+    @IBOutlet weak var nextDayBtn: UIBarButtonItem!
     
     // Full list of a user's foods for the respective date, sorted via the sort function.
     var userFoods = [UserFoodAPIModel]() {
@@ -194,10 +195,8 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     let alcohol = obj["alcohol"].doubleValue
                     let timing = obj["timing"].stringValue
                     let newFood = UserFoodAPIModel(pkSetup: pk, idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, servingSizeSetUp: servingSize, unitSetUp: unit, caloriesSetUp: calories, fatsSetUp: fats, carbsSetUp: carbs, proteinSetUp: protein, alcoholSetUp: alcohol, timingSetUp: timing)
-                    print("\(newFood.name)")
                     self.userFoods.append(newFood)
                 }
-                print("\(self.userFoods) #2")
             } else {
                 print("Error")
             }
@@ -270,8 +269,17 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     // Refreshes all labels are change. *Incomplete - missing summary labels (Calories Remaining, etc.)*
     func updateLabels() {
+
         setNavTitle()
+
+        if dateOffset >= 0 {
+            nextDayBtn.isEnabled = false
+        } else {
+            nextDayBtn.isEnabled = true
+        }
+        
         // function for updating summary labels
+        
     }
     
     // Changes the title
@@ -299,23 +307,7 @@ extension LogViewController: SwipeTableViewCellDelegate {
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
-            print("delete started!")
-            // Old Realm Method
-//            if let section = Meals(rawValue: indexPath.section), let foodForDeletion = self.data[section]?[indexPath.row] {
-//
-//                do {
-//                    try self.realm.write {
-//                        self.realm.delete(foodForDeletion)
-//                    }
-//                } catch {
-//                    print("Error deleting: \(error)")
-//                }
-//
-//                self.loadUserData()
-//            }
-//            New Delete method
-//            if let section = Meals(rawValue: (self.foodTableView.indexPathForSelectedRow?.section)!), let foodToBeDeleted = self.data[section]?[(self.foodTableView.indexPathForSelectedRow?.row)!] {
-//
+
             if let section = Meals(rawValue: indexPath.section), let foodToBeDeleted = self.data[section]?[indexPath.row] {
                 
                 let params: [String: Any] = ["id": foodToBeDeleted.pk]
@@ -329,7 +321,6 @@ extension LogViewController: SwipeTableViewCellDelegate {
                     } else {
                         print("Error")
                     }
-//                    self.loadUserData()
                 }
 
             }
