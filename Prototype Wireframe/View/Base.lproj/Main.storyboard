@@ -1157,6 +1157,7 @@
                     <connections>
                         <outlet property="foodTableView" destination="POR-uK-Y8u" id="rv0-Gs-8DA"/>
                         <outlet property="nextDayBtn" destination="3UX-3F-zCi" id="Csn-dI-jO2"/>
+                        <outlet property="targetCaloriesLabel" destination="8ni-zF-o1F" id="Hg7-Fh-dJt"/>
                         <segue destination="kyd-zX-cvf" kind="presentation" identifier="addFood" id="9aq-xW-ORG"/>
                     </connections>
                 </viewController>

@@ -21,6 +21,9 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var mappedFood: DBFoodAPIModel?
     @IBOutlet var foodTableView: UITableView!
     @IBOutlet weak var nextDayBtn: UIBarButtonItem!
+    @IBOutlet weak var targetCaloriesLabel: UILabel!
+    
+    
     
     // Full list of a user's foods for the respective date, sorted via the sort function.
     var userFoods = [UserFoodAPIModel]() {
@@ -174,6 +177,7 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         let params: [String: Any] = ["user": User.current.username, "date": modifiedDate]
         userFoods.removeAll()
         
+        // Grab Food Log
         Alamofire.request(foodLogURL, method: .get, parameters: params).responseJSON {
             response in
             if response.result.isSuccess {
@@ -201,6 +205,21 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 print("Error")
             }
         }
+        
+        // Grab Target Calories
+        Alamofire.request(dailyDataURL, method: .get, parameters: params).responseJSON {
+            response in
+            if response.result.isSuccess {
+                let responseJSON: JSON  = JSON(response.result.value!)[0]
+                let targetCalories = responseJSON["caloric_target"].stringValue
+                DispatchQueue.main.async {
+                    self.targetCaloriesLabel.text = targetCalories
+                }
+            } else {
+                print("Error")
+            }
+        }
+        
         sortData()
         updateLabels()
         
