@@ -201,12 +201,19 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     let newFood = UserFoodAPIModel(pkSetup: pk, idSetUp: id, nameSetUp: name, brandSetUp: brand, variantSetUp: variant, cookedSetUp: cooked, servingSizeSetUp: servingSize, unitSetUp: unit, caloriesSetUp: calories, fatsSetUp: fats, carbsSetUp: carbs, proteinSetUp: protein, alcoholSetUp: alcohol, timingSetUp: timing)
                     self.userFoods.append(newFood)
                 }
+                self.getTargetCalories(params: params)
             } else {
                 print("Error")
             }
         }
         
-        // Grab Target Calories
+        sortData()
+        updateLabels()
+        
+    }
+    
+    // Grab Target Calories
+    func getTargetCalories(params: [String: Any]) {
         Alamofire.request(dailyDataURL, method: .get, parameters: params).responseJSON {
             response in
             if response.result.isSuccess {
@@ -219,10 +226,6 @@ class LogViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 print("Error")
             }
         }
-        
-        sortData()
-        updateLabels()
-        
     }
     
     // Splits a user's food by meals for use with the TableView methods
