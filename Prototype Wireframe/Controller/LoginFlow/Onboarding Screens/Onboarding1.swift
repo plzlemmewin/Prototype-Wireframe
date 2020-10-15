@@ -20,8 +20,9 @@ class Onboarding1ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Disabling Next button until a name is entered.
         nameInput.delegate = self
+        
+        // Disabling Next button until a name is entered.
         nextButton.isEnabled = false
         nextButton.alpha = 0.75
 

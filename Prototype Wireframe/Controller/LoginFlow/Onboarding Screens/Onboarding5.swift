@@ -25,14 +25,15 @@ class Onboarding5ViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        let registerVC = segue.destination as! RegisterViewController
+        registerVC.name = name!
+        registerVC.birthday = birthday
+        registerVC.gender = gender
+        registerVC.activityLevel = activityLevel
+        registerVC.height = height
+        registerVC.goal = goal
+        registerVC.progressRate = progressRate
     }
-    */
 
 }

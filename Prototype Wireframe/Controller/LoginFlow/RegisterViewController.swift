@@ -12,6 +12,15 @@ import Alamofire
 
 class RegisterViewController: UIViewController {
     
+    
+    var name: String?
+    var gender: Int?
+    var birthday: String?
+    var activityLevel: String?
+    var height: Double?
+    var goal: Int?
+    var progressRate: String?
+    
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     
@@ -60,6 +69,8 @@ class RegisterViewController: UIViewController {
                 }
         }
     }
+    
+    
     
     
 }

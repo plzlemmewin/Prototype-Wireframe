@@ -12,27 +12,50 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
 
     //MARK: Variables & Constants
     var buttonID = 0
+    var numFieldsModified = 0
     
     var name: String?
     var birthday: String = ""
     var activityLevel: String = ""
     var height: Double = 0.0
-    let cmToInchConversion = 0.393701
+    var weight: Double = 0.0
     
+    let cmToInchConversion = 0.393701
     let activityLevelSelections = ["Sedentary", "Slightly Active", "Moderately Active", "Very Active", "Extremely Active"]
     
-    let datePicker: UIDatePicker = {
-        let pk = UIDatePicker()
-        pk.datePickerMode = .date
-        return pk
-    }()
+    // Control Flow
+    @IBOutlet weak var userGreeting: UITextView!
+    @IBOutlet weak var nextButton: UIButton!
     
+    // User Input Buttons
+    @IBOutlet weak var birthdayButton: UIButton!
+    @IBOutlet weak var genderSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var heightButton: UIButton!
+    @IBOutlet weak var activityLevelButton: UIButton!
+    @IBOutlet weak var heightUnitsSegmentedControl: UISegmentedControl!
+    
+    @IBOutlet weak var weightUnitsSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var weightButton: UIButton!
+    
+    // Date Formatters
+    let baseDateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df
+    }()
     
     // Used for the date in the Nav Bar. Format: Jul 25, 2019
     let dateFormatterUser: DateFormatter = {
         let df = DateFormatter()
         df.dateFormat = "MMM dd, yyyy"
         return df
+    }()
+    
+    // UIPickers
+    let datePicker: UIDatePicker = {
+        let pk = UIDatePicker()
+        pk.datePickerMode = .date
+        return pk
     }()
     
     let activityLevelPicker: UIPickerView = {
@@ -45,9 +68,18 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
         return pk
     }()
     
+    let weightPicker: UIPickerView = {
+        let pk = UIPickerView()
+        return pk
+    }()
+    
     // heightPicker components
     var heightUnits = ["in"] // ["in","cm"]
     var heightData: [[String]] = [[String]]()
+    
+    // weightPicker components
+    var weightUnits = ["lb"] // ["lbs","kg"]
+    var weightData: [[String]] = [[String]]()
     
     
     let toolBar: UIToolbar = {
@@ -57,51 +89,43 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
         return tb
     }()
     
-    @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var birthdayButton: UIButton!
-    @IBOutlet weak var userGreeting: UITextView!
-    @IBOutlet weak var genderSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var heightButton: UIButton!
-    @IBOutlet weak var activityLevelButton: UIButton!
-    @IBOutlet weak var heightUnitsSegmentedControl: UISegmentedControl!
-    
-    // Used for networking calls
-    let baseDateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
-        return df
-    }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Disabling Next button fields are entered
+//        nextButton.isEnabled = false
+//        nextButton.alpha = 0.75
 
         // Do any additional setup after loading the view.
         if let userName = name {
            userGreeting.text = "Great meeting you, \(userName)!"
         }
         
-        // activityLevelPicker setup
-        activityLevelPicker.delegate = self
-        activityLevelPicker.dataSource = self
-        activityLevelPicker.tag = 1
-        
+
         // heightPicker setup
         heightPicker.delegate = self
         heightPicker.dataSource = self
-        heightPicker.tag = 2
+        heightUnitsSegmentedControl.isEnabled = false
         
+        // weightPicker setup
+        weightPicker.delegate = self
+        weightPicker.dataSource = self
+        weightUnitsSegmentedControl.isEnabled = false
         
+        // activityLevelPicker setup
+        activityLevelPicker.delegate = self
+        activityLevelPicker.dataSource = self
         
         // Set Button Tags
         genderSegmentedControl.tag = 0
         birthdayButton.tag = 1
         heightButton.tag = 2
-        activityLevelButton.tag = 3
+        weightButton.tag = 3
+        activityLevelButton.tag = 4
         
-        heightPickerSetup()
-        heightUnitsSegmentedControl.isEnabled = false
-        
+        pickerSetup()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -118,6 +142,9 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
         // Height Picker Set up
         heightPicker.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.frame.width, height: 200)
         
+        // Weight Picker Set up
+        weightPicker.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.frame.width, height: 200)
+        
         // Toolbar Set up
         toolBar.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.frame.width, height: 50)
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(closeToolBar))
@@ -129,6 +156,7 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
         self.view.addSubview(datePicker)
         self.view.addSubview(activityLevelPicker)
         self.view.addSubview(heightPicker)
+        self.view.addSubview(weightPicker)
         self.view.addSubview(toolBar)
         
         setInitialValues()
@@ -163,9 +191,21 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
         buttonID = heightButton.tag
         print("\(buttonID)")
         hideNextButton()
+        print("\(heightData)")
         heightPicker.frame = CGRect(x: 0, y: self.view.frame.maxY - 200, width: self.view.frame.width, height: 200)
         toolBar.frame = CGRect(x: 0, y: self.view.frame.maxY - 250, width: self.view.frame.width, height: 50)
     }
+    
+    @IBAction func weightButtonPressed(_ sender: Any) {
+        buttonID = weightButton.tag
+        print("\(buttonID)")
+        hideNextButton()
+        print("\(weightData)")
+        weightPicker.frame = CGRect(x: 0, y: self.view.frame.maxY - 200, width: self.view.frame.width, height: 200)
+        toolBar.frame = CGRect(x: 0, y: self.view.frame.maxY - 250, width: self.view.frame.width, height: 50)
+    }
+    
+    
 
     // MARK: Set Up Functions
     
@@ -181,27 +221,33 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == activityLevelPicker {
             return activityLevelSelections.count
-        } else {
+        } else if pickerView == heightPicker {
             return heightData[component].count
+        } else {
+            return weightData[component].count
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == activityLevelPicker {
             activityLevel = activityLevelSelections[row]
-            print("\(activityLevel)")
             return activityLevel
-        } else {
+        } else if pickerView == heightPicker {
             return heightData[component][row]
+            
+        } else {
+            return weightData[component][row]
+            
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 35
     }
+
     
     // Set up all components of the UIPicker
-    func heightPickerSetup() {
+    func pickerSetup() {
         
         var wholeNums = [String]()
         var fractionalNums = [String]()
@@ -213,6 +259,12 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
                        fractionalNums,
                        heightUnits,
         ]
+        
+        weightData = [wholeNums,
+                      fractionalNums,
+                      weightUnits,
+        ]
+        
     }
     
     func wholeNumsSetup(wholeNumsArray: inout [String]) {
@@ -227,6 +279,30 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
     func fractionalNumsSetup(fractionalNumsArray: inout [String]) {
         let setUp = ["-","1/8","1/4","1/3","3/8","1/2","5/8","2/3","3/4","7/8"]
         fractionalNumsArray.append(contentsOf: setUp)
+    }
+    
+    // Load weightPicker components in the right placement
+    func setInitialWeightPicker() {
+        let averageMaleWeightlbs = 220.0
+        let averageFemaleWeightlbs = 180.0
+        
+        
+        if genderSegmentedControl.selectedSegmentIndex == 0 {
+            weight = averageMaleWeightlbs
+        } else {
+            weight = averageFemaleWeightlbs
+        }
+        print("weight: \(weight)")
+        var wholeNum = Int(weight)
+        var fractionalNum = weight - Double(wholeNum)
+        var partialPickerPosition = 0
+        
+        convertValueToPartial(partialValue: &fractionalNum, partialPicker: &partialPickerPosition, wholeValue: &wholeNum)
+        print("wholeNum: \(wholeNum)")
+        print("fractionalNumb: \(fractionalNum)")
+        
+        weightPicker.selectRow(wholeNum, inComponent: 0, animated: false)
+        weightPicker.selectRow(partialPickerPosition, inComponent: 1, animated: false)
     }
 
      // Load heightPicker components in the right placement
@@ -335,6 +411,8 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
         
         heightPicker.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.frame.width, height: 200)
         
+        weightPicker.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.frame.width, height: 200)
+        
         toolBar.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.frame.width, height: 50)
         
         
@@ -347,8 +425,9 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
     // Initial UI Setup
     func setInitialValues() {
         setInitialActivity()
-        setInitialHeightUnit()
+//        setInitialHeightUnit()
         setInitialHeightPicker()
+        setInitialWeightPicker()
     }
     
     func setInitialActivity() {
@@ -363,6 +442,7 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
     func updateLabel() {
         switch buttonID {
         case 1:
+            birthday = baseDateFormatter.string(from: datePicker.date)
             birthdayButton.setTitle(dateFormatterUser.string(from: datePicker.date), for: .normal)
         case 2:
             let wholeNum = Int(height * cmToInchConversion)
@@ -374,14 +454,21 @@ class Onboarding2ViewController: UIViewController, UITextFieldDelegate, UIPicker
             let heightValue = "\(wholeNum) \(fractionalNum)"
             heightButton.setTitle(heightValue, for: .normal)
         case 3:
+            let wholeNum = Int(weight)
+            var fractionalNum = ""
+            convertPartialServingPickerToValue(selection: weightPicker.selectedRow(inComponent: 1), output: &fractionalNum)
+            
+            print("whole num: \(wholeNum), fractional num: \(fractionalNum)")
+            
+            let weightValue = "\(wholeNum) \(fractionalNum)"
+            weightButton.setTitle(weightValue, for: .normal)
+        case 4:
             activityLevelButton.setTitle(activityLevel, for: .normal)
         default:
             print("Error: Out of index range")
         }
     }
     
-    
-
     
     
     
